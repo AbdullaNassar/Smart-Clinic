@@ -11,7 +11,7 @@ const initRosheta=[
     },
 ];
 const initState={name:"", times:"0" , notes:""};
-function Rosheta({saveData}){
+function Rosheta({saveData,data=[]}){
     const[isOpen,setIsOpen]=useState(false);
     const[newMedicine,setNewMedicine]=useState('');
     const {isLoading, data:medicines, error}= useQuery({
@@ -30,7 +30,7 @@ function Rosheta({saveData}){
         },
         onError:(err)=>alert(err.message),
     });
-    const[rosheta,setRosheta]=useState(initRosheta);
+    const[rosheta,setRosheta]=useState(data);
 
     function reducer(state,action){
         switch(action.type){
@@ -54,7 +54,6 @@ function Rosheta({saveData}){
             return;
         }
         setRosheta((prev)=>[...prev,state]);
-        
     }
     // console.log(rosheta);
     if(isLoading) return <h2>Loading...</h2>

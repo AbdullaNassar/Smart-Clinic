@@ -5,11 +5,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addNewdisease, getDiseases } from "../../../services/apiDiseases";
 
 const initState={name:"", notes:""};
-function OldDiasies({saveData}){
+function OldDiasies({saveData,data=[]}){
     const[isOpen,setIsOpen]=useState(false);
     const[newDisea,setNewDisea]=useState('');
-    const{register , handleSubmit,reset}=useForm();
-    const[myDiseas,setMyDiseas]=useState([]);
+    console.log(data);    
+    const{register , handleSubmit,reset}=useForm({
+        defaultValues:data
+    });
+    const[myDiseas,setMyDiseas]=useState(data);
 
     const {isLoading, data:diseases, error}= useQuery({
         queryKey:['diseases'],

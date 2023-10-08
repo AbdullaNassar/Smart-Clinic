@@ -7,6 +7,9 @@ function Booking(){
                         <Link to="/newBooking">اضافة حجز جديد</Link>
                     </button>
                     <button>
+                        <Link to="/todayBooking">عرض حجوزات اليوم</Link>
+                    </button>
+                    <button>
                         <Link to="/allBookings">عرض جميع الحجوزات</Link>
                     </button>
                     

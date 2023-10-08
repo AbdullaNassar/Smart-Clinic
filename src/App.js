@@ -14,6 +14,7 @@ import AllBookings from "./features/Booking/AllBookings";
 import Reservation from "./features/Reservation/Reservation";
 import AllReservations from "./features/Kashf/AllReservations";
 import NewReservation from "./features/Kashf/NewReservation";
+import TodayBooking from "./features/Booking/TodayBooking";
 const queryClient =new QueryClient({
   defaultOptions:{
     queries:{
@@ -34,6 +35,7 @@ function App() {
           <Route path="/patients" element={<Patients/>} />
           <Route path="/patientHistory" element={<PatientHostory/>}/>
           <Route path="/booking" element={<Booking/>} />
+          <Route path="/todayBooking" element={<TodayBooking/>}/>
           <Route path="/allBookings" element={<AllBookings/>}/>
           <Route path="/newBooking" element={<NewBooking/>} />
           <Route path="/reservations" element={<Reservation/>} />

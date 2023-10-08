@@ -4,10 +4,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addNewSymptom, getSymptoms } from "../../../services/apiSymptoms";
 
 const initState={name:"", notes:""};
-function Symptoms({saveData}){
+function Symptoms({saveData,data=[]}){
     const[isOpen,setIsOpen]=useState(false);
     const[newSymptom,setNewSymptom]=useState('');
-    const[mySymptoms,setMysymptoms]=useState([]);
+    const[mySymptoms,setMysymptoms]=useState(data);
 
     const {isLoading, data:symptoms, error}= useQuery({
         queryKey:['symptoms'],
@@ -94,19 +94,13 @@ function Symptoms({saveData}){
                 </tr>
                 {mySymptoms.map((item,idx)=>
                 <tr>
-                    
                     <td>{item.name} </td>
                     <td>{item.notes} </td>
-                  
-                    
                 </tr>)}
-               
             </table>
             <button onClick={(e)=>{
                 saveData("symptoms",mySymptoms)
             }}>حفظ</button>
-
-              
         </div>
     );
 }

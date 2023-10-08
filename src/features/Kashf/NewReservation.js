@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import classes from "./NewReservation.module.css";
 import { useState } from "react";
 import PatientInfo from "./newReservFeatures/PatientInfo";
@@ -13,11 +13,15 @@ import Rosheta from "./newReservFeatures/Rosheta";
 import Symptoms from "./newReservFeatures/Symptoms";
 import Xrays from "./newReservFeatures/Xrays";
 import supabase from "../../services/supabase";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { creteReservation } from "../../services/apiReservation";
+import { getPatientInfo } from "../../services/apiPatients";
+import { updateBooking } from "../../services/apiBooking";
 function NewReservation({patientID, bookingID,}){
-    // console.log('ids');
-    // console.log(patientID,bookingID);
+    console.log('ids');
+    console.log(patientID,bookingID);
+    const navigate = useNavigate();
+    const { data, isLoading, error } = useQuery(['patientInfo', patientID], () => getPatientInfo(patientID));
     const initData=
     {
         
@@ -36,6 +40,15 @@ function NewReservation({patientID, bookingID,}){
         },
         onError:(err)=>alert(err.message),
     });
+
+    const mutation = useMutation((params) => updateBooking(...params), {
+        onSuccess: () => {
+          // alert('Column updated successfully!');
+        },
+        onError: (error) => {
+          alert('Error updating column: ' + error.message);
+        },
+      });
     function saveData(type,data){
           switch(type){
             case "quickCheck":{
@@ -76,7 +89,7 @@ function NewReservation({patientID, bookingID,}){
             }
             case "oppositeMedicines":{
                 setDataReserv((prev)=>({...prev, oppositeMedicines:data}));
-                mutate(dataReserv);
+                // mutate(dataReserv);
                 break;
             }
             default: console.log('cant define type');
@@ -99,7 +112,7 @@ function NewReservation({patientID, bookingID,}){
     }
     return(
         <div className={classes.all}>
-            {cur!==10&&<div className={classes.btns}>
+            {cur!==100&&<div className={classes.btns}>
                 <button onClick={()=>switchTab(0)}>بيانات المريض</button>
                 <button onClick={()=>switchTab(1)}>فحص سريع</button>
                 <button onClick={()=>switchTab(2)}>مراض سابقه</button>
@@ -110,19 +123,29 @@ function NewReservation({patientID, bookingID,}){
                 <button onClick={()=>switchTab(7)}>الاشعه المطلوبه</button>
                 <button onClick={()=>switchTab(8)}>الاكل المحدد</button>
                 <button onClick={()=>switchTab(9)}>الادويه المتعارضه</button>
-                <button onClick={()=>switchTab(10)}>طباعه</button>        
+                <button onClick={()=>switchTab(10)}>طباعه</button>   
+                <button onClick={()=>{
+                     const id = bookingID;
+                     const columnName = 'status';
+                     const columnValue = "تم الدخول والخروج";
+                     const params = [id, columnName, columnValue];
+                     mutation.mutate(params);
+                     mutate(dataReserv);
+                     navigate(-1);
+                }}>انهاء الكشف</button>     
             </div>}
-            {cur===0 && <PatientInfo patientID={patientID} /> }
-            {cur===1 && <QuickCheck saveData={saveData} /> }
-            {cur===2 && <OldDiasies saveData={saveData} /> }
-            {cur===3 && <Symptoms  saveData={saveData}/> }
-            {cur===4 && <Diagnosis saveData={saveData} /> }
-            {cur===5 && <Rosheta saveData={saveData}/> }
-            {cur===6 && <MedicalTests saveData={saveData}/> }
-            {cur===7 && <Xrays saveData={saveData}/> }
-            {cur===8 && <Food saveData={saveData}/> }
-            {cur===9 && <OpposingMedications saveData={saveData}/> }
-            {cur===10 && <Printer /> }
+            {cur===0 && <PatientInfo data={data} isLoading={isLoading} error={error} /> }
+            {cur===1 && <QuickCheck data={dataReserv.quickCheck} saveData={saveData} /> }
+            {cur===2 && <OldDiasies data={dataReserv.oldDisease} saveData={saveData} /> }
+            {cur===3 && <Symptoms  data={dataReserv.symptoms} saveData={saveData}/> }
+            {cur===4 && <Diagnosis data={dataReserv.diagnosis} saveData={saveData} /> }
+            {cur===5 && <Rosheta data={dataReserv.rosheta} saveData={saveData}/> }
+            {cur===6 && <MedicalTests data={dataReserv.medicalTest} saveData={saveData}/> }
+            {cur===7 && <Xrays data={dataReserv.xrays} saveData={saveData}/> }
+            {cur===8 && <Food data={dataReserv.food} saveData={saveData}/> }
+            {cur===9 && <OpposingMedications data={dataReserv.oppositeMedicines} saveData={saveData}/> }
+            {cur===10 && <Printer data={dataReserv} patientinfo={data} /> }
+            
 
          </div>
     );

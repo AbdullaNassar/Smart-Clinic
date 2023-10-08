@@ -5,10 +5,10 @@ import { addNewXray, getXrays } from "../../../services/apiXrays";
 import { addNewFood, getFood } from "../../../services/apiFood";
 
 const initState={name:"", notes:"",isOk:true};
-function Food({saveData}){
+function Food({saveData, data=[]}){
     const[isOpen,setIsOpen]=useState(false);
     const[newFood,setNewFood]=useState('');
-    const[myFood,setMyfood]=useState([]);
+    const[myFood,setMyfood]=useState(data);
 
     const {isLoading, data:foods, error}= useQuery({
         queryKey:['foods'],

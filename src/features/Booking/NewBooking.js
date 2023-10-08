@@ -4,15 +4,17 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { createBooking } from "../../services/apiBooking";
+import ReactDatePicker from "react-datepicker";
 
 function NewBooking(){
     const[value,setValue]=useState();
+    const [startDate, setStartDate] = useState(new Date());
+    console.log(startDate);
     const {isLoading, data:patients, error}= useQuery({
         queryKey:['patients'],
         queryFn: getPatients,
     })
-    // console.log('here');
-    // console.log(patients);
+    
     const{register , handleSubmit,reset}=useForm();
     const queryClient=useQueryClient();
     const {isLoading:isAdding, mutate}=useMutation({
@@ -28,6 +30,8 @@ function NewBooking(){
     });
 
     function onSubmit(data){
+        data.date=startDate;
+        // data.additionalValue = startDate;
         console.log(data);
         mutate(data);
     }
@@ -37,8 +41,8 @@ function NewBooking(){
             <div>
                 <label>المريض</label>
                 {!isLoading&&<select value={value} onChange={(e)=>setValue(e.target.value)} id="patientID" {...register('patientID')}>
-                    {patients.map(patient=><option value={patient.id}>
-                        {patient.name}
+                    {patients!==undefined &&patients.map(patient=><option value={patient.id}>
+                        {patient.name===undefined?"":patient.name}
                     </option>)}
                 </select>}
                 <button>
@@ -65,7 +69,7 @@ function NewBooking(){
             </div>
             <div>
                 <label>تاريخ الحجز</label>
-                <input/>
+                <ReactDatePicker selected={startDate} onChange={(date) => setStartDate((date))}  />
             </div>
             <div>
                 <label>المبلغ قبل الخصم</label>

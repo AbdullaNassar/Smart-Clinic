@@ -5,10 +5,10 @@ import { addNewSymptom, getSymptoms } from "../../../services/apiSymptoms";
 import { addNewMedicine, getMedicines } from "../../../services/apiMedicine";
 
 const initState={name:"", notes:""};
-function OpposingMedications({saveData}){
+function OpposingMedications({saveData, data=[]}){
     const[isOpen,setIsOpen]=useState(false);
     const[newMedicine,setNewMedicine]=useState('');
-    const[myMedicine,setMyMedicine]=useState([]);
+    const[myMedicine,setMyMedicine]=useState(data);
 
     const {isLoading, data:medicine, error}= useQuery({
         queryKey:['medicine'],

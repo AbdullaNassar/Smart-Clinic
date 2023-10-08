@@ -50,3 +50,18 @@ export async function getbookingInfo(id){
   }
   return data;
 }
+
+export async function updateBooking(id,columnName, value){
+  const updates = {
+    [columnName]: value,
+  };
+  const { data, error } = await supabase
+  .from('bookings')
+  .update(updates)
+  .eq("id",id)
+
+  if (error) {
+     console.log('error');
+  }
+  return data;
+}

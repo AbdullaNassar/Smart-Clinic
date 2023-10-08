@@ -1,10 +1,13 @@
 import { useForm } from "react-hook-form";
 
-function Diagnosis({saveData}){
-    const{register , handleSubmit,reset}=useForm();
-    function onSubmit(data){
-        // console.log(data);
-        saveData('diagnosis',data);
+function Diagnosis({saveData,data={}}){
+    const{register , handleSubmit,reset}=useForm({
+        defaultValues:data
+    });
+    console.log(data);
+    function onSubmit(daaata){
+        // console.log(daaata);
+        saveData('diagnosis',daaata);
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

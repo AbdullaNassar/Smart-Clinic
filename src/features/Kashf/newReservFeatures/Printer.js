@@ -1,9 +1,11 @@
 import classes from "./Printer.module.css"
 import {FaHouse, FaLaptopCode, FaLocationArrow, FaPhoneFlip, FaRegHospital,FaSquareWhatsapp,FaUserNurse} from "react-icons/fa6";
-function Printer(){
+function Printer({data={}, patientinfo={}}){
     function printPage() {
         window.print();
       }
+    console.log(patientinfo);
+    // console.log(data.diagnosis.notes);
       return (
         <div className={classes.all}>
             <div className={classes.header}>
@@ -25,126 +27,107 @@ function Printer(){
                 <label>تاريخ الكشف  22/3/2023</label>
             </div>
             <div className={classes.col}>
-                <label>ضغط الدم:120</label>
-                <label>السكر: 600 عالي</label>
-                <label>النبض:سريعه</label>
-                <label>التنفس:سريع</label>
-                <label>الوزن:80</label>
-                <label>الحراره:37</label>
+                {/* {data.quickCheck!==undefined&&data.quickCheck.pressure!==""&&<label>ضغط الدم:{data.quickCheck.pressure}</label>} */}
+                {data.quickCheck!==undefined&&data.quickCheck.pressure!==""&&<label>ضغط الدم:{data.quickCheck.pressure}</label>}
+                {data.quickCheck!==undefined&&data?.quickCheck?.diabites!==""&&<label>السكر:  {data?.quickCheck?.diabites}</label>}
+                {data.quickCheck!==undefined&&data?.quickCheck?.heartRate!==""&&<label>النبض:{data?.quickCheck?.heartRate}</label>}
+                {data.quickCheck!==undefined&&data?.quickCheck?.breathe!==""&&<label>التنفس:{data?.quickCheck?.breathe}</label>}
+                {data.quickCheck!==undefined&&data?.quickCheck?.weight!==""&&<label>الوزن:{data?.quickCheck?.weight}</label>}
+                {data.quickCheck!==undefined&&data?.quickCheck?.temperture!==""&&<label>الحراره:{data?.quickCheck?.temperture}</label>}
             </div>
             <div  className={classes.col}>
-                <label>اسم المريض: عبدالله مؤمن</label>
-                <label>السن:23</label>
-                <label>النوع:ذكر</label>
+                <label>اسم المريض: {patientinfo?.name}</label>
+                <label>السن:{patientinfo?.age}</label>
+                <label>النوع:{patientinfo?.gender}</label>
                 <label>اسم الدكتور: طه بندو</label>
-                <label>ملاحظات:استشاره بعد اسبوع</label>
-                <label>التشخيص:صداع</label>
-                <label>نصائح للمريض: الراحه التامه</label>
+                
+                {data.diagnosis!==undefined&&data.diagnosis.notes!==""&&<label>ملاحظات: {data.diagnosis.notes}</label>}
+                {data.diagnosis!==undefined&&data.diagnosis.details!==""&&<label>التشخيص: {data.diagnosis.details}</label>}
+                {data.diagnosis!==undefined&&data.diagnosis.advices!==""&&<label>نصائح للمريض: {data.diagnosis.advices}</label>}
             </div>
             </div>
             <hr/>
-            <div>
-            <table className={classes.customTable}>
+            <div className={classes.card}>
+            <div className={classes.box}>
+            {data.rosheta!==undefined&&<table className={classes.customTable}>
                 <caption>العلاج</caption>
                 <tr>
                     <th>اسم الدواء</th>
                     <th>الجرعه</th>
                     <th>ملاحظات</th>
                 </tr>
+                 {data.rosheta.map(item=>
                 <tr>
-                    <td>catafast </td>
-                    <td>1 مره بعد الاكل</td>
-                    <td>الخميس فقط</td>
-                </tr>
-                <tr>
-                    <td>aspiren 500</td>
-                    <td>5 مرات بعد الاكل</td>
-                    <td>يوميا عدا الجمعه</td>
-                </tr>
-                <tr>
-                    <td>kitofan 500</td>
-                    <td>3 مرات بعد الاكل</td>
-                    <td>يوميا عدا الجمعه</td>
-                </tr>
-                <tr>
-                    <td>congestal 500</td>
-                    <td>3 مرات بعد الاكل</td>
-                    <td>يوميا عدا الجمعه</td>
-                </tr>
-            </table>
-            <hr/>
+                    <td>{item.name} </td>
+                    <td>{item.times}</td>
+                    {item.notes!==""&&<td>{item.notes}</td>}
+                </tr>)}
+            </table>}
+            {/* <hr/> */}
             </div>
-            <div>
-            <table className={classes.customTable}>
+            <div className={classes.box}>
+            {data.medicalTest!==undefined&&<table className={classes.customTable}>
                 <caption>التحاليل المطلوبه</caption>
                 <tr>
                     <th>اسم التحليل</th>
                     <th>ملاحظات</th>
                 </tr>
+                {data.medicalTest.map(item=>
                 <tr>
-                    <td>liver </td>
-                    <td>التحليل عند الاستيقاظ صباحا</td>
+                    <td>{item.name}</td>
+                    {item.notes!==""&&<td>{item.notes}</td>}
                 </tr>
-                <tr>
-                    <td>hemoglobin </td>
-                    <td>...</td>
-                </tr>
-            </table >
-            <hr/>
+                )}
+            </table >}
+            {/* <hr/> */}
             </div>
-            <div>
-            <table className={classes.customTable}>
+            <div className={classes.box}>
+            {data.xrays!==undefined&&<table className={classes.customTable}>
                 <caption>الاشعات المطلوبه</caption>
                 <tr>
                     <th>اسم الاشعه</th>
                     <th>ملاحظات</th>
                 </tr>
-                <tr>
-                    <td>رسم قلب </td>
-                    <td>عدم الاكل قبل التحليل بساعه</td>
-                </tr>
-                <tr>
-                    <td>اشعه علي المخ </td>
-                    <td>...</td>
-                </tr>
-            </table>
-            <hr/>
+                {data.xrays.map(item=>
+                    <tr>
+                        <td>{item.name}</td>
+                        {item.notes!==''&&<td>{item.notes}</td>}
+                    </tr>)}
+            </table>}
+            {/* <hr/> */}
             </div>
-            <div>
-            <table className={classes.customTable}>
-                <caption>الاكل المسموح اثناء فتره العلاج</caption>
+            <div className={classes.box}>
+            {data.food!==undefined&&<table className={classes.customTable}>
+                <caption>الاكل اثناء فتره العلاج</caption>
                 <tr>
-                    <th>اسم الاكل/الشراب</th>
-                    <th>ملاحظات</th>
+                    <th>الطعام</th>
+                    {/* <th>مسموح/ممنوع</th> */}
                 </tr>
-                <tr>
-                    <td>سمك</td>
-                    <td>...</td>
-                    
-                </tr>
-                <tr>
-                    <td>فراخ</td>
-                    <td>....</td>
-                </tr>
-            </table>
-            <hr/>
+                {data.food.map(item=>
+                    <tr>
+                        <td>{item.name}</td>
+                        <td>{item.isOk===true?"مسموح":"ممنوع"}</td>
+                    </tr>)}
+            </table>}
+            {/* <hr/> */}
             </div>
-            <div>
-            <table className={classes.customTable}>
+            <div className={classes.box}>
+            {data.oppositeMedicines!==undefined&&<table className={classes.customTable}>
                 <caption>الادويه  المحظوره اثناء فتره العلاج</caption>
                 <tr>
                     <th>اسم الدواء</th>
                     <th>ملاحظات</th>
                 </tr>
-                <tr>
-                    <td>kitofan</td>
-                    <td>...</td>
-                    
-                </tr>
-                
-            </table>
-            <hr/>
+                {data.oppositeMedicines.map(item=>
+                    <tr>
+                        <td>{item.name}</td>
+                        {item.notes!==''&&<td>{item.notes}</td>}
+                    </tr>)}
+            </table>}
+            {/* <hr/> */}
             </div>
+            </div>
+            <hr/>
             <div className={classes.footer}>
                 <div className={classes.col}>
                     <span>+01063698275<FaPhoneFlip /> </span>

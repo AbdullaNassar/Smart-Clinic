@@ -3,13 +3,13 @@ import supabase from "../../../services/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { getPatientInfo } from "../../../services/apiPatients";
 
-function PatientInfo({patientID}){
+function PatientInfo({data,isLoading,error}){
     // const {isLoading, data:bookings, error}= useQuery({
     //     queryKey:['patients'],
     //     queryFn: getBooking,
     // })
     // console.log('patient', patientID);
-    const { data, isLoading, error } = useQuery(['patientInfo', patientID], () => getPatientInfo(patientID));
+   
    
       if(isLoading)return<p>Loading...</p>
     return (

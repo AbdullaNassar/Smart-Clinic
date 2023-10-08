@@ -44,6 +44,8 @@ function AllBookings(){
         queryKey:['booking'],
         queryFn: getBooking,
     })
+    console.log(bookings);
+    // console.log(typeof(bookings[5].date))
 
 useEffect(() => {
     async function fetchData() {
@@ -54,11 +56,13 @@ useEffect(() => {
         const name = await getPatientInfo(id.patientID);
         names.push(name);
       }
-
       setPatientNames(names);
     }
-
     fetchData();
+
+    if(bookings!==undefined){
+      const today = new Date().toISOString().split('T')[0];
+    }
   }, [bookings,isLoading]);
 
 // console.log(patientNames);
@@ -80,7 +84,118 @@ useEffect(() => {
         }).format(date);
       }
     const [startDate, setStartDate] = useState(new Date());
-    // console.log((startDate));
+    console.log((startDate));
+
+    const[order,setOrder]=useState('all');
+    const[bookingList, setBookingList]=useState(bookings);
+ useEffect(function(){
+  switch(order){
+    case "all":{
+      const newList = bookings; // Create a copy of the original list
+      newList.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setBookingList(newList);
+      break;
+    }
+    case "week":{
+      const currentDate = new Date();
+
+      // Calculate the date 7 days ago
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(currentDate.getDate() - 7);
+      
+      // Filter the original list based on the date
+      const newList = bookings.filter(obj => {
+        // Convert the 'date' string to a Date object
+        const objDate = new Date(obj.date);
+      
+        // Return true if the object's date is within the last 7 days
+        const newDate = new Date();
+        newDate.setDate(newDate.getDate() + 1);
+        return objDate >= sevenDaysAgo && objDate<newDate ;
+      });
+      setBookingList(newList);
+      break;
+    }
+    case "month":{
+      const currentDate = new Date();
+
+      // Calculate the date 7 days ago
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(currentDate.getDate() - 30);
+      
+      // Filter the original list based on the date
+      const newList = bookings.filter(obj => {
+        // Convert the 'date' string to a Date object
+        const objDate = new Date(obj.date);
+      
+        // Return true if the object's date is within the last 7 days
+        const newDate = new Date();
+        newDate.setDate(newDate.getDate() + 1);
+        return objDate >= sevenDaysAgo && objDate<newDate ;
+      });
+      setBookingList(newList);
+      break;
+    }
+    case "3month":{
+      const currentDate = new Date();
+
+      // Calculate the date 7 days ago
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(currentDate.getDate() - 90);
+      
+      // Filter the original list based on the date
+      const newList = bookings.filter(obj => {
+        // Convert the 'date' string to a Date object
+        const objDate = new Date(obj.date);
+      
+        // Return true if the object's date is within the last 7 days
+        const newDate = new Date();
+        newDate.setDate(newDate.getDate() + 1);
+        return objDate >= sevenDaysAgo && objDate<newDate ;
+      });
+      setBookingList(newList);
+      break;
+    }
+    case "year":{
+      const currentDate = new Date();
+
+      // Calculate the date 7 days ago
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(currentDate.getDate() - 365);
+      
+      // Filter the original list based on the date
+      const newList = bookings.filter(obj => {
+        // Convert the 'date' string to a Date object
+        const objDate = new Date(obj.date);
+      
+        // Return true if the object's date is within the last 7 days
+        const newDate = new Date();
+        newDate.setDate(newDate.getDate() + 1);
+        return objDate >= sevenDaysAgo && objDate<newDate ;
+      });
+      setBookingList(newList);
+      break;
+    }
+    case "specfic":{
+      const currentDate = new Date(startDate);
+      const currentDateString = currentDate.toISOString().split('T')[0];
+
+      // Filter the original list based on the date
+      const newList = bookings.filter(obj => {
+        // Extract the date part from the 'date' string
+        const objDate = obj.date.split('T')[0];
+
+        // Return true if the object's date is today
+        return objDate === currentDateString;
+      });
+      setBookingList(newList)
+      break;
+    }
+
+    default: console.log('cant find order way');
+  }
+ },[bookings,order])
+    
 
     // const filteredList = patients.filter((item) => {
     //     const itemDate = new Date(item.date);
@@ -143,7 +258,15 @@ useEffect(() => {
                         newDate.setDate(newDate.getDate() + 1);
                         setStartDate(newDate);
                     }}>+</button>
-                    <DatePicker selected={startDate} onChange={(date) => setStartDate((date))} />
+                    <DatePicker selected={startDate} onChange={(date) => {
+                      setStartDate((date))
+                      setOrder('specfic');
+                    }} />
+                    <button onClick={(e)=>setOrder('all')}>الكل</button>
+                    <button onClick={(e)=>setOrder('week')}>اخر اسبوع</button>
+                    <button onClick={(e)=>setOrder('month')}>اخر شهر </button>
+                    <button onClick={(e)=>setOrder('3month')}>اخر 3 شهور </button>
+                    <button onClick={(e)=>setOrder('year')}>اخر سنه</button>
                 </div>
                 <div onClick={handleSavePDF} className={classes.print}>
                     <label>طباعة</label>
@@ -158,31 +281,18 @@ useEffect(() => {
                     <th>نوع الحجز</th>
                     <th>حاله الحجز</th>
                     <th>المبلغ</th>
+                    <th>التاريخ</th>
                     <th>ملاحظات</th>
                 </tr>
-                {!isLoading &&bookings.map((item,idx)=>
+                {!isLoading &&bookingList.map((item,idx)=>
                 <tr>
                     <td>{patientNames[idx]}</td>
-                    <td>{item.id}</td>
+                    <td>{idx+1}</td>
                     <td>{item.type}</td>
                     <td>{item.status}</td>
                     <td>{item.price}</td>
+                    <td><time>{formatDate(item.date)}</time></td>
                     <td>{item.notes}</td>
-                    {item.status==='لم يتم الدخول للدكتور'&&<button onClick={()=>{
-                      setIsStart(true)
-                      const ids={
-                        "bookingID":item.id,
-                        "patientID":item.patientID,
-                      }
-                      setIDs(ids);
-                    }}> بدء الكشف</button>}
-                    <button>تعديل</button>
-                    {item.status!=='تم الدخول والخروج' &&
-                     <button onClick={()=>{
-                      mutate(item.id);
-                     }}>
-                        حذف
-                     </button>}
                 </tr>)}
                
             </table>

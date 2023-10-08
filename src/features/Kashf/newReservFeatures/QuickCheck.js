@@ -1,25 +1,30 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 const initReserv=[
 
 ]
-function QuickCheck({saveData}){
-    const{register , handleSubmit,reset}=useForm();
+function QuickCheck({saveData,data={}}){
+    const{register , handleSubmit,reset}=useForm({
+        defaultValues:data
+    });
     function onSubmit(data){
         saveData("quickCheck",data);
     }
+    
+    console.log(data);
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
             <div>
                 <label>ضغط الدم</label>
-                <input {...register("pressure")}/>
+                <input  {...register("pressure")}/>
             </div>
             <div>
                 <label>التنفس</label>
-                <input {...register("breathe")} />
+                <input  {...register("breathe")} />
             </div>
             <div>
                 <label>نبضات القلب</label>
-                <input {...register('heartRate')} />
+                <input  {...register('heartRate')} />
             </div>
             <div>
                 <label>حراره الجسم</label>
@@ -31,11 +36,11 @@ function QuickCheck({saveData}){
             </div>
             <div>
                 <label>الوزن</label>
-                <input {...register("weight")} />
+                <input  {...register("weight")} />
             </div>
             <div>
                 <label>عمليات سابقه</label>
-                <input {...register("oldOperations")}/>
+                <input  {...register("oldOperations")}/>
             </div>
             <button>حفظ</button>
         </form>

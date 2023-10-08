@@ -4,10 +4,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addNewXray, getXrays } from "../../../services/apiXrays";
 
 const initState={name:"", notes:""};
-function Xrays({saveData}){
+function Xrays({saveData, data=[]}){
     const[isOpen,setIsOpen]=useState(false);
     const[newXray,setNewXray]=useState('');
-    const[myXrays,setMyXrays]=useState([]);
+    const[myXrays,setMyXrays]=useState(data);
 
     const {isLoading, data:xrays, error}= useQuery({
         queryKey:['xrays'],
