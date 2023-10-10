@@ -10,7 +10,18 @@ import { deleteBooking, getBooking, updateBooking } from "../../services/apiBook
 import { Link } from "react-router-dom";
 import NewReservation from "../Kashf/NewReservation";
 import supabase from "../../services/supabase";
+import s1 from "../../sounds/Recording.m4a";
+import s2 from "../../sounds/Recording(2).m4a";
+import s3 from "../../sounds/Recording(3).m4a";
+import s4 from "../../sounds/Recording(4).m4a";
+import s5 from "../../sounds/Recording(5).m4a";
+import s6 from "../../sounds/Recording(6).m4a";
+import s7 from "../../sounds/Recording(7).m4a";
+import s8 from "../../sounds/Recording(8).m4a";
+import s9 from "../../sounds/Recording(9).m4a";
+import s10 from "../../sounds/Recording(10).m4a";
 function TodayBooking(){
+  const[cur,setCur]=useState(1);
   const queryClient= useQueryClient();
   const { isLoading:isDeleting, mutate} = useMutation({
     mutationFn:(id)=>deleteBooking(id),
@@ -80,6 +91,20 @@ useEffect(() => {
             bookings.splice(i, 1);
           }
         }
+        const statusOrder = ["تم الدخول والخروج", "بالداخل عند الدكتور", "لم يتم الدخول للدكتور"];
+        bookings.sort((a, b) => {
+          const statusA = a.status;
+          const statusB = b.status;
+        
+          return statusOrder.indexOf(statusA) - statusOrder.indexOf(statusB);
+        });
+        for(let i=0;i<bookings.length;i++){
+          if(bookings[i].status!=='تم الدخول والخروج'){
+            setCur(i+1);
+            break;
+          }
+          setCur(bookings.length);
+        }
       }
       for (const id of bookings) {
         const name = await getPatientInfo(id.patientID);
@@ -94,6 +119,72 @@ useEffect(() => {
 
 // console.log(patientNames);
     // console.log(bookings[1].patientID);
+    
+ const generateRingSound = () => {
+    // Create an AudioContext instance
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  
+    // Create an oscillator node
+    const oscillator = audioContext.createOscillator();
+    oscillator.type = 'sine'; // Set the oscillator type to "sine" for a simple tone
+  
+    // Connect the oscillator to the audio context's destination (i.e., speakers)
+    oscillator.connect(audioContext.destination);
+  
+    // Start the oscillator
+    oscillator.start();
+  
+    // Stop the oscillator after a specified duration (e.g., 1 second)
+    setTimeout(() => {
+      oscillator.stop();
+    }, 1000); // Adjust the duration as needed
+
+    let audio ;
+    switch(cur){
+      case 1:{
+        audio = new Audio(s1);
+        break;
+      }
+      case 2:{
+        audio = new Audio(s2);
+        break;
+      }
+      case 3:{
+        audio = new Audio(s3);
+        break;
+      }
+      case 4:{
+        audio = new Audio(s4);
+        break;
+      }
+      case 5:{
+        audio = new Audio(s5);
+        break;
+      }
+      case 6:{
+        audio = new Audio(s6);
+        break;
+      }
+      case 7:{
+        audio = new Audio(s7);
+        break;
+      }
+      case 8:{
+        audio = new Audio(s8);
+        break;
+      }
+      case 9:{
+        audio = new Audio(s9);
+        break;
+      }
+      case 10:{
+        audio = new Audio(s10);
+        break;
+      }
+      default:
+    }
+      audio.play();
+  };
     const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
         day: "numeric",
@@ -164,10 +255,13 @@ useEffect(() => {
             <div className={classes.header}>
                 <div>
                     <time>{formatDate(new Date())} </time>
-                    <span><FaBell/></span>
-                    <button>التالي</button>
-                    <input type="number"/>
-                    <label>الرقم الحالي: 1</label>
+                    <span onClick={(e)=>generateRingSound()}><FaBell/></span>
+                    <button onClick={(e)=>{
+                      setCur(p=>p+1);
+                      // generateRingSound();
+                    }}>التالي</button>
+                    {/* <input type="number" onChange={(e)=>setCur(e.target.value)}/> */}
+                    <label>الرقم الحالي: {cur}</label>
                     {/* <button onClick={()=>{
                         const newDate = new Date(startDate);
                         newDate.setDate(newDate.getDate() - 1);

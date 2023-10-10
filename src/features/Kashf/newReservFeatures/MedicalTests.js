@@ -5,7 +5,7 @@ import { addNewSymptom, getSymptoms } from "../../../services/apiSymptoms";
 import { addNewMedicalTest, getMedicalTests } from "../../../services/apiMedicalTest";
 
 const initState={name:"", notes:""};
-function Symptoms({saveData,data=[]}){
+function MedicalTests({saveData,data=[]}){
     const[isOpen,setIsOpen]=useState(false);
     const[newMedicalTest,setNewMedicalTest]=useState('');
     const[myMedicalTests,setMyMedicalTests]=useState(data);
@@ -105,4 +105,4 @@ function Symptoms({saveData,data=[]}){
         </div>
     );
 }
-export default Symptoms;
+export default MedicalTests;

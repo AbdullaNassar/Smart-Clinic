@@ -1,15 +1,23 @@
-.search{
-  display: flex;
+.header{
+    margin: 1rem;
+    display: flex;
     justify-content: space-between;
-    padding: 1rem;
+    flex-wrap: wrap;
 }
-.search span{
-  color: green;
+
+.header label{
+    margin-right: 1rem;
 }
-.search span:hover{
-  cursor: pointer;
-  transform: scale(1.1);
-}
+/* .header button{
+    width: 2rem;
+    height: 2rem;
+    
+    border: none;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    
+} */
 
 .customers {
     font-family: Arial, Helvetica, sans-serif;
@@ -31,4 +39,10 @@
     text-align: left;
     background-color: #04AA6D;
     color: white;
+}
+.print{
+    cursor: pointer;
+}
+.print span{
+    color: green;
 }

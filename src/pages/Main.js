@@ -22,9 +22,6 @@ function Main(){
             })
         },
         onError: err=>alert(err.message)
-
-
-
     })
     return(
         <div className={classes.all}>
@@ -41,16 +38,7 @@ function Main(){
                         <Link to="/patients">المرضي</Link>
                     </button>
                     <button>
-                        <Link to="/reservations">الكشف</Link>
-                    </button>
-                    <button>
-                        <Link to="/patientHistory">المخزن</Link>
-                    </button>
-                    <button>
-                        <Link to="/dailyInfo">البيانات اليوميه</Link>
-                    </button>
-                    <button>
-                        <Link to="/dailyInfo">الاعدادت</Link>
+                        <Link to="/ExpensesRevenues">المصروفات والايرادات</Link>
                     </button>
                     <button>
                         <Link to="/dailyInfo">تسجيل دخول/خروج</Link>

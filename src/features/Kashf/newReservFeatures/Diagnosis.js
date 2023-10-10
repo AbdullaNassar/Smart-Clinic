@@ -4,7 +4,7 @@ function Diagnosis({saveData,data={}}){
     const{register , handleSubmit,reset}=useForm({
         defaultValues:data
     });
-    console.log(data);
+    // console.log(data);
     function onSubmit(daaata){
         // console.log(daaata);
         saveData('diagnosis',daaata);

@@ -15,6 +15,13 @@ import Reservation from "./features/Reservation/Reservation";
 import AllReservations from "./features/Kashf/AllReservations";
 import NewReservation from "./features/Kashf/NewReservation";
 import TodayBooking from "./features/Booking/TodayBooking";
+import PatientDetails from "./features/patient/PatientDetails";
+import ShowReservation from "./features/Kashf/displayReservation/ShowReservation";
+import ExpensesRevenues from "./features/ExpensesRevenues/ExpensesRevenues";
+import NewExpense from "./features/ExpensesRevenues/NewExpense";
+import NewRevenue from "./features/ExpensesRevenues/NewRevenue";
+import ShowExpenses from "./features/ExpensesRevenues/ShowExpenses";
+import ShowRevenues from "./features/ExpensesRevenues/ShowRevenues";
 const queryClient =new QueryClient({
   defaultOptions:{
     queries:{
@@ -41,7 +48,14 @@ function App() {
           <Route path="/reservations" element={<Reservation/>} />
           <Route path="/newReservations" element={<NewReservation/>} />
           <Route path="/allReservations" element={<AllReservations/>} />
+          <Route path="/ReservationDetails" element={<ShowReservation/>} />
           <Route path="/dailyInfo" element={<DailyInfo/>}/>
+          <Route path="/patientDetails/:id" element={<PatientDetails/>} />
+          <Route path="/ExpensesRevenues" element={<ExpensesRevenues/>}/>
+          <Route path="/ExpensesRevenues/newExpense"element={<NewExpense/>} />
+          <Route path="/ExpensesRevenues/newRevenue"element={<NewRevenue/>} />
+          <Route path="/ExpensesRevenues/expenses"element={<ShowExpenses/>} />
+          <Route path="/ExpensesRevenues/revenues"element={<ShowRevenues/>} />
         </Routes>
       </BrowserRouter>
     </PatientProvider>

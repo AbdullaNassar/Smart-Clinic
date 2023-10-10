@@ -37,3 +37,30 @@ export async function creteReservation(newReservations){
         }
         return data;
       }
+  
+export async function updateReservation(id, updatedData){
+  const { data, error } = await supabase
+  .from('reservations')
+  .update(updatedData)
+  .eq('id', id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}
+
+export async function updateReservationColumn(id,columnName, value){
+  const updates = {
+    [columnName]: value,
+  };
+  const { data, error } = await supabase
+  .from('reservations')
+  .update(updates)
+  .eq("id",id)
+
+  if (error) {
+     console.log('error');
+  }
+  return data;
+}

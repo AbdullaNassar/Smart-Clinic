@@ -9,8 +9,7 @@ function PatientInfo({data,isLoading,error}){
     //     queryFn: getBooking,
     // })
     // console.log('patient', patientID);
-   
-   
+    console.log(data);
       if(isLoading)return<p>Loading...</p>
     return (
         <div>

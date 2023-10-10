@@ -3,70 +3,25 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaPrint } from "react-icons/fa6";
 import React, { useEffect } from 'react';
-import jsPDF from 'jspdf';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import classes from "./AllBookings.module.css";
-import { deleteBooking, getBooking } from "../../services/apiBooking";
-import { Link } from "react-router-dom";
-import NewReservation from "../Kashf/NewReservation";
-import supabase from "../../services/supabase";
-function AllBookings(){
-  const queryClient= useQueryClient();
-  const { isLoading:isDeleting, mutate} = useMutation({
-    mutationFn:(id)=>deleteBooking(id),
-    onSuccess: ()=>{
-        queryClient.invalidateQueries({
-            queryKey:['booking'],
-        })
-    },
-    onError: err=>alert(err.message)
-})
+import classes from "./ShowExpenses.module.css";
+import { getMyExpenses } from "../../services/apiMyExpenses";
+import { getExpenses } from "../../services/apiExpenses";
+import { getMyRevenues } from "../../services/apiMyRevenues";
+import { getRevenues } from "../../services/apiRevenues";
+function ShowRevenues(){
 
-  const[IDs,setIDs]=useState();
-  const [patientNames, setPatientNames] = useState([]);
-     async function getPatientInfo(id){
-      
-      const{data, error}=await supabase
-      .from('patients')
-      .select()
-      .eq('id',id)
-      .single()
-      if(error){
-        console.log('ere');
-        return;
-      }
-      // console.log(data);
-      return data.name;
-    }
-    // getPatientInfo(1);
-    const[isStart,setIsStart]=useState(false);
-    const {isLoading, data:bookings, error}= useQuery({
-        queryKey:['booking'],
-        queryFn: getBooking,
+    const {isLoading, data:revenues, error}= useQuery({
+        queryKey:['revenues'],
+        queryFn: getMyRevenues,
     })
-    console.log(bookings);
-    // console.log(typeof(bookings[5].date))
+    // console.log(expenses);
 
-useEffect(() => {
-    async function fetchData() {
-      const names = [];
-      if(isLoading)return;
-
-      for (const id of bookings) {
-        const name = await getPatientInfo(id.patientID);
-        names.push(name);
-      }
-      setPatientNames(names);
-    }
-    fetchData();
-
-    if(bookings!==undefined){
-      const today = new Date().toISOString().split('T')[0];
-    }
-  }, [bookings,isLoading]);
-
-// console.log(patientNames);
-    // console.log(bookings[1].patientID);
+    const {isLoading: loadingExpensesType, data:revenueType, error:errorExpensesType}= useQuery({
+        queryKey:['Revenues'],
+        queryFn: getRevenues,
+    })
+    console.log(revenueType);
     const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
         day: "numeric",
@@ -84,16 +39,16 @@ useEffect(() => {
         }).format(date);
       }
     const [startDate, setStartDate] = useState(new Date());
-    console.log((startDate));
-
+   
     const[order,setOrder]=useState('all');
-    const[bookingList, setBookingList]=useState(bookings);
+    const[type,setType]=useState('all');
+    const[revenuesList, setRevenuesList]=useState(revenues);
  useEffect(function(){
-  if(bookings!==undefined)switch(order){
+  if(revenues!==undefined)switch(order){
     case "all":{
-      const newList = bookings; // Create a copy of the original list
+      const newList = revenues; // Create a copy of the original list
       newList.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setBookingList(newList);
+      setRevenuesList(newList);
       break;
     }
     case "week":{
@@ -104,7 +59,7 @@ useEffect(() => {
       sevenDaysAgo.setDate(currentDate.getDate() - 7);
       
       // Filter the original list based on the date
-      const newList = bookings.filter(obj => {
+      const newList = revenues.filter(obj => {
         // Convert the 'date' string to a Date object
         const objDate = new Date(obj.date);
       
@@ -113,7 +68,7 @@ useEffect(() => {
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setBookingList(newList);
+      setRevenuesList(newList);
       break;
     }
     case "month":{
@@ -124,7 +79,7 @@ useEffect(() => {
       sevenDaysAgo.setDate(currentDate.getDate() - 30);
       
       // Filter the original list based on the date
-      const newList = bookings.filter(obj => {
+      const newList = revenues.filter(obj => {
         // Convert the 'date' string to a Date object
         const objDate = new Date(obj.date);
       
@@ -133,7 +88,7 @@ useEffect(() => {
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setBookingList(newList);
+      setRevenuesList(newList);
       break;
     }
     case "3month":{
@@ -144,7 +99,7 @@ useEffect(() => {
       sevenDaysAgo.setDate(currentDate.getDate() - 90);
       
       // Filter the original list based on the date
-      const newList = bookings.filter(obj => {
+      const newList = revenues.filter(obj => {
         // Convert the 'date' string to a Date object
         const objDate = new Date(obj.date);
       
@@ -153,7 +108,7 @@ useEffect(() => {
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setBookingList(newList);
+      setRevenuesList(newList);
       break;
     }
     case "year":{
@@ -164,7 +119,7 @@ useEffect(() => {
       sevenDaysAgo.setDate(currentDate.getDate() - 365);
       
       // Filter the original list based on the date
-      const newList = bookings.filter(obj => {
+      const newList = revenues.filter(obj => {
         // Convert the 'date' string to a Date object
         const objDate = new Date(obj.date);
       
@@ -173,7 +128,7 @@ useEffect(() => {
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setBookingList(newList);
+      setRevenuesList(newList);
       break;
     }
     case "specfic":{
@@ -181,69 +136,31 @@ useEffect(() => {
       const currentDateString = currentDate.toISOString().split('T')[0];
 
       // Filter the original list based on the date
-      const newList = bookings.filter(obj => {
+      const newList = revenues.filter(obj => {
         // Extract the date part from the 'date' string
         const objDate = obj.date.split('T')[0];
 
         // Return true if the object's date is today
         return objDate === currentDateString;
       });
-      setBookingList(newList)
+      setRevenuesList(newList)
       break;
     }
 
     default: console.log('cant find order way');
   }
- },[bookings,order,startDate])
+ },[revenues,order,startDate])
     
-
-    // const filteredList = patients.filter((item) => {
-    //     const itemDate = new Date(item.date);
-    //     return (
-    //       itemDate.getDate() === startDate.getDate() &&
-    //       itemDate.getMonth() === startDate.getMonth() &&
-    //       itemDate.getFullYear() === startDate.getFullYear()
-    //     );
-    //   });
-      
-     
-
-      useEffect(() => {
-        const handleAfterPrint = () => {
-          generatePDF();
-          window.removeEventListener('afterprint', handleAfterPrint);
-        };
-    
-        window.addEventListener('afterprint', handleAfterPrint);
-    
-        return () => {
-          window.removeEventListener('afterprint', handleAfterPrint);
-        };
-      }, []);
-    
-      const generatePDF = () => {
-        const doc = new jsPDF();
-        doc.html(document.body, {
-          callback: function () {
-            doc.save('webpage.pdf');
-          },
-        });
-      };
-    
-      const handleSavePDF = () => {
-        window.print();
-      };
-      if(isStart){
-        // console.log(IDs);
-        return(
-          <>
-          <NewReservation patientID={IDs.patientID} bookingID={IDs.bookingID} />
-          <button className="no-print" onClick={(e)=>setIsStart(e=>!e)}>انهاء الكشف</button>
-          </>
-  
-        );
-      }
-    else return(
+//  console.log(type);
+//  console.log(revenuesList);
+ useEffect(function(){
+    if(revenuesList!==undefined&&type!=='all'){
+        const newList=revenuesList.filter(item=>item.revenueType===type);
+        // setRevenuesList(newList);
+        // console.log(newList);
+    }
+ },[revenuesList,type])
+ return(
         <div>
             <div className={classes.header}>
                 <div>
@@ -267,8 +184,20 @@ useEffect(() => {
                     <button onClick={(e)=>setOrder('month')}>اخر شهر </button>
                     <button onClick={(e)=>setOrder('3month')}>اخر 3 شهور </button>
                     <button onClick={(e)=>setOrder('year')}>اخر سنه</button>
+                    <div>
+                        <label>نوع الايراد</label>
+                        <select value={type} onChange={(e)=>setType(e.target.value)}>
+                            <option value="all">all</option>
+                            {revenueType!==undefined&&revenueType.map(item=><option value={item.name}>
+                                {item.name}
+                            </option>)}
+                        </select>
+                    </div>
                 </div>
-                <div onClick={handleSavePDF} className={classes.print}>
+                
+                <div onClick={()=>{
+                    window.print();
+                }} className={classes.print}>
                     <label>طباعة</label>
                     <span ><FaPrint/></span>
                 </div>
@@ -277,24 +206,29 @@ useEffect(() => {
             <table className={classes.customers}>
                 <tr>
                     <th></th>
-                    <th>الاسم</th>
-                    <th>رقم الحجز</th>
-                    <th>نوع الحجز</th>
-                    <th>حاله الحجز</th>
-                    <th>المبلغ</th>
+                    <th>نوع الايراد</th>
+                    <th>اسم الايراد</th>
                     <th>التاريخ</th>
+                    <th>المبلغ قبل الخصم</th>
+                    <th>الخصم</th>
+                    <th>المبلغ بعد الخصم</th>
+                    <th>المدفوع</th>
+                    <th>المتبقي</th>
                     <th>ملاحظات</th>
                 </tr>
-                {!isLoading &&bookingList.map((item,idx)=>
+                {revenuesList!==undefined &&revenuesList.map((item,idx)=>
                 <tr>
-                    <td>{idx+1}</td>
-                    <td>{patientNames[idx]}</td>
-                    <td>{item.id}</td>
-                    <td>{item.type}</td>
-                    <td>{item.status}</td>
-                    <td>{item.price}</td>
+                    <td>{idx+1}</td>        
+                    <td>{item.revenueType}</td>
+                    <td>{item.revenueName}</td>
                     <td><time>{formatDate(item.date)}</time></td>
+                    <td>{item.price}</td>
+                    <td>{item.discount}</td>
+                    <td>200</td>
+                    <td>{item.paidAmount}</td>
+                    <td>{item.reminderAmount}</td>
                     <td>{item.notes}</td>
+                    
                 </tr>)}
                
             </table>
@@ -303,4 +237,4 @@ useEffect(() => {
         </div>
     );
 }
-export default AllBookings;
+export default ShowRevenues;

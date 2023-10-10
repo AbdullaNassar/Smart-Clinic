@@ -1,10 +1,11 @@
 import classes from "./Printer.module.css"
 import {FaHouse, FaLaptopCode, FaLocationArrow, FaPhoneFlip, FaRegHospital,FaSquareWhatsapp,FaUserNurse} from "react-icons/fa6";
-function Printer({data={}, patientinfo={}}){
+function Printer({data={},isLoading, patientinfo={}}){
     function printPage() {
         window.print();
       }
     console.log(patientinfo);
+    if(isLoading)return<h2>Loading...</h2>
     // console.log(data.diagnosis.notes);
       return (
         <div className={classes.all}>
