@@ -62,14 +62,23 @@ function Rosheta({saveData,data=[]}){
             <form onSubmit={onSubmit}>
                 <div>
                     <label>اختر الدواء</label>
-                    <select onChange={(e)=>{
+                    <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
+                        // console.log(e.target.value);
+                        dispatch({type:"name",payload: e.target.value})
+                    }} />
+                <datalist id="names"  >
+                    {medicines&&medicines.map(item=><option >
+                        {item.name}
+                    </option>)}
+                </datalist>
+                    {/* <select onChange={(e)=>{
                         dispatch({type:"name", payload: e.target.value});
                     }} >
                         {!isLoading &&medicines.map(item=>
                         <option value={item.name}>
                             {item.name}
                         </option>)}
-                    </select>
+                    </select> */}
                     <button type="button" onClick={(e)=>setIsOpen(true)}>+</button>
                     {isOpen&&<div>
                         <label>ادخل اسم الدواء</label>
@@ -123,6 +132,9 @@ function Rosheta({saveData,data=[]}){
                     <td>{item.name} </td>
                     <td>{item.times} </td>
                     <td>{item.notes} </td>
+                    <td><button onClick={()=>{
+                       setRosheta(prev=>prev.filter(x=>x!==item))
+                    }}>حذف</button></td>
                    
                     
                 </tr>)}

@@ -56,14 +56,23 @@ function Food({saveData, data=[]}){
             <div>
             <form onSubmit={onSubmit} >
                 <label>اختر الطعام</label>
-                <select onChange={(e)=>{
+                <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
+                    // console.log(e.target.value);
+                    dispatch({type:"name1",payload: e.target.value})
+                }} />
+                <datalist id="names"  >
+                    {foods&&foods.map(item=><option >
+                        {item.name}
+                    </option>)}
+                </datalist>
+                {/* <select onChange={(e)=>{
                     dispatch({type:"name1", payload: e.target.value});
                 }} >
                     {!isLoading&&foods.map(item=>
                     <option value={item.name}>
                         {item.name}
                     </option>)}
-                </select>
+                </select> */}
                 {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
                 {isOpen &&<div>
                     <label >اسم الطعام</label>
@@ -92,14 +101,23 @@ function Food({saveData, data=[]}){
             </form>
             <form onSubmit={onSubmit} >
                 <label>اختر الطعام</label>
-                <select onChange={(e)=>{
+                <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
+                    // console.log(e.target.value);
+                    dispatch({type:"name2",payload: e.target.value})
+                }} />
+                <datalist id="names"  >
+                    {foods&&foods.map(item=><option >
+                        {item.name}
+                    </option>)}
+                </datalist>
+                {/* <select onChange={(e)=>{
                     dispatch({type:"name2", payload: e.target.value});
                 }} >
                     {!isLoading&&foods.map(item=>
                     <option value={item.name}>
                         {item.name}
                     </option>)}
-                </select>
+                </select> */}
                 {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
                 {isOpen &&<div>
                     <label >اسم الطعام</label>
@@ -147,6 +165,9 @@ function Food({saveData, data=[]}){
                     <td>{item.name} </td>
                     <td>{item.notes} </td>
                     <td>{item.isOk?"مسموح":"ممنوع"} </td>
+                    <td><button onClick={()=>{
+                       setMyfood(prev=>prev.filter(x=>x!==item))
+                    }}>حذف</button></td>
                 </tr>)}
             </table>
             <button onClick={(e)=>{

@@ -1,7 +1,11 @@
 .all{
-    background: #777;
+    background: #eee;
     padding: 1rem;
     min-height: 100vh;
+
+    /* temprory */
+    display: flex;
+    justify-content: space-between;
 }
 .header{
     display: flex;
@@ -47,4 +51,11 @@
 .display .item{
     display: flex;
     gap: 0.5rem;
+}
+
+.content{
+    display:flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 80%;
 }

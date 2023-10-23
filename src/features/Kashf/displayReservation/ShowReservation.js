@@ -16,6 +16,7 @@ import OpposingMedications from "../newReservFeatures/OpposingMedications";
 import { getPatientInfo } from "../../../services/apiPatients";
 import PatientInfo from "../newReservFeatures/PatientInfo";
 import Printer from "../newReservFeatures/Printer";
+import toast from "react-hot-toast";
 function ShowReservation(){
     const[cur,setCur]=useState(0);
     const navigate =useNavigate();
@@ -57,10 +58,13 @@ let reservationID;
 
 const mutation = useMutation((params) =>updateReservationColumn(...params), {
     onSuccess: () => {
-      alert('Column updated successfully!');
+      queryClient.invalidateQueries({
+        queryKey:['reservations'],
+    })
+      toast.success('Column updated successfully!');
     },
     onError: (error) => {
-      alert('Error updating column: ' + error.message);
+      toast.error('Error updating column: ' + error.message);
     },
   });
   const { data:patientData, isLoading:loadingPatient, error:errorPatient } = useQuery(['patientInfo', patientID], () => getPatientInfo(patientID));
@@ -87,17 +91,6 @@ if(isLoading)return <h2>Loading...</h2>
     function switchTab(id){
         setCur(id);
     }
-    const handleUpdate = async (id, updatedData) => {
-        try {
-          await updateMutation.mutateAsync(id, updatedData);
-          queryClient.invalidateQueries('reservations'); // Replace with your query key
-          alert('Update successful!');
-        } catch (error) {
-          // Handle the error
-          console.log(error)
-          alert('Update failed. Please try again.');
-        }
-      };
       
     function saveData(type,data){
         switch(type){
@@ -119,7 +112,7 @@ if(isLoading)return <h2>Loading...</h2>
                         // console.log('here')
                         mutation.mutate(params);
              
-              
+        
                 break;
           }
           case "symptoms":{

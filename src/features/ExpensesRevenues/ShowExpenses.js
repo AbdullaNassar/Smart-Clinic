@@ -40,13 +40,15 @@ function ShowExpenses(){
    
     const[order,setOrder]=useState('all');
     const[type,setType]=useState('all');
-    const[expensesList, setExpensesList]=useState(expenses);
- useEffect(function(){
+    let expensesList;
+    // const[expensesList, setExpensesList]=useState(expenses);
+ 
   if(expenses!==undefined)switch(order){
     case "all":{
-      const newList = expenses; // Create a copy of the original list
-      newList.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setExpensesList(newList);
+      expensesList = expenses; // Create a copy of the original list
+      expensesList.sort((a, b) => new Date(b.date) - new Date(a.date));
+      // expensesList=newList;
+      // setExpensesList(newList);
       break;
     }
     case "week":{
@@ -66,7 +68,8 @@ function ShowExpenses(){
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setExpensesList(newList);
+      expensesList=newList;
+      // setExpensesList(newList);
       break;
     }
     case "month":{
@@ -86,7 +89,8 @@ function ShowExpenses(){
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setExpensesList(newList);
+      expensesList=newList;
+      // setExpensesList(newList);
       break;
     }
     case "3month":{
@@ -106,7 +110,8 @@ function ShowExpenses(){
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setExpensesList(newList);
+      expensesList=newList;
+      // setExpensesList(newList);
       break;
     }
     case "year":{
@@ -126,7 +131,8 @@ function ShowExpenses(){
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setExpensesList(newList);
+      expensesList=newList;
+      // setExpensesList(newList);
       break;
     }
     case "specfic":{
@@ -141,23 +147,25 @@ function ShowExpenses(){
         // Return true if the object's date is today
         return objDate === currentDateString;
       });
-      setExpensesList(newList)
+      expensesList=newList;
+      // setExpensesList(newList)
       break;
     }
 
     default: console.log('cant find order way');
   }
- },[expenses,order,startDate])
+
     
  console.log(type);
  console.log(expensesList);
- useEffect(function(){
+ 
     if(expensesList!==undefined&&type!=='all'){
         const newList=expensesList.filter(item=>item.expenseType===type);
+        expensesList=newList;
         // setExpensesList(newList);
         // console.log(newList);
     }
- },[expensesList,type])
+
  return(
         <div>
             <div className={classes.header}>

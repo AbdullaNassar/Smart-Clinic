@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-
 function Diagnosis({saveData,data={}}){
     const{register , handleSubmit,reset}=useForm({
         defaultValues:data

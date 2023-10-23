@@ -52,14 +52,23 @@ function Symptoms({saveData,data=[]}){
         <div>
             <form onSubmit={onSubmit} >
                 <label>اختر العرض المرضي</label>
-                <select onChange={(e)=>{
+                <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
+                    // console.log(e.target.value);
+                    dispatch({type:"name",payload: e.target.value})
+                }} />
+                <datalist id="names"  >
+                    {symptoms&&symptoms.map(item=><option >
+                        {item.name}
+                    </option>)}
+                </datalist>
+                {/* <select onChange={(e)=>{
                     dispatch({type:"name", payload: e.target.value});
                 }} >
                     {!isLoading&&symptoms.map(item=>
                     <option value={item.name}>
                         {item.name}
                     </option>)}
-                </select>
+                </select> */}
                 {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
                 {isOpen &&<div>
                     <label >اسم العرض</label>
@@ -96,6 +105,9 @@ function Symptoms({saveData,data=[]}){
                 <tr>
                     <td>{item.name} </td>
                     <td>{item.notes} </td>
+                    <td><button onClick={()=>{
+                       setMysymptoms(prev=>prev.filter(x=>x!==item))
+                    }}>حذف</button></td>
                 </tr>)}
             </table>
             <button onClick={(e)=>{

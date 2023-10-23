@@ -32,10 +32,10 @@ function PatientDetails(){
         <div className={classes.all}>
             {isLoading||filteredList===undefined?<div>Loading...</div>:<div className={classes.info}>
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMxsbOPDiffgD6Nas-dZu_3s6nsRWW8lmPgg&usqp=CAU"/>
-                <h3>{data.name}</h3>
-                <label>النوع: {data.gender}</label>
-                <label>السن {data.age}</label>
-                <label>رقم الهاتف: {data.age}</label>
+                <h3>{data?.name}</h3>
+                <label>النوع: {data?.gender}</label>
+                <label>السن {data?.age}</label>
+                <label>رقم الهاتف: {data.phone}</label>
                 <label>عدد الزيارات: {filteredList.length}</label>
             </div>}
             <div className={classes.details}>

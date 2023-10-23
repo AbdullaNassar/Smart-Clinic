@@ -1,15 +1,11 @@
 import { useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaBell, FaPrint } from "react-icons/fa6";
 import React, { useEffect } from 'react';
-import jsPDF from 'jspdf';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import classes from "./AllBookings.module.css";
-import { deleteBooking, getBooking, updateBooking } from "../../services/apiBooking";
-import { Link } from "react-router-dom";
+import { deleteBooking,  getTodayBooking, updateBooking } from "../../services/apiBooking";
 import NewReservation from "../Kashf/NewReservation";
-import supabase from "../../services/supabase";
 import s1 from "../../sounds/Recording.m4a";
 import s2 from "../../sounds/Recording(2).m4a";
 import s3 from "../../sounds/Recording(3).m4a";
@@ -20,106 +16,59 @@ import s7 from "../../sounds/Recording(7).m4a";
 import s8 from "../../sounds/Recording(8).m4a";
 import s9 from "../../sounds/Recording(9).m4a";
 import s10 from "../../sounds/Recording(10).m4a";
+import DeleteConfirmationModal from "../../UI/Modal";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useTodayActivity } from "./useTodayActivity";
 function TodayBooking(){
+  const navigate=useNavigate();
+  const[isOpenModal,setIsOpenModal]=useState(false);
   const[cur,setCur]=useState(1);
   const queryClient= useQueryClient();
   const { isLoading:isDeleting, mutate} = useMutation({
     mutationFn:(id)=>deleteBooking(id),
     onSuccess: ()=>{
+       toast.success('booking deleting succsfuly')
         queryClient.invalidateQueries({
             queryKey:['booking'],
         })
     },
-    onError: err=>alert(err.message)
+    onError: err=>toast.error(err.message)
 })
 
 
   const[IDs,setIDs]=useState();
-  const [patientNames, setPatientNames] = useState([]);
-     async function getPatientInfo(id){
-      
-      const{data, error}=await supabase
-      .from('patients')
-      .select()
-      .eq('id',id)
-      .single()
-      if(error){
-        console.log('ere');
-        return;
-      }
-      // console.log(data);
-      return data.name;
-    }
-    // getPatientInfo(1);
+   
     const[isStart,setIsStart]=useState(false);
     const {isLoading, data:bookings, error}= useQuery({
         queryKey:['booking'],
-        queryFn: getBooking,
+        queryFn: getTodayBooking,
     })
-    console.log(bookings)
 
-    // const queryClient=useQueryClient();
-    // const {isLoading:isOpening, mutate:mutateOpen}=useMutation({
-    //     mutationFn:(id)=>updateBooking(id),
-    //     onSuccess: ()=>{
-    //         queryClient.invalidateQueries({
-    //             queryKey:['booking'],
-    //         })
-    //     },
-    //     onError: err=>alert(err.message)
-    // })
-   
+    // const { activities, isLoading:loadingActivity } = useTodayActivity();
+    // console.log(activities);
+    // console.log(bookings)
         const mutation = useMutation((params) => updateBooking(...params), {
           onSuccess: () => {
-            // alert('Column updated successfully!');
+            // toast.success('Column updated successfully!');
           },
           onError: (error) => {
-            alert('Error updating column: ' + error.message);
+            // toast.error('Error updating column: ' + error.message);
           },
         });
 
-useEffect(() => {
-    async function fetchData() {
-      const names = [];
-      if(isLoading)return;
-      if(bookings!==undefined){
-        const today = new Date().toISOString().split('T')[0];
-  
-        for (let i = bookings.length - 1; i >= 0; i--) {
-          const obj = bookings[i];
-          if (obj.date.split('T')[0] !== today) {
-            bookings.splice(i, 1);
-          }
-        }
-        const statusOrder = ["تم الدخول والخروج", "بالداخل عند الدكتور", "لم يتم الدخول للدكتور"];
-        bookings.sort((a, b) => {
-          const statusA = a.status;
-          const statusB = b.status;
-        
-          return statusOrder.indexOf(statusA) - statusOrder.indexOf(statusB);
-        });
-        for(let i=0;i<bookings.length;i++){
-          if(bookings[i].status!=='تم الدخول والخروج'){
-            setCur(i+1);
-            break;
-          }
-          setCur(bookings.length);
-        }
-      }
-      for (const id of bookings) {
-        const name = await getPatientInfo(id.patientID);
-        names.push(name);
-      }
-      setPatientNames(names);
+ useEffect(function(){
+  if(bookings!==undefined){
+  for(let i=0;i<bookings.length;i++){
+    if(bookings[i].status!=='تم الدخول والخروج'){
+      setCur(i+1);
+      break;
     }
-    fetchData();
+    setCur(bookings.length);
+  }
+  }
+ },[bookings])
 
-    
-  }, [bookings,isLoading]);
-
-// console.log(patientNames);
-    // console.log(bookings[1].patientID);
-    
  const generateRingSound = () => {
     // Create an AudioContext instance
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -201,46 +150,8 @@ useEffect(() => {
           second: "2-digit",
         }).format(date);
       }
-    const [startDate, setStartDate] = useState(new Date());
-    // console.log((startDate));
-
-    // const filteredList = patients.filter((item) => {
-    //     const itemDate = new Date(item.date);
-    //     return (
-    //       itemDate.getDate() === startDate.getDate() &&
-    //       itemDate.getMonth() === startDate.getMonth() &&
-    //       itemDate.getFullYear() === startDate.getFullYear()
-    //     );
-    //   });
-      
-     
-
-      useEffect(() => {
-        const handleAfterPrint = () => {
-          generatePDF();
-          window.removeEventListener('afterprint', handleAfterPrint);
-        };
-    
-        window.addEventListener('afterprint', handleAfterPrint);
-    
-        return () => {
-          window.removeEventListener('afterprint', handleAfterPrint);
-        };
-      }, []);
-    
-      const generatePDF = () => {
-        const doc = new jsPDF();
-        doc.html(document.body, {
-          callback: function () {
-            doc.save('webpage.pdf');
-          },
-        });
-      };
-    
-      const handleSavePDF = () => {
-        window.print();
-      };
-      if(isStart){
+   console.log(bookings)
+   if(isStart){
         // console.log(IDs);
         return(
           <>
@@ -274,7 +185,7 @@ useEffect(() => {
                     }}>+</button>
                     <DatePicker selected={startDate} onChange={(date) => setStartDate((date))} /> */}
                 </div>
-                <div onClick={handleSavePDF} className={classes.print}>
+                <div onClick={()=>window.print()} className={classes.print}>
                     <label>طباعة</label>
                     <span ><FaPrint/></span>
                 </div>
@@ -287,19 +198,21 @@ useEffect(() => {
                     <th>نوع الحجز</th>
                     <th>حاله الحجز</th>
                     <th>المبلغ</th>
+                    <th>الخصم</th>
                     <th>المدفوع</th>
                     <th>المتبقي</th>
                     <th>ملاحظات</th>
                 </tr>
                 {!isLoading &&bookings.map((item,idx)=>
                 <tr>
-                    <td>{patientNames[idx]}</td>
+                    <td>{item.patients.name}</td>
                     <td>{idx+1}</td>
                     <td>{item.type}</td>
                     <td>{item.status}</td>
                     <td>{item.price}</td>
-                    <td>{item.notes}</td>
-                    <td>{item.notes}</td>
+                    <td>{item.discount}</td>
+                    <td>{item.paidAmount}</td>
+                    <td>{item.price-item.paidAmount-item.discount}</td>
                     <td>{item.notes}</td>
                     {item.status!=='تم الدخول والخروج'&&<button onClick={()=>{
                       setIsStart(true)
@@ -319,10 +232,28 @@ useEffect(() => {
                     <button>تعديل</button>
                     {item.status!=='تم الدخول والخروج' &&
                      <button onClick={()=>{
-                      mutate(item.id);
+                      setIsOpenModal(true)
+                      
                      }}>
+
                         حذف
                      </button>}
+                     
+                     <button onClick={()=>{
+                      navigate(`/ReservationDetails?patID=${item.patientID}&bokID=${item.id}`)
+                    }}>تعديل الكشف</button>
+
+                     <DeleteConfirmationModal
+                      isOpen={isOpenModal}
+                      onCancel={()=>setIsOpenModal(false)}
+                      onConfirm={()=>{
+                        mutate(item.id);
+                        setIsOpenModal(false);
+                      
+                      }}
+                    />
+                
+                     
                 </tr>)}
                
             </table>

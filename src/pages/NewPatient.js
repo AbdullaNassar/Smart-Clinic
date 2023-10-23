@@ -6,19 +6,20 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createBooking } from "../services/apiBooking";
 import { createNewPatient } from "../services/apiPatients";
+import toast from "react-hot-toast";
 function NewPatient(){
     const{register , handleSubmit,reset}=useForm();
     const queryClient=useQueryClient();
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: createNewPatient,
         onSuccess: ()=>{
-            alert("new patient added succsfully");
+            toast.success("new patient added succsfully");
             queryClient.invalidateQueries({
                 queryKey:['patients']
             });
             reset();
         },
-        onError:(err)=>alert(err.message),
+        onError:(err)=>toast.error(err.message),
     });
     function onSubmit(data){
         console.log(data);

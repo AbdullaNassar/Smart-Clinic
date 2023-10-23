@@ -5,6 +5,7 @@ import { addNewExpense, getExpenses } from "../../services/apiExpenses";
 import { useForm } from "react-hook-form";
 import { addNewClinicExpenses } from "../../services/apiMyExpenses";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 function NewExpense(){
     const navigate =useNavigate();
     const[date,setDate]=useState(new Date());
@@ -18,12 +19,12 @@ function NewExpense(){
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: addNewExpense,
         onSuccess: ()=>{
-            alert("new Expense added succsfully");
+            toast.success("new Expense added succsfully");
             queryClient.invalidateQueries({
                 queryKey:['Expenses']
             }); 
         },
-        onError:(err)=>alert(err.message),
+        onError:(err)=>toast.error(err.message),
     });
     console.log(expenses);
 

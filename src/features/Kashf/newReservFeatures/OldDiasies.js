@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import classes from "./OldDiasies.module.css";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addNewdisease, getDiseases } from "../../../services/apiDiseases";
+import SpinnerMini from "../../../UI/SpinnerMini";
 
 const initState={name:"", notes:""};
 function OldDiasies({saveData,data=[]}){
@@ -18,8 +19,6 @@ function OldDiasies({saveData,data=[]}){
         queryKey:['diseases'],
         queryFn: getDiseases,
     })
-
-
     const queryClient=useQueryClient();
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: addNewdisease,
@@ -52,11 +51,23 @@ function OldDiasies({saveData,data=[]}){
         }
         setMyDiseas(prev=>[...prev,state]);
     }
+    console.log(myDiseas);
     // console.log(newDisea);
+    
     return (
         <div>
             <form onSubmit={onSubmit} >
-                <label>اختر المرض</label>
+            <label>اختر المرض</label>
+           <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
+            // console.log(e.target.value);
+            dispatch({type:"name",payload: e.target.value})
+           }} />
+                <datalist id="names"  >
+                    {diseases&&diseases.map(item=><option >
+                        {item.name}
+                    </option>)}
+                </datalist>
+                {/* <label>اختر المرض</label>
                 <select onChange={(e)=>{
                     dispatch({type:"name", payload: e.target.value});
                 }} >
@@ -64,7 +75,7 @@ function OldDiasies({saveData,data=[]}){
                     <option value={item.name}>
                         {item.name}
                     </option>)}
-                </select>
+                </select> */}
                 {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
                 {isOpen &&<div>
                     <label >اسم المرض</label>
@@ -102,7 +113,9 @@ function OldDiasies({saveData,data=[]}){
                     
                     <td>{item.name} </td>
                     <td>{item.notes} </td>
-                  
+                    <td><button onClick={()=>{
+                       setMyDiseas(prev=>prev.filter(x=>x!==item))
+                    }}>حذف</button></td>
                     
                 </tr>)}
                
@@ -110,8 +123,6 @@ function OldDiasies({saveData,data=[]}){
             <button onClick={(e)=>{
                 saveData("oldDisease",myDiseas)
             }}>حفظ</button>
-
-              
         </div>
     );
 }

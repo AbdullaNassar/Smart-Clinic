@@ -4,7 +4,7 @@ function Printer({data={},isLoading, patientinfo={}}){
     function printPage() {
         window.print();
       }
-    console.log(patientinfo);
+    console.log(data);
     if(isLoading)return<h2>Loading...</h2>
     // console.log(data.diagnosis.notes);
       return (
@@ -28,13 +28,13 @@ function Printer({data={},isLoading, patientinfo={}}){
                 <label>تاريخ الكشف  22/3/2023</label>
             </div>
             <div className={classes.col}>
-                {/* {data.quickCheck!==undefined&&data.quickCheck.pressure!==""&&<label>ضغط الدم:{data.quickCheck.pressure}</label>} */}
-                {data.quickCheck!==undefined&&data.quickCheck.pressure!==""&&<label>ضغط الدم:{data.quickCheck.pressure}</label>}
-                {data.quickCheck!==undefined&&data?.quickCheck?.diabites!==""&&<label>السكر:  {data?.quickCheck?.diabites}</label>}
-                {data.quickCheck!==undefined&&data?.quickCheck?.heartRate!==""&&<label>النبض:{data?.quickCheck?.heartRate}</label>}
-                {data.quickCheck!==undefined&&data?.quickCheck?.breathe!==""&&<label>التنفس:{data?.quickCheck?.breathe}</label>}
-                {data.quickCheck!==undefined&&data?.quickCheck?.weight!==""&&<label>الوزن:{data?.quickCheck?.weight}</label>}
-                {data.quickCheck!==undefined&&data?.quickCheck?.temperture!==""&&<label>الحراره:{data?.quickCheck?.temperture}</label>}
+                {/* {data.quickCheck&&data.quickCheck.pressure!==""&&<label>ضغط الدم:{data.quickCheck.pressure}</label>} */}
+                {data.quickCheck&&data.quickCheck?.pressure!==""&&<label>ضغط الدم:{data.quickCheck.pressure}</label>}
+                {data.quickCheck&&data?.quickCheck?.diabites!==""&&<label>السكر:  {data?.quickCheck?.diabites}</label>}
+                {data.quickCheck&&data?.quickCheck?.heartRate!==""&&<label>النبض:{data?.quickCheck?.heartRate}</label>}
+                {data.quickCheck&&data?.quickCheck?.breathe!==""&&<label>التنفس:{data?.quickCheck?.breathe}</label>}
+                {data.quickCheck&&data?.quickCheck?.weight!==""&&<label>الوزن:{data?.quickCheck?.weight}</label>}
+                {data.quickCheck&&data?.quickCheck?.temperture!==""&&<label>الحراره:{data?.quickCheck?.temperture}</label>}
             </div>
             <div  className={classes.col}>
                 <label>اسم المريض: {patientinfo?.name}</label>
@@ -42,15 +42,15 @@ function Printer({data={},isLoading, patientinfo={}}){
                 <label>النوع:{patientinfo?.gender}</label>
                 <label>اسم الدكتور: طه بندو</label>
                 
-                {data.diagnosis!==undefined&&data.diagnosis.notes!==""&&<label>ملاحظات: {data.diagnosis.notes}</label>}
-                {data.diagnosis!==undefined&&data.diagnosis.details!==""&&<label>التشخيص: {data.diagnosis.details}</label>}
-                {data.diagnosis!==undefined&&data.diagnosis.advices!==""&&<label>نصائح للمريض: {data.diagnosis.advices}</label>}
+                {data.diagnosis&&data.diagnosis?.notes!==""&&<label>ملاحظات: {data.diagnosis.notes}</label>}
+                {data.diagnosis&&data.diagnosis?.details!==""&&<label>التشخيص: {data.diagnosis.details}</label>}
+                {data.diagnosis&&data.diagnosis?.advices!==""&&<label>نصائح للمريض: {data.diagnosis.advices}</label>}
             </div>
             </div>
             <hr/>
             <div className={classes.card}>
             <div className={classes.box}>
-            {data.rosheta!==undefined&&<table className={classes.customTable}>
+            {data.rosheta&&data.rosheta.length>0&&<table className={classes.customTable}>
                 <caption>العلاج</caption>
                 <tr>
                     <th>اسم الدواء</th>
@@ -67,7 +67,7 @@ function Printer({data={},isLoading, patientinfo={}}){
             {/* <hr/> */}
             </div>
             <div className={classes.box}>
-            {data.medicalTest!==undefined&&<table className={classes.customTable}>
+            {data.medicalTest&&data.medicalTest.length>0&&<table className={classes.customTable}>
                 <caption>التحاليل المطلوبه</caption>
                 <tr>
                     <th>اسم التحليل</th>
@@ -83,7 +83,7 @@ function Printer({data={},isLoading, patientinfo={}}){
             {/* <hr/> */}
             </div>
             <div className={classes.box}>
-            {data.xrays!==undefined&&<table className={classes.customTable}>
+            {data.xrays&&data.xrays.length>0&&<table className={classes.customTable}>
                 <caption>الاشعات المطلوبه</caption>
                 <tr>
                     <th>اسم الاشعه</th>
@@ -98,7 +98,7 @@ function Printer({data={},isLoading, patientinfo={}}){
             {/* <hr/> */}
             </div>
             <div className={classes.box}>
-            {data.food!==undefined&&<table className={classes.customTable}>
+            {data.food&&data.food.length>0&&<table className={classes.customTable}>
                 <caption>الاكل اثناء فتره العلاج</caption>
                 <tr>
                     <th>الطعام</th>
@@ -113,7 +113,7 @@ function Printer({data={},isLoading, patientinfo={}}){
             {/* <hr/> */}
             </div>
             <div className={classes.box}>
-            {data.oppositeMedicines!==undefined&&<table className={classes.customTable}>
+            {data.oppositeMedicines&&data.oppositeMedicines.length>0&&<table className={classes.customTable}>
                 <caption>الادويه  المحظوره اثناء فتره العلاج</caption>
                 <tr>
                     <th>اسم الدواء</th>

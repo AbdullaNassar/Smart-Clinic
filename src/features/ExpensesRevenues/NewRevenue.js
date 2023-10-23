@@ -7,6 +7,7 @@ import { addNewClinicExpenses } from "../../services/apiMyExpenses";
 import { useNavigate } from "react-router-dom";
 import { addNewRevenue, getRevenues } from "../../services/apiRevenues";
 import { addNewClinicRevenues } from "../../services/apiMyRevenues";
+import toast from "react-hot-toast";
 function NewRevenue(){
     const navigate =useNavigate();
     const[date,setDate]=useState(new Date());
@@ -32,12 +33,12 @@ function NewRevenue(){
     const {isLoading:isAddingRevenue, mutate:mutateMyRevenue}=useMutation({
         mutationFn: addNewClinicRevenues,
         onSuccess: ()=>{
-            alert("new my Revenue added succsfully");
+            toast.success("new my Revenue added succsfully");
             queryClient.invalidateQueries({
                 queryKey:['Revenues']
             }); 
         },
-        onError:(err)=>alert(err.message),
+        onError:(err)=>toast.error(err.message),
     });
     // console.log(revenues);
 
@@ -46,7 +47,7 @@ function NewRevenue(){
     function onSubmit(data){
         data.date=date;
         console.log(data);
-        mutateMyRevenue(data);
+        // mutateMyRevenue(data);
         reset();
     }
     if(loadingRevenue)return <h2>Loading...</h2>

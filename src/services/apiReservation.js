@@ -1,9 +1,10 @@
+import { getToday } from "../utils/helper";
 import supabase from "./supabase";
 
 export async function getReservations(){
     let { data,  error } = await supabase
   .from('reservations')
-  .select('*')
+  .select('*,patients(*),bookings(*)')
 
   if(error){
     throw new Error('bookings cannot be loaded');
@@ -62,5 +63,20 @@ export async function updateReservationColumn(id,columnName, value){
   if (error) {
      console.log('error');
   }
+  return data;
+}
+
+export async function getReservationsAfterDate(date) {
+  const { data, error } = await supabase
+    .from("reservations")
+    .select("created_at, bookings(*)")
+    .gte("created_at", date)
+    .lte("created_at", getToday({ end: true }));
+
+  if (error) {
+    console.error(error);
+    throw new Error("Bookings could not get loaded");
+  }
+
   return data;
 }

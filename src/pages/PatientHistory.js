@@ -4,9 +4,13 @@ import classes from "./PatientHistory.module.css";
 import { getPatients } from "../services/apiPatients";
 import { useQuery } from "@tanstack/react-query";
 import { getReservations } from "../services/apiReservation";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { FaPrint } from "react-icons/fa6";
+import Pagination from "../UI/Pagnition";
 function PatientHostory(){
+    const [searchParams,setSearchParams]=useSearchParams();
+  const page=!searchParams.get("page")?1: Number(searchParams.get('page'));
+    console.log(page);
     const[searchQuery,setSearchQuery]=useState(null);
     const {isLoading, data:patients, error}= useQuery({
         queryKey:['patients'],
@@ -32,13 +36,26 @@ function PatientHostory(){
     if(!isLoading&&searchQuery) filteredList = patients.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()));
     console.log(filteredList);
+    let bookingsCount=0;
+    if(filteredList!==undefined){bookingsCount= filteredList.length;
+    console.log(bookingsCount);
+    let x=[];
+    for(let from=(page-1)*10 , count=0; from<filteredList.length &&count<10;count++,from++ ){
+    x.push(filteredList[from]);
+    }
+    filteredList=x; }   
+
     const navigate =useNavigate();
     return(
         <div className={classes.all}>
             <div className={classes.search}>
                 <div className={classes.searchItem}>
                     <label>بحث بالاسم</label>
-                    <input value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
+                    <input value={searchQuery} onChange={(e)=>{
+                        setSearchQuery(e.target.value)
+                        searchParams.set('page',1)
+                      setSearchParams(searchParams);
+                    }}/>
                 </div>
                 <span onClick={()=>{
                     window.print();
@@ -59,7 +76,7 @@ function PatientHostory(){
                 </tr>
                 {filteredList.map((item,idx)=>
                 <tr>
-                    <td>{idx+1}</td>
+                    <td>{(page-1)*10+idx+1}</td>
                     <td>{item.name}</td>
                     {/* <td>{item.id}</td> */}
                     <td>{item.age}</td>
@@ -72,6 +89,7 @@ function PatientHostory(){
                     }}>تفاصيل</button></td>
                 </tr>)}
             </table>}
+            {filteredList!==undefined&&<Pagination count={bookingsCount}/>}
         </div>
     );
 }

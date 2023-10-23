@@ -1,0 +1,22 @@
+.all{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+.btns{
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1rem;
+    padding-right: 2rem;
+}
+.cncl{
+    padding: 5px;
+}
+.dlt{
+    background: red;
+    padding: 0.4rem;
+    /* border: none; */
+    color: white;
+    border-radius: 5px;
+}

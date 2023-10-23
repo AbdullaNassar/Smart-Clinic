@@ -10,7 +10,7 @@ function QuickCheck({saveData,data={}}){
     function onSubmit(data){
         saveData("quickCheck",data);
     }
-    
+
     console.log(data);
     return (
         <form onSubmit={handleSubmit(onSubmit)} >

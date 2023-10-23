@@ -7,11 +7,18 @@ import jsPDF from 'jspdf';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import classes from "./AllBookings.module.css";
 import { deleteBooking, getBooking } from "../../services/apiBooking";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import NewReservation from "../Kashf/NewReservation";
 import supabase from "../../services/supabase";
+import Pagination from "../../UI/Pagnition";
 function AllBookings(){
+  const navigate=useNavigate();
   const queryClient= useQueryClient();
+
+  const [searchParams,setSearchParams]=useSearchParams();
+  const page=!searchParams.get("page")?1: Number(searchParams.get('page'));
+    console.log(page);
+  
   const { isLoading:isDeleting, mutate} = useMutation({
     mutationFn:(id)=>deleteBooking(id),
     onSuccess: ()=>{
@@ -23,50 +30,13 @@ function AllBookings(){
 })
 
   const[IDs,setIDs]=useState();
-  const [patientNames, setPatientNames] = useState([]);
-     async function getPatientInfo(id){
-      
-      const{data, error}=await supabase
-      .from('patients')
-      .select()
-      .eq('id',id)
-      .single()
-      if(error){
-        console.log('ere');
-        return;
-      }
-      // console.log(data);
-      return data.name;
-    }
-    // getPatientInfo(1);
     const[isStart,setIsStart]=useState(false);
     const {isLoading, data:bookings, error}= useQuery({
         queryKey:['booking'],
         queryFn: getBooking,
     })
     console.log(bookings);
-    // console.log(typeof(bookings[5].date))
 
-useEffect(() => {
-    async function fetchData() {
-      const names = [];
-      if(isLoading)return;
-
-      for (const id of bookings) {
-        const name = await getPatientInfo(id.patientID);
-        names.push(name);
-      }
-      setPatientNames(names);
-    }
-    fetchData();
-
-    if(bookings!==undefined){
-      const today = new Date().toISOString().split('T')[0];
-    }
-  }, [bookings,isLoading]);
-
-// console.log(patientNames);
-    // console.log(bookings[1].patientID);
     const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
         day: "numeric",
@@ -84,16 +54,17 @@ useEffect(() => {
         }).format(date);
       }
     const [startDate, setStartDate] = useState(new Date());
-    console.log((startDate));
-
+    
     const[order,setOrder]=useState('all');
-    const[bookingList, setBookingList]=useState(bookings);
- useEffect(function(){
+
+    let bookingsList=[];
+
   if(bookings!==undefined)switch(order){
     case "all":{
       const newList = bookings; // Create a copy of the original list
       newList.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setBookingList(newList);
+      
+      bookingsList=newList;
       break;
     }
     case "week":{
@@ -113,7 +84,7 @@ useEffect(() => {
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setBookingList(newList);
+      bookingsList=newList;
       break;
     }
     case "month":{
@@ -133,7 +104,7 @@ useEffect(() => {
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setBookingList(newList);
+      bookingsList=newList;
       break;
     }
     case "3month":{
@@ -153,7 +124,7 @@ useEffect(() => {
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setBookingList(newList);
+      bookingsList=newList;
       break;
     }
     case "year":{
@@ -173,7 +144,7 @@ useEffect(() => {
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      setBookingList(newList);
+      bookingsList=newList;
       break;
     }
     case "specfic":{
@@ -188,13 +159,13 @@ useEffect(() => {
         // Return true if the object's date is today
         return objDate === currentDateString;
       });
-      setBookingList(newList)
+      bookingsList=newList
       break;
     }
 
     default: console.log('cant find order way');
   }
- },[bookings,order,startDate])
+
     
 
     // const filteredList = patients.filter((item) => {
@@ -205,36 +176,17 @@ useEffect(() => {
     //       itemDate.getFullYear() === startDate.getFullYear()
     //     );
     //   });
-      
-     
-
-      useEffect(() => {
-        const handleAfterPrint = () => {
-          generatePDF();
-          window.removeEventListener('afterprint', handleAfterPrint);
-        };
     
-        window.addEventListener('afterprint', handleAfterPrint);
-    
-        return () => {
-          window.removeEventListener('afterprint', handleAfterPrint);
-        };
-      }, []);
-    
-      const generatePDF = () => {
-        const doc = new jsPDF();
-        doc.html(document.body, {
-          callback: function () {
-            doc.save('webpage.pdf');
-          },
-        });
-      };
-    
-      const handleSavePDF = () => {
-        window.print();
-      };
+    let bookingsCount=0 ;
+    if(bookingsList!==undefined){ bookingsCount=bookingsList.length;
+    let x=[];
+    for(let from=(page-1)*10 , count=0; from<bookingsList.length &&count<10;count++,from++ ){
+    x.push(bookingsList[from]);
+    }
+    bookingsList=x;}
+    console.log(bookingsList);      
       if(isStart){
-        // console.log(IDs);
+        
         return(
           <>
           <NewReservation patientID={IDs.patientID} bookingID={IDs.bookingID} />
@@ -252,23 +204,51 @@ useEffect(() => {
                         const newDate = new Date(startDate);
                         newDate.setDate(newDate.getDate() - 1);
                         setStartDate(newDate);
+                        searchParams.set('page',1)
+                      setSearchParams(searchParams);
+                      setOrder('specfic');
                     }}>-</button>
                     <button onClick={()=>{
                         const newDate = new Date(startDate);
                         newDate.setDate(newDate.getDate() + 1);
                         setStartDate(newDate);
+                        searchParams.set('page',1)
+                      setSearchParams(searchParams);
+                      setOrder('specfic');
                     }}>+</button>
                     <DatePicker selected={startDate} onChange={(date) => {
                       setStartDate((date))
+                      searchParams.set('page',1)
+                      setSearchParams(searchParams);
                       setOrder('specfic');
                     }} />
-                    <button onClick={(e)=>setOrder('all')}>الكل</button>
-                    <button onClick={(e)=>setOrder('week')}>اخر اسبوع</button>
-                    <button onClick={(e)=>setOrder('month')}>اخر شهر </button>
-                    <button onClick={(e)=>setOrder('3month')}>اخر 3 شهور </button>
-                    <button onClick={(e)=>setOrder('year')}>اخر سنه</button>
+                    <button onClick={(e)=>{
+                       searchParams.set('page',1)
+                       setSearchParams(searchParams);
+                       setOrder('all');
+                    }}>الكل</button>
+                    <button onClick={(e)=>{
+                      searchParams.set('page',1)
+                      setSearchParams(searchParams);
+                      setOrder('week')
+                    }}>اخر اسبوع</button>
+                    <button onClick={(e)=>{
+                      searchParams.set('page',1)
+                      setSearchParams(searchParams);
+                      setOrder('month')
+                    }}>اخر شهر </button>
+                    <button onClick={(e)=>{
+                      searchParams.set('page',1)
+                      setSearchParams(searchParams);
+                      setOrder('3month')
+                    }}>اخر 3 شهور </button>
+                    <button onClick={(e)=>{
+                      searchParams.set('page',1)
+                      setSearchParams(searchParams);
+                      setOrder('year')
+                    }}>اخر سنه</button>
                 </div>
-                <div onClick={handleSavePDF} className={classes.print}>
+                <div className={classes.print}>
                     <label>طباعة</label>
                     <span ><FaPrint/></span>
                 </div>
@@ -278,28 +258,43 @@ useEffect(() => {
                 <tr>
                     <th></th>
                     <th>الاسم</th>
+                    <th>السن</th>
+                    <th>رقم الهاتف</th>
                     <th>رقم الحجز</th>
                     <th>نوع الحجز</th>
                     <th>حاله الحجز</th>
-                    <th>المبلغ</th>
                     <th>التاريخ</th>
+                    <th>المبلغ</th>
+                    <th>الخصم</th>
+                    <th>المدفوع</th>
+                    <th>المتبقي</th>
                     <th>ملاحظات</th>
                 </tr>
-                {!isLoading &&bookingList.map((item,idx)=>
+                {!isLoading &&bookingsList.map((item,idx)=>
                 <tr>
-                    <td>{idx+1}</td>
-                    <td>{patientNames[idx]}</td>
+                    <td>{(page-1)*10+idx+1}</td>
+                    <td>{item.patients.name}</td>
+                    <td>{item.patients.age}</td>
+                    <td>{item.patients.phone}</td>
                     <td>{item.id}</td>
                     <td>{item.type}</td>
                     <td>{item.status}</td>
-                    <td>{item.price}</td>
                     <td><time>{formatDate(item.date)}</time></td>
+                    <td>{item.price}</td>
+                    <td>{item.discount}</td>
+                    <td>{item.paidAmount}</td>
+                    <td>{item.price-item.discount-item.paidAmount}</td>
                     <td>{item.notes}</td>
+                    <td><button onClick={()=>{
+                            navigate(`/ReservationDetails?patID=${item.patients.id}&bokID=${item.id}`)
+                        }}>فتح الكشف</button></td>
                 </tr>)}
                
             </table>
               
             </div>
+            {bookingsList!==undefined && <Pagination count={bookingsCount} />}
+
         </div>
     );
 }
