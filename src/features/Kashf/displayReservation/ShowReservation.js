@@ -17,6 +17,7 @@ import { getPatientInfo } from "../../../services/apiPatients";
 import PatientInfo from "../newReservFeatures/PatientInfo";
 import Printer from "../newReservFeatures/Printer";
 import toast from "react-hot-toast";
+import { Button } from "@mui/material";
 function ShowReservation(){
     const[cur,setCur]=useState(0);
     const navigate =useNavigate();
@@ -61,10 +62,10 @@ const mutation = useMutation((params) =>updateReservationColumn(...params), {
       queryClient.invalidateQueries({
         queryKey:['reservations'],
     })
-      toast.success('Column updated successfully!');
+      toast.success('تم تعديل البيانات بنجاح');
     },
     onError: (error) => {
-      toast.error('Error updating column: ' + error.message);
+      toast.error('خطأ في تعديل البيانات: ' + error.message);
     },
   });
   const { data:patientData, isLoading:loadingPatient, error:errorPatient } = useQuery(['patientInfo', patientID], () => getPatientInfo(patientID));
@@ -192,20 +193,20 @@ if(isLoading)return <h2>Loading...</h2>
     return(
         <div className={classes.all}>
         {cur!==100&&<div className={classes.btns}>
-            <button onClick={()=>switchTab(0)}>بيانات المريض</button>
-            <button onClick={()=>switchTab(1)}>فحص سريع</button>
-            <button onClick={()=>switchTab(2)}>مراض سابقه</button>
-            <button onClick={()=>switchTab(3)}>الاعراض</button>
-            <button onClick={()=>switchTab(4)}>التشخيص</button>
-            <button onClick={()=>switchTab(5)}>الروشته العلاجيه</button>
-            <button onClick={()=>switchTab(6)}>التحاليل المطلوبه</button>
-            <button onClick={()=>switchTab(7)}>الاشعه المطلوبه</button>
-            <button onClick={()=>switchTab(8)}>الاكل المحدد</button>
-            <button onClick={()=>switchTab(9)}>الادويه المتعارضه</button>
-            <button onClick={()=>switchTab(10)}>طباعه</button>   
-            <button onClick={()=>{
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(0)}>بيانات المريض</Button>
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(1)}>فحص سريع</Button>
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(2)}>مراض سابقه</Button>
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(3)}>الاعراض</Button>
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(4)}>التشخيص</Button>
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(5)}>الروشته العلاجيه</Button>
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(6)}>التحاليل المطلوبه</Button>
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(7)}>الاشعه المطلوبه</Button>
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(8)}>الاكل المحدد</Button>
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(9)}>الادويه المتعارضه</Button>
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(10)}>طباعه</Button>   
+            <Button variant="text" style={{fontSize:"16px"}} onClick={()=>{
               navigate(-1);
-            }}>اغلاق</button>     
+            }}>اغلاق</Button>     
         </div>}
         {cur===0 && <PatientInfo data={patientData} isLoading={loadingPatient} error={errorPatient} /> }
         {cur===1&& <QuickCheck data={dataReserv.quickCheck} saveData={saveData} />}

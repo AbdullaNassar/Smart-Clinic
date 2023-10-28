@@ -6,7 +6,10 @@ const Form = styled.form`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 2rem;
   /* end of my style */
+
+  
 
   ${(props) =>
     props.type === "regular" &&

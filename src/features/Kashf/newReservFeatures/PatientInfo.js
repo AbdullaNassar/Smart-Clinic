@@ -1,37 +1,30 @@
-import { useEffect, useState } from "react";
-import supabase from "../../../services/supabase";
-import { useQuery } from "@tanstack/react-query";
-import { getPatientInfo } from "../../../services/apiPatients";
+import classes from "./PatientInfo.module.css"
 
 function PatientInfo({data,isLoading,error}){
-    // const {isLoading, data:bookings, error}= useQuery({
-    //     queryKey:['patients'],
-    //     queryFn: getBooking,
-    // })
-    // console.log('patient', patientID);
-    console.log(data);
+   
+    // console.log(data);
       if(isLoading)return<p>Loading...</p>
     return (
         <div>
-            <div>
-                <label>اسم المريض</label>
-                <input value={data?.name}/>
+            <div  className={classes.row}>
+                <label>اسم المريض:</label>
+                <input disabled={true} value={data?.name}/>
             </div>
-            <div>
-                <label>العمر</label>
-                <input value={data?.age} />
+            <div  className={classes.row}>
+                <label>العمر:</label>
+                <input disabled={true} value={data?.age} />
             </div>
-            <div>
-                <label>الجنس</label>
-                <input value={data?.gender} />
+            <div  className={classes.row}>
+                <label>النوع:</label>
+                <input disabled={true} value={data?.gender} />
             </div>
-            <div>
-                <label>الرقم</label>
-                <input value={data?.phone} />   
+            <div  className={classes.row}>
+                <label>رقم الهاتف:</label>
+                <input disabled={true} value={data?.phone} />   
             </div>
-            <div>
-                <label>ملاحظات</label>
-                <textarea value={data?.notes} />
+            <div  className={classes.row}>
+                <label>ملاجظات:</label>
+                <textarea disabled={true} value={data?.notes} />
             </div>
         </div>
     );

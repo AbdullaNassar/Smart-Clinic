@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import classes from "./Diagnosis.module.css";
 function Diagnosis({saveData,data={}}){
     const{register , handleSubmit,reset}=useForm({
         defaultValues:data
@@ -10,23 +11,20 @@ function Diagnosis({saveData,data={}}){
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <label>تاريخ الكشف</label>
-                <data>22/8/2023</data>
-            </div>
-            <div>
-                <label>التشخيص</label>
+           
+            <div className={classes.row}>
+                <label>التشخيص:</label>
                 <textarea {...register("details")} />
             </div>
-            <div>
-                <label>نصائح للمريض</label>
-                <input {...register("advices")} />
+            <div className={classes.row}>
+                <label>نصائح للمريض:</label>
+                <textarea style={{height:"60px"}} {...register("advices")} />
             </div>
-            <div>
-                <label>ملاحظات</label>
+            <div className={classes.row}>
+                <label>ملاحظات:</label>
                 <input {...register('notes')} />
             </div>
-            <button>حفظ</button>
+            <button className={classes.button}>حفظ</button>
         </form>
     );
 }

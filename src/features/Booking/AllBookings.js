@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FaPrint } from "react-icons/fa6";
+import { FaMoneyBillTrendUp, FaPrint, FaRegCalendarCheck, FaSistrix } from "react-icons/fa6";
 import React, { useEffect } from 'react';
 import jsPDF from 'jspdf';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,13 +11,21 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import NewReservation from "../Kashf/NewReservation";
 import supabase from "../../services/supabase";
 import Pagination from "../../UI/Pagnition";
+import { getRevenues } from "../../services/apiRevenues";
+import MyFilter from "../../UI/MyFilter";
 function AllBookings(){
   const navigate=useNavigate();
   const queryClient= useQueryClient();
+  const[searchQuery,setSearchQuery]=useState(null);
 
   const [searchParams,setSearchParams]=useSearchParams();
   const page=!searchParams.get("page")?1: Number(searchParams.get('page'));
     console.log(page);
+
+    const {isLoading: loadingExpensesType, data:revenueType, error:errorExpensesType}= useQuery({
+      queryKey:['Revenues'],
+      queryFn: getRevenues,
+  })
   
   const { isLoading:isDeleting, mutate} = useMutation({
     mutationFn:(id)=>deleteBooking(id),
@@ -54,8 +62,14 @@ function AllBookings(){
         }).format(date);
       }
     const [startDate, setStartDate] = useState(new Date());
+
+    const order = !searchParams.get("last")
+    ? "all"
+    : searchParams.get("last");
+  
     
-    const[order,setOrder]=useState('all');
+    // const[order,setOrder]=useState('all');
+    const[type,setType]=useState('all');
 
     let bookingsList=[];
 
@@ -166,16 +180,21 @@ function AllBookings(){
     default: console.log('cant find order way');
   }
 
-    
+  if(bookingsList!==undefined&&type!=='all'){
+    console.log('here');
+      const newList=bookingsList.filter(item=>item.type===type);
+      bookingsList=newList;
+     
+      console.log(newList);
+  }
 
-    // const filteredList = patients.filter((item) => {
-    //     const itemDate = new Date(item.date);
-    //     return (
-    //       itemDate.getDate() === startDate.getDate() &&
-    //       itemDate.getMonth() === startDate.getMonth() &&
-    //       itemDate.getFullYear() === startDate.getFullYear()
-    //     );
-    //   });
+  if(bookingsList!==undefined&&searchQuery!==null) {
+    // console.log(searchQuery);
+    bookingsList = bookingsList.filter((item) =>
+    item.patients.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  }
+    // console.log(bookingsList);
+
     
     let bookingsCount=0 ;
     if(bookingsList!==undefined){ bookingsCount=bookingsList.length;
@@ -197,62 +216,87 @@ function AllBookings(){
       }
     else return(
         <div>
+          <div className="heading">
+            <h2 className="heading__title">جميع الحجوزات</h2>
+            <span color={{color:"#04AA6D;"}}><FaRegCalendarCheck/></span>
+          </div>
             <div className={classes.header}>
-                <div>
-                    <time>{formatDate(startDate)} </time>
+                  <div>
+                    
+                    <input  placeholder="بحث..." type="text" id="search"  value={searchQuery} onChange={(e)=>{
+                            setSearchQuery(e.target.value)
+                            searchParams.set('page',1)
+                          setSearchParams(searchParams);
+                        }}/>
+                        <span><FaSistrix/></span>
+                  </div>
+
+                    <div>
+                    <MyFilter
+                      filterField="last"
+                      options={[
+                        { value: "all", label: "الكل" },
+                        { value: "week", label: "اخر اسبوع" },
+                        { value: "month", label: "اخر شهر" },
+                        { value: "3month", label: "اخر 3 شهور" },
+                        { value: "year", label: "اخر سنه" },
+                      ]}
+                    />
+                    </div>
+                    
+                    <div>
+                        <label>نوع الحجز</label>
+                        <select value={type} onChange={(e)=>{
+                          searchParams.set('page',1)
+                          setSearchParams(searchParams);
+                          setType(e.target.value)
+                        }}>
+                            <option value="all">all</option>
+                            {revenueType!==undefined&&revenueType.map(item=><option value={item.name}>
+                                {item.name}
+                            </option>)}
+                        </select>
+                    </div>
+                    
+                  <div className={classes.date}>  
+                    {/* {order==='specfic'&& <time>{formatDate(startDate)} </time>} */}
                     <button onClick={()=>{
                         const newDate = new Date(startDate);
                         newDate.setDate(newDate.getDate() - 1);
                         setStartDate(newDate);
                         searchParams.set('page',1)
+                        searchParams.set('last','specfic')
+                        
                       setSearchParams(searchParams);
-                      setOrder('specfic');
+                      // setOrder('specfic');
                     }}>-</button>
+                    
+                    <DatePicker selected={startDate} onChange={(date) => {
+                      setStartDate((date))
+                      searchParams.set('page',1)
+                      searchParams.set('last','specfic')
+                      setSearchParams(searchParams);
+
+                      // setOrder('specfic');
+                    }} />
                     <button onClick={()=>{
                         const newDate = new Date(startDate);
                         newDate.setDate(newDate.getDate() + 1);
                         setStartDate(newDate);
                         searchParams.set('page',1)
+                        searchParams.set('last','specfic')
                       setSearchParams(searchParams);
-                      setOrder('specfic');
+                      // setOrder('specfic');
                     }}>+</button>
-                    <DatePicker selected={startDate} onChange={(date) => {
-                      setStartDate((date))
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                      setOrder('specfic');
-                    }} />
-                    <button onClick={(e)=>{
-                       searchParams.set('page',1)
-                       setSearchParams(searchParams);
-                       setOrder('all');
-                    }}>الكل</button>
-                    <button onClick={(e)=>{
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                      setOrder('week')
-                    }}>اخر اسبوع</button>
-                    <button onClick={(e)=>{
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                      setOrder('month')
-                    }}>اخر شهر </button>
-                    <button onClick={(e)=>{
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                      setOrder('3month')
-                    }}>اخر 3 شهور </button>
-                    <button onClick={(e)=>{
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                      setOrder('year')
-                    }}>اخر سنه</button>
-                </div>
+                    </div>
+                    
+                
                 <div className={classes.print}>
-                    <label>طباعة</label>
-                    <span ><FaPrint/></span>
+                    {/* <label>طباعة</label> */}
+                    <span onClick={()=>window.print()} ><FaPrint/></span>
                 </div>
             </div>
+           
             <div>
             <table className={classes.customers}>
                 <tr>
@@ -285,7 +329,7 @@ function AllBookings(){
                     <td>{item.paidAmount}</td>
                     <td>{item.price-item.discount-item.paidAmount}</td>
                     <td>{item.notes}</td>
-                    <td><button onClick={()=>{
+                    <td><button disabled={item.status!=='تم الدخول والخروج'} className="btnOutlined" onClick={()=>{
                             navigate(`/ReservationDetails?patID=${item.patients.id}&bokID=${item.id}`)
                         }}>فتح الكشف</button></td>
                 </tr>)}

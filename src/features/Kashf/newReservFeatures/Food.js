@@ -1,8 +1,9 @@
 import { useReducer, useState } from "react";
-import classes from "./OldDiasies.module.css";
+import classes from "./Food.module.css";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addNewXray, getXrays } from "../../../services/apiXrays";
 import { addNewFood, getFood } from "../../../services/apiFood";
+import { FaDeleteLeft } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const initState={name:"", notes:"",isOk:true};
 function Food({saveData, data=[]}){
@@ -19,13 +20,13 @@ function Food({saveData, data=[]}){
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: addNewFood,
         onSuccess: ()=>{
-            alert("new food added succsfully");
+            toast.success("تمت الاضافه الي القائمه بنجاح");
             queryClient.invalidateQueries({
                 queryKey:['foods']
             }); 
             
         },
-        onError:(err)=>alert(err.message),
+        onError:(err)=>toast.error(err.message),
     });
     // console.log(foods);
     function reducer(state,action){
@@ -36,6 +37,8 @@ function Food({saveData, data=[]}){
                 return {...state,   isOk:false,name: action.payload};
             case "notes":
                 return {...state , notes: action.payload};
+            case "reset":
+                return initState;
             default:
                 return initState;
         }
@@ -44,10 +47,15 @@ function Food({saveData, data=[]}){
     function onSubmit(e){
         e.preventDefault();
         if(!state.name) {
-            alert('add food');
+            toast.error('اختر الطعام من القائمه');
             return;
         }
-        setMyfood(prev=>[...prev,state]);
+        if( !myFood.some(item => item.name === state.name )){
+            setMyfood(prev=>[...prev,state]);
+            dispatch({type:"reset"});
+        }
+        else (toast.error('تمت الاضافه من قبل'))
+        
     }
 
     // console.log(newFood);
@@ -55,6 +63,7 @@ function Food({saveData, data=[]}){
         <div>
             <div>
             <form onSubmit={onSubmit} >
+                <div className={classes.row}>
                 <label>اختر الطعام</label>
                 <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
                     // console.log(e.target.value);
@@ -65,14 +74,7 @@ function Food({saveData, data=[]}){
                         {item.name}
                     </option>)}
                 </datalist>
-                {/* <select onChange={(e)=>{
-                    dispatch({type:"name1", payload: e.target.value});
-                }} >
-                    {!isLoading&&foods.map(item=>
-                    <option value={item.name}>
-                        {item.name}
-                    </option>)}
-                </select> */}
+                
                 {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
                 {isOpen &&<div>
                     <label >اسم الطعام</label>
@@ -91,15 +93,18 @@ function Food({saveData, data=[]}){
                     }}>اضافه طعام جديد</button>
                     <button  type="button" onClick={()=>setIsOpen(false)}>اغلاق</button>
                 </div>}
-                <div>
+                </div>
+
+                <div className={classes.row}>
                     <label>ملاحظات</label>
                     <input onChange={(e)=>{
                          dispatch({type:"notes", payload: e.target.value});
                     }}  /> 
                 </div>
-                <button>اضافه</button>
+                <button className={`${classes.button} ${classes.addBtn}`}>اضافه</button>
             </form>
             <form onSubmit={onSubmit} >
+                <div className={classes.row}>
                 <label>اختر الطعام</label>
                 <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
                     // console.log(e.target.value);
@@ -110,39 +115,15 @@ function Food({saveData, data=[]}){
                         {item.name}
                     </option>)}
                 </datalist>
-                {/* <select onChange={(e)=>{
-                    dispatch({type:"name2", payload: e.target.value});
-                }} >
-                    {!isLoading&&foods.map(item=>
-                    <option value={item.name}>
-                        {item.name}
-                    </option>)}
-                </select> */}
-                {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
-                {isOpen &&<div>
-                    <label >اسم الطعام</label>
-                    <input value={newFood} onChange={(e)=>setNewFood(e.target.value)}/>
-                    <button  type="button" onClick={()=>{
-                        if(newFood===''){
-                            alert('ادخل اسم  الطعام');
-                            return;
-                        }
-                        const newFo={
-                            "name":newFood,
-                        }
-                        mutate(newFo);
-                        setNewFood('');
-                        setIsOpen(false);
-                    }}>اضافه طعام جديد</button>
-                    <button  type="button" onClick={()=>setIsOpen(false)}>اغلاق</button>
-                </div>}
-                <div>
+                </div>
+                
+                <div className={classes.row}>
                     <label>ملاحظات</label>
                     <input onChange={(e)=>{
                          dispatch({type:"notes", payload: e.target.value});
                     }}  /> 
                 </div>
-                <button>اضافه</button>
+                <button className={`${classes.button} ${classes.addBtn}`}>اضافه</button>
             </form>
             
             </div>
@@ -165,12 +146,12 @@ function Food({saveData, data=[]}){
                     <td>{item.name} </td>
                     <td>{item.notes} </td>
                     <td>{item.isOk?"مسموح":"ممنوع"} </td>
-                    <td><button onClick={()=>{
+                    <td><span className="spn" onClick={()=>{
                        setMyfood(prev=>prev.filter(x=>x!==item))
-                    }}>حذف</button></td>
+                    }}><FaDeleteLeft/></span></td>
                 </tr>)}
             </table>
-            <button onClick={(e)=>{
+            <button  className={classes.button} onClick={(e)=>{
                 saveData("foods",myFood)
             }}>حفظ</button>
         </div>

@@ -1,0 +1,14 @@
+.heading{
+    background-color: #f2f2f2;
+    padding: 20px;
+    display: flex;
+    gap: 1rem;
+    color: blue;
+}
+.heading__title{
+    color: #333333;
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0;
+    
+}

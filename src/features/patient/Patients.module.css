@@ -1,9 +1,38 @@
+.all{
+    background: #eee;
+    min-height: 87vh;
+    max-height: 87vh;
+    padding: 1rem 0;
+
+}
+.all::before {
+    content: '';
+    position: absolute;
+    /* top: 0; */
+    left: 0;
+    width: 100%;
+    height: 86vh;
+    background-image: url('https://img.freepik.com/free-vector/clean-medical-background_53876-101048.jpg?w=360&t=st=1698120964~exp=1698121564~hmac=26dd710d5c90675fba3ac1edd7feec43358f887da356125db64a786224bbd7a1');
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    filter: blur(4px);
+    /* z-index: -1; */
+  }
+  
+.content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    color: #ffffff;
+  }
 .btns{
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    width: 10rem;
+    gap: 2rem;
+    width: fit-content;
+    /* margin: 1rem; */
 }
-.btns button{
-    height: 4rem;
+.btns Button{
+    font-size: 1.3rem;
 }

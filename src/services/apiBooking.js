@@ -101,3 +101,14 @@ export async function updateBooking(id,columnName, value){
 }
 
 
+export async function updateSpecficBooking(id, updatedData){
+  const { data, error } = await supabase
+  .from('bookings')
+  .update(updatedData)
+  .eq('id', id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}

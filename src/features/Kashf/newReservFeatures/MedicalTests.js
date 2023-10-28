@@ -1,8 +1,10 @@
 import { useReducer, useState } from "react";
-import classes from "./OldDiasies.module.css";
+import classes from "./MedicalTest.module.css";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addNewSymptom, getSymptoms } from "../../../services/apiSymptoms";
 import { addNewMedicalTest, getMedicalTests } from "../../../services/apiMedicalTest";
+import { FaDeleteLeft } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const initState={name:"", notes:""};
 function MedicalTests({saveData,data=[]}){
@@ -20,13 +22,13 @@ function MedicalTests({saveData,data=[]}){
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: addNewMedicalTest,
         onSuccess: ()=>{
-            alert("new medicalTest added succsfully");
+            toast.success("تمت اضافه تحليل جديد الي القائمة");
             queryClient.invalidateQueries({
                 queryKey:['medicalTests']
             }); 
             
         },
-        onError:(err)=>alert(err.message),
+        onError:(err)=>toast.error(err.message),
     });
     // console.log(medicalTests);
     function reducer(state,action){
@@ -35,6 +37,8 @@ function MedicalTests({saveData,data=[]}){
                 return {...state, name: action.payload};
             case "notes":
                 return {...state , notes: action.payload};
+            case "reset": 
+                return initState;
             default:
                 return initState;
         }
@@ -43,17 +47,24 @@ function MedicalTests({saveData,data=[]}){
     function onSubmit(e){
         e.preventDefault();
         if(!state.name) {
-            alert('add symptom');
+            toast.error('اختر تحليل من القائمه');
             return;
         }
-        setMyMedicalTests(prev=>[...prev,state]);
+        
+
+        if( !myMedicalTests.some(item => item.name === state.name )){
+            setMyMedicalTests(prev=>[...prev,state]);
+            dispatch({type:"reset"});
+        }
+        else (toast.error('تمت الاضافه من قبل'))
     }
     // console.log(newMedicalTest);
     return (
         <div>
             <form onSubmit={onSubmit} >
-                <label>اختر التحليل</label>
-                <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
+                <div className={classes.row}>
+                <label>اختر التحليل:</label>
+                <input value={state.name} type="text" list="names" placeholder="التحاليل..."  onChange={(e)=>{
                     // console.log(e.target.value);
                     dispatch({type:"name",payload: e.target.value})
                 }} />
@@ -62,21 +73,14 @@ function MedicalTests({saveData,data=[]}){
                         {item.name}
                     </option>)}
                 </datalist>
-                {/* <select onChange={(e)=>{
-                    dispatch({type:"name", payload: e.target.value});
-                }} >
-                    {!isLoading&&medicalTests.map(item=>
-                    <option value={item.name}>
-                        {item.name}
-                    </option>)}
-                </select> */}
+               
                 {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
                 {isOpen &&<div>
-                    <label >اسم العرض</label>
+                    <label >اسم التحليل:</label>
                     <input value={newMedicalTest} onChange={(e)=>setNewMedicalTest(e.target.value)}/>
                     <button  type="button" onClick={()=>{
                         if(newMedicalTest===''){
-                            alert('ادخل اسم  التحليل');
+                            toast.error('ادخل اسم المراد اضافته الي القائمه');
                             return;
                         }
                         const newSym={
@@ -88,13 +92,15 @@ function MedicalTests({saveData,data=[]}){
                     }}>اضافه تحليل جديد</button>
                     <button  type="button" onClick={()=>setIsOpen(false)}>اغلاق</button>
                 </div>}
-                <div>
-                    <label>ملاحظات</label>
-                    <input onChange={(e)=>{
+                </div>
+
+                <div className={classes.row}>
+                    <label>ملاحظات:</label>
+                    <input value={state.notes} onChange={(e)=>{
                          dispatch({type:"notes", payload: e.target.value});
                     }}  /> 
                 </div>
-                <button>اضافه</button>
+                <button className={`${classes.button} ${classes.addBtn}`}>اضافه</button>
                 
             </form>
             <table className={classes.customers}>
@@ -106,12 +112,12 @@ function MedicalTests({saveData,data=[]}){
                 <tr>
                     <td>{item.name} </td>
                     <td>{item.notes} </td>
-                    <td><button onClick={()=>{
+                    <td><span className="spn" onClick={()=>{
                        setMyMedicalTests(prev=>prev.filter(x=>x!==item))
-                    }}>حذف</button></td>
+                    }}><FaDeleteLeft/></span></td>
                 </tr>)}
             </table>
-            <button onClick={(e)=>{
+            <button  className={classes.button} onClick={(e)=>{
                 saveData("medicalTests",myMedicalTests)
             }}>حفظ</button>
         </div>

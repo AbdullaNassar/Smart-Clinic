@@ -1,23 +1,36 @@
 import { Link } from "react-router-dom";
 import classes from "./ExpensesRevenues.module.css";
+import { Button } from "@mui/material";
+
 function ExpensesRevenues(){
+
     return(
-        <div>
+        <div className={classes.all}>
              <div className={classes.btns}>
-                    <button>
-                        <Link to="newExpense">عمليه مصروف/شراء جديده</Link>
-                    </button>
+                    <Link to="newExpense">
+                        <Button variant="contained" style={{background:"teal", fontSize:"14px", width:"100%"}}>
+                            عمليه مصروف / شراء جديده
+                        </Button>
+                    </Link>
+                    
+                    {/* <Link to="newRevenue">
+                        <Button variant="contained" style={{background:"teal", fontSize:"14px" , width:"100%"}}>
+                            عمليه ايراد جديده
+                        </Button>
+                    </Link> */}
 
-                    <button>
-                        <Link to="newRevenue">عمليه ايراد جديده</Link>
-                    </button>
-                    <button>
-                        <Link to="expenses">مصروفات العياده</Link>
-                    </button>
+                    <Link to="expenses">
+                        <Button variant="contained" style={{background:"teal", fontSize:"14px", width:"100%"}}>
+                            مصروفات العياده
+                        </Button>
+                    </Link>
 
-                    <button>
-                        <Link to="revenues">ايرادات العياده</Link>
-                    </button>                  
+                    <Link to="revenues">
+                        <Button variant="contained" style={{background:"teal", fontSize:"14px", width:"100%"}}>
+                            ايرادات العياده
+                        </Button>
+                    </Link>
+
                 </div>
         </div>
     );

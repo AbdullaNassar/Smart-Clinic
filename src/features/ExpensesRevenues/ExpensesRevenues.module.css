@@ -1,9 +1,28 @@
+
+    .all{
+        background: #eee;
+        min-height: 87vh;
+        max-height: 87vh;
+        padding: 1rem 0;
+
+        background-image: url('https://img.freepik.com/free-photo/gold-coin-hourglass-time-is-money-concept_35913-2502.jpg?w=740&t=st=1698120146~exp=1698120746~hmac=f41d9c8bc39f4a5a1b9e06cfadd7e83ff9ca4f8e29c0f4503b9c741d57c6074b');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%; /* Adjust the height as needed */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
 .btns{
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    width: 10rem;
+    gap: 2rem;
+    width: fit-content;
+    /* margin: 1rem; */
 }
+
 .btns button{
     height: 4rem;
 }

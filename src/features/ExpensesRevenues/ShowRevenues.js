@@ -1,31 +1,32 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FaPrint } from "react-icons/fa6";
-import React, { useEffect } from 'react';
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import classes from "./ShowExpenses.module.css";
-import { getMyRevenues } from "../../services/apiMyRevenues";
+import { FaMoneyBill1, FaMoneyBillTrendUp, FaPrint, FaSistrix } from "react-icons/fa6";
+import {  useQuery } from "@tanstack/react-query";
+import classes from "./ShowRevenues.module.css";
 import { getRevenues } from "../../services/apiRevenues";
 import { getReservations } from "../../services/apiReservation";
 import Pagination from "../../UI/Pagnition";
 import { useSearchParams } from "react-router-dom";
+import MyFilter from "../../UI/MyFilter";
+
 function ShowRevenues(){
+  const[searchQuery,setSearchQuery]=useState(null);
 
   const [searchParams,setSearchParams]=useSearchParams();
   const page=!searchParams.get("page")?1: Number(searchParams.get('page'));
-    console.log(page);
-    const {isLoading, data:revenues, error}= useQuery({
-        queryKey:['revenues'],
-        queryFn: getReservations,
-    })
-    console.log(revenues);
+
+  const {isLoading, data:revenues, error}= useQuery({
+            queryKey:['revenues'],
+            queryFn: getReservations,
+        })
+        console.log(revenues);
 
     const {isLoading: loadingExpensesType, data:revenueType, error:errorExpensesType}= useQuery({
-        queryKey:['Revenues'],
-        queryFn: getRevenues,
-    })
-    // console.log(revenueType);
+      queryKey:['Revenues'],
+      queryFn: getRevenues,
+  })
+    console.log(revenueType);
     // const formatDate = (date) =>
     // new Intl.DateTimeFormat("en", {
     //     day: "numeric",
@@ -44,196 +45,189 @@ function ShowRevenues(){
       }
     const [startDate, setStartDate] = useState(new Date());
    
-    const[order,setOrder]=useState('all');
-    const[type,setType]=useState('all');
-    let revenuesList;
-    // const[revenuesList, setRevenuesList]=useState(revenues);
+const order = !searchParams.get("last")
+? "all"
+: searchParams.get("last");
+
+
+// const[order,setOrder]=useState('all');
+const[type,setType]=useState('all');
+
+let RevenuesList=[];
+
+if(revenues!==undefined)switch(order){
+case "all":{
+  const newList = revenues; // Create a copy of the original list
+  newList.sort((a, b) => new Date(b.bookings.date) - new Date(a.bookings.date));
+  
+  RevenuesList=newList;
+  break;
+}
+case "week":{
+  const currentDate = new Date();
+
+  // Calculate the date 7 days ago
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(currentDate.getDate() - 7);
+  
+  // Filter the original list based on the date
+  const newList = revenues.filter(obj => {
+    // Convert the 'date' string to a Date object
+    const objDate = new Date(obj.bookings.date);
+  
+    // Return true if the object's date is within the last 7 days
+    const newDate = new Date();
+    newDate.setDate(newDate.getDate() + 1);
+    return objDate >= sevenDaysAgo && objDate<newDate ;
+  });
+  RevenuesList=newList;
+  break;
+}
+case "month":{
+  const currentDate = new Date();
+
+  // Calculate the date 7 days ago
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(currentDate.getDate() - 30);
+  
+  // Filter the original list based on the date
+  const newList = revenues.filter(obj => {
+    // Convert the 'date' string to a Date object
+    const objDate = new Date(obj.bookings.date);
+  
+    // Return true if the object's date is within the last 7 days
+    const newDate = new Date();
+    newDate.setDate(newDate.getDate() + 1);
+    return objDate >= sevenDaysAgo && objDate<newDate ;
+  });
+  RevenuesList=newList;
+  break;
+}
+case "3month":{
+  const currentDate = new Date();
+
+  // Calculate the date 7 days ago
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(currentDate.getDate() - 90);
+  
+  // Filter the original list based on the date
+  const newList = revenues.filter(obj => {
+    // Convert the 'date' string to a Date object
+    const objDate = new Date(obj.bookings.date);
+  
+    // Return true if the object's date is within the last 7 days
+    const newDate = new Date();
+    newDate.setDate(newDate.getDate() + 1);
+    return objDate >= sevenDaysAgo && objDate<newDate ;
+  });
+  RevenuesList=newList;
+  break;
+}
+case "year":{
+  const currentDate = new Date();
+
+  // Calculate the date 7 days ago
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(currentDate.getDate() - 365);
+  
+  // Filter the original list based on the date
+  const newList = revenues.filter(obj => {
+    // Convert the 'date' string to a Date object
+    const objDate = new Date(obj.bookings.date);
+  
+    // Return true if the object's date is within the last 7 days
+    const newDate = new Date();
+    newDate.setDate(newDate.getDate() + 1);
+    return objDate >= sevenDaysAgo && objDate<newDate ;
+  });
+  RevenuesList=newList;
+  break;
+}
+case "specfic":{
+  const currentDate = new Date(startDate);
+  const currentDateString = currentDate.toISOString().split('T')[0];
+
+  // Filter the original list based on the date
+  const newList = revenues.filter(obj => {
+    // Extract the date part from the 'date' string
+    const objDate = obj.bookings.date.split('T')[0];
+
+    // Return true if the object's date is today
+    return objDate === currentDateString;
+  });
+  RevenuesList=newList
+  break;
+}
+
+default: console.log('cant find order way');
+}
+
+if(RevenuesList!==undefined&&type!=='all'){
+console.log('here');
+  const newList=RevenuesList.filter(item=>item.bookings.type===type);
+  RevenuesList=newList;
  
-  if(revenues!==undefined)switch(order){
-    case "all":{
-      const newList = revenues; // Create a copy of the original list
-      newList.sort((a, b) => new Date(b.date) - new Date(a.date));
-      // setRevenuesList(newList);
-      revenuesList=newList;
-      break;
-    }
-    case "week":{
-      const currentDate = new Date();
+  console.log(newList);
+}
+console.log(RevenuesList);
+if(RevenuesList!==undefined&&searchQuery!==null) {
+// console.log(searchQuery);
+RevenuesList = RevenuesList.filter((item) =>
+item.patients.name.toLowerCase().includes(searchQuery.toLowerCase()));
+}
+// console.log(RevenuesList);
 
-      // Calculate the date 7 days ago
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(currentDate.getDate() - 7);
-      
-      // Filter the original list based on the date
-      const newList = revenues.filter(obj => {
-        // Convert the 'date' string to a Date object
-        // console.log(obj);
-        const objDate = new Date(obj.bookings.date);
-      
-        // Return true if the object's date is within the last 7 days
-        const newDate = new Date();
-        newDate.setDate(newDate.getDate() + 1);
-        return objDate >= sevenDaysAgo && objDate<newDate ;
-      });
-      revenuesList=newList;
-      // setRevenuesList(newList);
-      break;
-    }
-    case "month":{
-      const currentDate = new Date();
 
-      // Calculate the date 7 days ago
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(currentDate.getDate() - 30);
-      
-      // Filter the original list based on the date
-      const newList = revenues.filter(obj => {
-        // Convert the 'date' string to a Date object
-        const objDate = new Date(obj.bookings.date);
-      
-        // Return true if the object's date is within the last 7 days
-        const newDate = new Date();
-        newDate.setDate(newDate.getDate() + 1);
-        return objDate >= sevenDaysAgo && objDate<newDate ;
-      });
-      // setRevenuesList(newList);
-      revenuesList=newList;
-      break;
-    }
-    case "3month":{
-      const currentDate = new Date();
+let expensesCount=0 ;
+if(RevenuesList!==undefined){ expensesCount=RevenuesList.length;
+let x=[];
+for(let from=(page-1)*10 , count=0; from<RevenuesList.length &&count<10;count++,from++ ){
+x.push(RevenuesList[from]);
+}
+RevenuesList=x;}
 
-      // Calculate the date 7 days ago
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(currentDate.getDate() - 90);
-      
-      // Filter the original list based on the date
-      const newList = revenues.filter(obj => {
-        // Convert the 'date' string to a Date object
-        const objDate = new Date(obj.bookings.date);
-      
-        // Return true if the object's date is within the last 7 days
-        const newDate = new Date();
-        newDate.setDate(newDate.getDate() + 1);
-        return objDate >= sevenDaysAgo && objDate<newDate ;
-      });
-      revenuesList=newList;
-      // setRevenuesList(newList);
-      break;
-    }
-    case "year":{
-      const currentDate = new Date();
-
-      // Calculate the date 7 days ago
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(currentDate.getDate() - 365);
-      
-      // Filter the original list based on the date
-      const newList = revenues.filter(obj => {
-        // Convert the 'date' string to a Date object
-        const objDate = new Date(obj.bookings.date);
-      
-        // Return true if the object's date is within the last 7 days
-        const newDate = new Date();
-        newDate.setDate(newDate.getDate() + 1);
-        return objDate >= sevenDaysAgo && objDate<newDate ;
-      });
-      revenuesList=newList;
-      // setRevenuesList(newList);
-      break;
-    }
-    case "specfic":{
-      const currentDate = new Date(startDate);
-      const currentDateString = currentDate.toISOString().split('T')[0];
-
-      // Filter the original list based on the date
-      const newList = revenues.filter(obj => {
-        // Extract the date part from the 'date' string
-
-        const objDate = obj.bookings.date.split('T')[0];
-
-        // Return true if the object's date is today
-        return objDate === currentDateString;
-      });
-      revenuesList=newList;
-      // setRevenuesList(newList)
-      break;  
-    }
-
-    default: console.log('cant find order way');
+let allPrices=0, allDiscounts=0, allPaid=0;
+if(RevenuesList){
+  for(let i=0;i<RevenuesList.length;i++){
+      allPrices+=RevenuesList[i].bookings.price-RevenuesList[i].bookings.discount;
+      allDiscounts+=RevenuesList[i].bookings.discount;
+      allPaid+=RevenuesList[i].bookings.paidAmount;
   }
-
-    
-//  console.log(type);
-//  console.log(revenuesList);
-
-    if(revenuesList!==undefined&&type!=='all'){
-      console.log('here');
-        const newList=revenuesList.filter(item=>item.bookings.type===type);
-        revenuesList=newList;
-        // setRevenuesList(newList);
-        console.log(newList);
-    }
-    
-    
-    let revenuesCount=0 ;
-    if(revenuesList!==undefined){ revenuesCount=revenuesList.length;
-    let x=[];
-    for(let from=(page-1)*10 , count=0; from<revenuesList.length &&count<10;count++,from++ ){
-    x.push(revenuesList[from]);
-    }
-    revenuesList=x;}
-    console.log(revenuesList);
+}
+console.log(RevenuesList);      
  return(
         <div>
-            <div className={classes.header}>
-                <div>
-                    {/* <time>{startDate} </time> */}
-                    <button onClick={()=>{
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                        const newDate = new Date(startDate);
-                        newDate.setDate(newDate.getDate() - 1);
-                        setStartDate(newDate);
-                    }}>-</button>
-                    <button onClick={()=>{
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                        const newDate = new Date(startDate);
-                        newDate.setDate(newDate.getDate() + 1);
-                        setStartDate(newDate);
-                    }}>+</button>
-                    <DatePicker selected={startDate} onChange={(date) => {
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                      setStartDate((date))
-                      setOrder('specfic');
-                    }} />
-                    <button onClick={(e)=>{
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                      setOrder('all')
-                    }}>الكل</button>
-                    <button onClick={(e)=>{
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                      setOrder('week')
-                    }}>اخر اسبوع</button>
-                    <button onClick={(e)=>{
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                      setOrder('month')
-                    }}>اخر شهر </button>
-                    <button onClick={(e)=>{
-                      setOrder('3month')
-                    }}>اخر 3 شهور </button>
-                    <button onClick={(e)=>{
-                      searchParams.set('page',1)
-                      setSearchParams(searchParams);
-                      setOrder('year')
-                    }}>اخر سنه</button>
+          <div className="heading">
+            <h2 className="heading__title">الايرادات</h2>
+            <span><FaMoneyBillTrendUp/></span>
+          </div>
+        
+          <div className={classes.header}>
+                  <div>
+                    
+                    <input  placeholder="بحث..." type="text" id="search"  value={searchQuery} onChange={(e)=>{
+                            setSearchQuery(e.target.value)
+                            searchParams.set('page',1)
+                          setSearchParams(searchParams);
+                        }}/>
+                        <span><FaSistrix/></span>
+                  </div>
+
                     <div>
-                        <label>نوع الايراد</label>
+                    <MyFilter
+                      filterField="last"
+                      options={[
+                        { value: "all", label: "الكل" },
+                        { value: "week", label: "اخر اسبوع" },
+                        { value: "month", label: "اخر شهر" },
+                        { value: "3month", label: "اخر 3 شهور" },
+                        { value: "year", label: "اخر سنه" },
+                      ]}
+                    />
+                    </div>
+                    
+                    <div>
+                        <label>نوع المصروف</label>
                         <select value={type} onChange={(e)=>{
                           searchParams.set('page',1)
                           setSearchParams(searchParams);
@@ -245,34 +239,73 @@ function ShowRevenues(){
                             </option>)}
                         </select>
                     </div>
-                </div>
+                    
+                  <div className={classes.date}>  
+                    {/* {order==='specfic'&& <time>{formatDate(startDate)} </time>} */}
+                    <button onClick={()=>{
+                        const newDate = new Date(startDate);
+                        newDate.setDate(newDate.getDate() - 1);
+                        setStartDate(newDate);
+                        searchParams.set('page',1)
+                        searchParams.set('last','specfic')
+                        
+                      setSearchParams(searchParams);
+                      // setOrder('specfic');
+                    }}>-</button>
+                    
+                    <DatePicker selected={startDate} onChange={(date) => {
+                      setStartDate((date))
+                      searchParams.set('page',1)
+                      searchParams.set('last','specfic')
+                      setSearchParams(searchParams);
+
+                      // setOrder('specfic');
+                    }} />
+                    <button onClick={()=>{
+                        const newDate = new Date(startDate);
+                        newDate.setDate(newDate.getDate() + 1);
+                        setStartDate(newDate);
+                        searchParams.set('page',1)
+                        searchParams.set('last','specfic')
+                      setSearchParams(searchParams);
+                      // setOrder('specfic');
+                    }}>+</button>
+                    </div>
+                    
                 
-                <div onClick={()=>{
-                    window.print();
-                }} className={classes.print}>
-                    <label>طباعة</label>
-                    <span ><FaPrint/></span>
+                <div className={classes.print}>
+                    {/* <label>طباعة</label> */}
+                    <span onClick={()=>window.print()} ><FaPrint/></span>
                 </div>
             </div>
             <div>
             <table className={classes.customers}>
                 <tr>
                     <th></th>
-                    
                     <th>اسم المريض</th>
                     <th>نوع الايراد</th>
                     <th>التاريخ</th>
-                    <th>المبلغ قبل الخصم</th>
+                    <th> المبلغ</th>
                     <th>الخصم</th>
                     <th>المبلغ بعد الخصم</th>
                     <th>المدفوع</th>
                     <th>المتبقي</th>
                     <th>ملاحظات</th>
                 </tr>
-                {revenuesList!==undefined &&revenuesList.map((item,idx)=>
                 <tr>
-                    <td>{(page-1)*10+ idx+1}</td>        
-                   
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td className={classes.results}>{allDiscounts+allPrices}</td>
+                  <td className={classes.results}>{allDiscounts}</td>
+                  <td className={classes.results}>{allPrices}</td>
+                  <td className={classes.results}>{allPaid}</td>
+                  <td className={classes.results}>{allPrices-allPaid}</td>
+                </tr>
+                {RevenuesList!==undefined &&RevenuesList.map((item,idx)=>
+                <tr>
+                    <td>{idx+1}</td>        
                     <td>{item.patients.name}</td>
                     <td>{item.bookings.type}</td>
                     <td></td>
@@ -289,7 +322,7 @@ function ShowRevenues(){
             </table>
               
             </div>
-            {revenuesList!==undefined && <Pagination count={revenuesCount} />}
+            {RevenuesList!==undefined && <Pagination count={expensesCount} />}
         </div>
     );
 }

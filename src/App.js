@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import NewPatient from "./pages/NewPatient";
@@ -28,6 +29,7 @@ import ProtectedRoute from "./UI/ProtectedRoute";
 import SignupForm from "./features/authentication/SignupForm";
 import { Toaster } from "react-hot-toast";
 import AppLayout from "./UI/AppLayout";
+import UpdateBooking from "./features/Booking/UpdateBooking";
 const queryClient =new QueryClient({
   defaultOptions:{
     queries:{
@@ -50,7 +52,7 @@ function App() {
                 <AppLayout/>
               // </ProtectedRoute>
               }
-              >
+          >
               
               <Route path="/" element={<Main/>}/>
               <Route path="/newPatient" element={<NewPatient/>} />
@@ -60,6 +62,7 @@ function App() {
               <Route path="/todayBooking" element={<TodayBooking/>}/>
               <Route path="/allBookings" element={<AllBookings/>}/>
               <Route path="/newBooking" element={<NewBooking/>} />
+              <Route path="/updateBooking/:id" element={<UpdateBooking/>} />
               <Route path="/reservations" element={<Reservation/>} />
               <Route path="/newReservations" element={<NewReservation/>} />
               <Route path="/allReservations" element={<AllReservations/>} />

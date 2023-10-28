@@ -155,7 +155,7 @@ const isDarkMode=false;
   const data = prepareData(startData, confirmedStays);
   return (
     <ChartBox>
-      <Heading as="h2">Booking type summary</Heading>
+      <Heading as="h2">انواع الايرادات</Heading>
       <ResponsiveContainer width="100%" height={240}>
         <PieChart>
           <Pie

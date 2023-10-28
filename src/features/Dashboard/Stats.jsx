@@ -7,7 +7,7 @@ import {
   import Stat from "./Stat";
   import { formatCurrency } from "../../utils/helper"; 
   
-  function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
+  function Stats({ bookings=[], confirmedStays, numDays, cabinCount }) {
     // 1.
     const numBookings = bookings.length;
   
@@ -47,13 +47,13 @@ import {
         //   value={checkins}
           value={30}
         /> */}
-        <Stat
+        {/* <Stat
           title="معدل الزياده"
           color="yellow"
           icon={<HiOutlineChartBar />}
         //   value={Math.round(occupation * 100) + "%"}
           value={Math.round(34) + "%"}
-        />
+        /> */}
       </>
     );
   }

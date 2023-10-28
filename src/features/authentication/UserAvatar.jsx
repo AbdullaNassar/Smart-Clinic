@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useUser } from "./useUser";
 import SpinnerMini from "../../UI/SpinnerMini";
+import mypic3 from "../../mypic3jpg.jpg";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const StyledUserAvatar = styled.div`
 const Avatar = styled.img`
   display: block;
   width: 4rem;
-  width: 3.6rem;
+  
   aspect-ratio: 1;
   object-fit: cover;
   object-position: center;
@@ -32,7 +33,8 @@ function UserAvatar() {
   return (
     <StyledUserAvatar>
       <Avatar
-        src={avatar || "https://github.com/AbdullaNassar/ultimate-react-course/blob/main/17-the-wild-oasis/final-6-final/public/default-user.jpg?raw=true"}
+      // https://github.com/AbdullaNassar/ultimate-react-course/blob/main/17-the-wild-oasis/final-6-final/public/default-user.jpg?raw=true
+        src={avatar || mypic3}
         alt={`Avatar of ${fullName}`}
       />
       <span>{fullName}</span>

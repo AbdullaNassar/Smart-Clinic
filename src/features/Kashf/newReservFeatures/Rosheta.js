@@ -3,6 +3,9 @@ import { addNewMedicine, getMedicines } from "../../../services/apiMedicine";
 import { useForm } from "react-hook-form";
 import { useReducer, useState } from "react";
 import classes from "./Rosheta.module.css";
+import { IconButton } from "@mui/material";
+import { FaDeleteLeft } from "react-icons/fa6";
+import toast from "react-hot-toast";
 const initRosheta=[
     {
         name:"aspiren",
@@ -10,7 +13,7 @@ const initRosheta=[
         notes:"before eat"
     },
 ];
-const initState={name:"", times:"0" , notes:""};
+const initState={name:"", times:"" , notes:""};
 function Rosheta({saveData,data=[]}){
     const[isOpen,setIsOpen]=useState(false);
     const[newMedicine,setNewMedicine]=useState('');
@@ -40,6 +43,7 @@ function Rosheta({saveData,data=[]}){
                 return {...state, times: action.payload};
             case "notes":
                 return {...state , notes: action.payload};
+            case "reset":return initState;
             default:
                 return initState;
         }
@@ -50,19 +54,24 @@ function Rosheta({saveData,data=[]}){
     function onSubmit(e){
         e.preventDefault();
         if(!state.name || !state.times) {
-            alert('add medicine and times');
+            toast.error('اختر الدواء والجرعه المحدده');
             return;
         }
-        setRosheta((prev)=>[...prev,state]);
+        if( !rosheta.some(item => item.name === state.name )){
+            setRosheta(prev=>[...prev,state]);
+            dispatch({type:"reset"});
+        }
+        else (toast.error('تمت الاضافه من قبل'))
+        
     }
     // console.log(rosheta);
     if(isLoading) return <h2>Loading...</h2>
     return (
         <div>
             <form onSubmit={onSubmit}>
-                <div>
-                    <label>اختر الدواء</label>
-                    <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
+                <div className={classes.row}>
+                    <label>اختر الدواء:</label>
+                    <input value={state.name} type="text" list="names" placeholder="الادويه..."  onChange={(e)=>{
                         // console.log(e.target.value);
                         dispatch({type:"name",payload: e.target.value})
                     }} />
@@ -71,21 +80,14 @@ function Rosheta({saveData,data=[]}){
                         {item.name}
                     </option>)}
                 </datalist>
-                    {/* <select onChange={(e)=>{
-                        dispatch({type:"name", payload: e.target.value});
-                    }} >
-                        {!isLoading &&medicines.map(item=>
-                        <option value={item.name}>
-                            {item.name}
-                        </option>)}
-                    </select> */}
+                    
                     <button type="button" onClick={(e)=>setIsOpen(true)}>+</button>
                     {isOpen&&<div>
-                        <label>ادخل اسم الدواء</label>
+                        <label>ادخل اسم الدواء:</label>
                         <input value={newMedicine} onChange={(e)=>setNewMedicine(e.target.value)}/>
                         <button type="button" onClick={(e)=>{
                             if(newMedicine===''){
-                                alert('ادخل اسم الدواء');
+                                toast.error('ادخل اسم الدواء');
                                 return;
                             }
                             const newMed={
@@ -99,21 +101,21 @@ function Rosheta({saveData,data=[]}){
                     </div>}
                 </div>
                 <div>
-                    <div>
+                    <div className={classes.row}>
                         <label>الجرعه</label>
-                        <input onChange={(e)=>{
+                        <input value={state.times} onChange={(e)=>{
                             dispatch({type:"times",payload:e.target.value})
                         }}/>
                     </div>
                     
-                    <div>
+                    <div className={classes.row}>
                     <label>ملاحظات</label>
-                    <input onChange={(e)=>{
+                    <input value={state.notes} onChange={(e)=>{
                         dispatch({type:"notes", payload:e.target.value})
                     }}/>
                     
                     </div>
-                    <button>اضافه</button>
+                    <button  className={`${classes.button} ${classes.addBtn}`}>اضافه</button>
                     
                     
                 </div>
@@ -132,15 +134,16 @@ function Rosheta({saveData,data=[]}){
                     <td>{item.name} </td>
                     <td>{item.times} </td>
                     <td>{item.notes} </td>
-                    <td><button onClick={()=>{
+                    
+                    <td><span className="spn" onClick={()=>{
                        setRosheta(prev=>prev.filter(x=>x!==item))
-                    }}>حذف</button></td>
+                    }}><FaDeleteLeft/></span></td>
                    
                     
                 </tr>)}
                
             </table>
-            <button onClick={()=>{
+            <button className={classes.button} onClick={()=>{
                 saveData("rosheta",rosheta);
             }}>حفظ</button>
             

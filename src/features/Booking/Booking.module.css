@@ -1,9 +1,40 @@
+.all{
+    background: #eee;
+    min-height: 87vh;
+    max-height: 87vh;
+    padding: 1rem 0;
+    
+    
+}
+.all::before {
+    content: '';
+    position: absolute;
+    /* top: 0; */
+    left: 0;
+    width: 100%;
+    height: 86vh;
+    background-image: url('https://img.freepik.com/free-photo/flat-lay-medical-elements-arrangement-with-copy-space_23-2148502906.jpg?size=626&ext=jpg&ga=GA1.1.128212209.1692481525&semt=ais');
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    /* filter: blur(4px); */
+    /* z-index: -1; */
+  }
+  
+.content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    color: #ffffff;
+  }
 .btns{
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    width: 10rem;
+    gap: 2rem;
+    width: fit-content;
+    /* margin: 1rem; */
 }
+
 .btns button{
     height: 4rem;
 }

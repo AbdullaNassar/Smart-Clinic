@@ -1,7 +1,9 @@
 import { useReducer, useState } from "react";
-import classes from "./OldDiasies.module.css";
+import classes from "./Symptoms.module.css";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addNewSymptom, getSymptoms } from "../../../services/apiSymptoms";
+import { FaDeleteLeft } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const initState={name:"", notes:""};
 function Symptoms({saveData,data=[]}){
@@ -19,13 +21,13 @@ function Symptoms({saveData,data=[]}){
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: addNewSymptom,
         onSuccess: ()=>{
-            alert("new symptom added succsfully");
+            toast.success("تمت اضافة عرض مرضي جديد");
             queryClient.invalidateQueries({
                 queryKey:['symptoms']
             }); 
             
         },
-        onError:(err)=>alert(err.message),
+        onError:(err)=>toast.error(err.message),
     });
     // console.log(symptoms);
     function reducer(state,action){
@@ -34,6 +36,8 @@ function Symptoms({saveData,data=[]}){
                 return {...state, name: action.payload};
             case "notes":
                 return {...state , notes: action.payload};
+            case "reset":
+                return initState;
             default:
                 return initState;
         }
@@ -42,17 +46,23 @@ function Symptoms({saveData,data=[]}){
     function onSubmit(e){
         e.preventDefault();
         if(!state.name) {
-            alert('add symptom');
+            toast.error('اختر العرض المرضي من القائمه');
             return;
         }
-        setMysymptoms(prev=>[...prev,state]);
+        if( !mySymptoms.some(item => item.name === state.name )){
+            setMysymptoms(prev=>[...prev,state]);
+            dispatch({type:"reset"});
+        }
+        else (toast.error('تمت الاضافه من قبل'))
+        
     }
     // console.log(newSymptom);
     return (
         <div>
             <form onSubmit={onSubmit} >
+                <div className={classes.row}>
                 <label>اختر العرض المرضي</label>
-                <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
+                <input value={state.name} type="text" list="names" placeholder="الاعراض..."  onChange={(e)=>{
                     // console.log(e.target.value);
                     dispatch({type:"name",payload: e.target.value})
                 }} />
@@ -61,14 +71,7 @@ function Symptoms({saveData,data=[]}){
                         {item.name}
                     </option>)}
                 </datalist>
-                {/* <select onChange={(e)=>{
-                    dispatch({type:"name", payload: e.target.value});
-                }} >
-                    {!isLoading&&symptoms.map(item=>
-                    <option value={item.name}>
-                        {item.name}
-                    </option>)}
-                </select> */}
+              
                 {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
                 {isOpen &&<div>
                     <label >اسم العرض</label>
@@ -87,13 +90,15 @@ function Symptoms({saveData,data=[]}){
                     }}>اضافه مرض جديد</button>
                     <button  type="button" onClick={()=>setIsOpen(false)}>اغلاق</button>
                 </div>}
-                <div>
+                </div>
+
+                <div  className={classes.row} >
                     <label>ملاحظات</label>
-                    <input onChange={(e)=>{
+                    <input value={state.notes} onChange={(e)=>{
                          dispatch({type:"notes", payload: e.target.value});
                     }}  /> 
                 </div>
-                <button>اضافه</button>
+                <button className={`${classes.button} ${classes.addBtn}`}>اضافه</button>
                 
             </form>
             <table className={classes.customers}>
@@ -105,12 +110,12 @@ function Symptoms({saveData,data=[]}){
                 <tr>
                     <td>{item.name} </td>
                     <td>{item.notes} </td>
-                    <td><button onClick={()=>{
+                    <td><span className="spn" onClick={()=>{
                        setMysymptoms(prev=>prev.filter(x=>x!==item))
-                    }}>حذف</button></td>
+                    }}><FaDeleteLeft/></span></td>
                 </tr>)}
             </table>
-            <button onClick={(e)=>{
+            <button  className={classes.button} onClick={(e)=>{
                 saveData("symptoms",mySymptoms)
             }}>حفظ</button>
         </div>

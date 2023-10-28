@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getPatients } from "../../services/apiPatients";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { createBooking } from "../../services/apiBooking";
@@ -8,16 +8,20 @@ import ReactDatePicker from "react-datepicker";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import FormRow from "../../UI/FormRow";
-import Input from "../../UI/Input";
-import Select from "../../UI/Select";
 import Spinner from "../../UI/Spinner";
+import Button  from "../../UI/Button";
+import classes from "./NewBooking.module.css"
+// import { Button } from "@mui/material";
+import { FaPersonCirclePlus } from "react-icons/fa6";
 const Error = styled.span`
   font-size: 1.4rem;
   color: var(--color-red-700);
 `;
 
 function NewBooking(){
-    const[value,setValue]=useState();
+   
+    
+    const navigate=useNavigate();
     const [startDate, setStartDate] = useState(new Date());
     // console.log(startDate);
     const {isLoading, data:patients, error}= useQuery({
@@ -35,7 +39,7 @@ function NewBooking(){
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: createBooking,
         onSuccess: ()=>{
-            toast.success("new booking added succsfully");
+            toast.success("تمت اضافة حجز جديد بنجاح");
             queryClient.invalidateQueries({
                 queryKey:['patients']
             });
@@ -54,101 +58,146 @@ function NewBooking(){
         console.log(data);
         mutate(data);
     }
-    // console.log('value', value);
+
     return(
-        <form onSubmit={handleSubmit(onSubmit)}>
+        
+        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+            <div className={classes.info}>
+
             <div>
-                <h2>hello</h2>
-                <input type="text" list="names" placeholder="Search names..." {...register('patientID')} />
+            <div  className={classes.formGroup}>
+                <label htmlFor="name" className={classes.label}>
+                    المريض:
+                </label>
+                {/* <FormRow error={errors?.patientID?.message}> */}
+                <input id="name" className={classes.input} type="text" list="names" placeholder="ادخل اسم المريض..." {...register('patientID', {required:"ادخل اسم المريض"})} />
+                
                 <datalist id="names"  >
                     {patients&&patients.map(patient=><option value={patient.id} data-id={patient.id}>
                         {patient.name}
                     </option>)}
                 </datalist>
-                <label>المريض</label>
+                
                 {/* {!isLoading&&<select value={value} onChange={(e)=>setValue(e.target.value)} id="patientID" >
                     {patients!==undefined &&patients.map(patient=><option value={patient.id}>
                         {patient.name===undefined?"":patient.name}
                     </option>)}
                 </select>} */}
-                <button>
-                    <Link to="/newPatient">+</Link>
-                </button>
+                 <Link to="/newPatient" className={classes.lnk}>
+                    <span><FaPersonCirclePlus/></span>
+                    {/* <BsFillPersonPlusFill/> */}
+                {/* <Button variant="contained">+</Button> */}
+                </Link>
+                {errors?.patientID?.message&& <Error>ادخل اسم المريض</Error>}
+                {/* </FormRow> */}
             </div>
             
-
-            <div>
-                <label>نوع الحجز</label>
-                <select id="type" {...register("type")}>
+            <div  className={classes.formGroup}>
+                <label htmlFor="type" className={classes.label}>
+                    نوع الحجز:
+                </label>
+                <select className={classes.input} id="type" {...register("type")}>
                     <option>حجز عادي</option>
                     <option>حجز مستعجل</option>
                     <option>اعادة كشف</option>
                 </select>
             </div>
             
-            <div>
-                <label>تاريخ الحجز</label>
-                <ReactDatePicker selected={startDate} onChange={(date) => setStartDate((date))}  />
+            <div  className={classes.formGroup}>
+            <label htmlFor="date" className={classes.label}>
+                    تاريخ الحجز:
+                </label>
+                <ReactDatePicker  className={classes.input} id="date" selected={startDate} onChange={(date) => setStartDate((date))}  />
             </div>
 
-            <FormRow label="المبلغ" error={errors?.price?.message}>
-                <Input
-                type="number"
-                id="price"
-                disabled={isLoading}
-                {...register("price", { required: "This field is required",
-                min:{
-                    value:50,
-                    message:"price must be a bigger than 50 EGP",
+            <div className={classes.formGroup}>
+                <label htmlFor="notes" className={classes.label}>
+                    ملاحظات:
+                </label>
+                <textarea  disabled={isLoading} id="notes" className={classes.textarea} {...register('notes')} />
+            </div>
 
-                } })}
-                />
-            </FormRow> 
+            </div>
 
-            <FormRow label="الخصم" error={errors?.discount?.message}>
-                <Input
-                type="number"
-                id="discount"
-                disabled={isLoading}
-                {...register("discount",{ min:{
-                    value:0,
-                    message: "can't type negative value"
-                }} )}
-                max={watch('price')}
-                />
-            </FormRow>  
+            <div>
+            <div className={classes.formGroup}>
+                <label htmlFor="price" className={classes.label}>
+                        المبلغ:
+                </label>
+                <FormRow error={errors?.price?.message}>
+                    <input className={classes.input}
+                    type="number"
+                    id="price"
+                    disabled={isLoading}
+                    {...register("price", { required: "ادخل سعر الكشف",
+                    min:{
+                        value:50,
+                        message:"السعر يجب ان يزيد عن 50 جنيه",
+
+                    } })}
+                    />
+                </FormRow>
+            </div> 
+            <div className={classes.formGroup}>
+                <label htmlFor="discount" className={classes.label}>
+                        الخصم:
+                </label>  
+                <FormRow error={errors?.discount?.message}>
+                    <input className={classes.input}
+                    type="number"
+                    id="discount"
+                    disabled={isLoading}
+                    {...register("discount",{ min:{
+                        value:0,
+                        message: "can't type negative value"
+                    }} )}
+                    max={watch('price')}
+                    />
+                </FormRow>  
+            </div>
+            <div className={classes.formGroup}>
+            <label className={classes.label}>
+                        المبلغ بعد الخصم:
+                </label>
+                <FormRow >
+                    <input className={classes.input} value={watch('price')- watch('discount')} type="number" disabled={true} />
+                </FormRow>
+            </div>
+            <div className={classes.formGroup}>
+                <label htmlFor="paidAmount" className={classes.label}>
+                        المدفوع:
+                </label> 
+                <FormRow  error={errors?.paidAmount?.message}>
+                    <input className={classes.input}
+                    type="number"
+                    id="paidAmount"
+                    disabled={isLoading}
+                    {...register("paidAmount", { required: "ادخل المبلغ المدفوع", min:{
+                        value:0,
+                        message: "can't type negative value"
+                    } })} 
+                    
+                    />
+                </FormRow> 
+            </div>
             
-            <FormRow label="المبلغ بعد الخصم" >
-                <Input value={watch('price')- watch('discount')} type="number" disabled={true} />
-            </FormRow>
-            
-            <FormRow label="المدفوع" error={errors?.paidAmount?.message}>
-                <Input
-                type="number"
-                id="paidAmount"
-                disabled={isLoading}
-                {...register("paidAmount", { required: "This field is required", min:{
-                    value:0,
-                    message: "can't type negative value"
-                } })} 
+            <div>
+                <label className={classes.label}>
+                        المتبقي:
+                </label>
+                <FormRow >
+                    <input className={classes.input} value={watch('price')-watch('discount')-watch('paidAmount')} type="number" disabled={true}/>
+                </FormRow>
+            </div>
+            </div>
+            </div>
+            <div className={classes.btns}>
+                <Button variation="secondary" onClick={()=>navigate(-1)}>الغاء</Button>
+                <button className={classes.button}>حجز</button>
+            </div>
                 
-                />
-            </FormRow> 
-            
-            <FormRow label="المتبقي" >
-                <Input value={watch('price')-watch('discount')-watch('paidAmount')} type="number" disabled={true}/>
-            </FormRow>
-    
-            <FormRow label="ملاحظات">
-                <Input
-                id="notes"
-                disabled={isLoading}
-                {...register("notes", )}
-                />
-            </FormRow> 
-            <button>حجز</button>
-            <button type="reset">reset</button>
         </form>
+        
     );
 }
 export default NewBooking;

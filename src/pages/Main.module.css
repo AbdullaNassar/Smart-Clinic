@@ -20,8 +20,9 @@
 .btns{
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     width: 10rem;
+    margin-top: 1rem;
 }
 .btns button{
     height: 4rem;

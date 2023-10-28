@@ -22,7 +22,7 @@ function LoginForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormRow label="Email address" orientation="vertical">
+      <FormRow label="البريد الالكتروني" orientation="vertical">
         <Input
           type="email"
           id="email"
@@ -33,7 +33,7 @@ function LoginForm() {
           disabled={isLoading}
         />
       </FormRow>
-      <FormRow label="Password" orientation="vertical">
+      <FormRow label="كلمة السر" orientation="vertical">
         <Input
           type="password"
           id="password"
@@ -44,7 +44,7 @@ function LoginForm() {
         />
       </FormRow>
       <FormRow orientation="vertical">
-        <Button size="large">{isLoading?<SpinnerMini/>:"login" }</Button>
+        <Button size="large">{isLoading?<SpinnerMini/>:"تسجيل دخول" }</Button>
       </FormRow>
     </Form>
   );

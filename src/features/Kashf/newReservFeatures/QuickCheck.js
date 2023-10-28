@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import classes from "./QickCheck.module.css"
+import { Button } from "@mui/material";
 const initReserv=[
 
 ]
@@ -14,35 +16,36 @@ function QuickCheck({saveData,data={}}){
     console.log(data);
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
-            <div>
-                <label>ضغط الدم</label>
+            <div className={classes.row}>
+                <label className={classes.lbl}>ضغط الدم:</label>
                 <input  {...register("pressure")}/>
             </div>
-            <div>
-                <label>التنفس</label>
+            <div className={classes.row}>
+                <label className={classes.lbl}>التنفس</label>
                 <input  {...register("breathe")} />
             </div>
-            <div>
-                <label>نبضات القلب</label>
+            <div className={classes.row}>
+                <label className={classes.lbl}>نبضات القلب</label>
                 <input  {...register('heartRate')} />
             </div>
-            <div>
-                <label>حراره الجسم</label>
+            <div className={classes.row}>
+                <label className={classes.lbl}>حراره الجسم</label>
                 <input {...register('temperture')} />
             </div>
-            <div>
-                <label>السكر</label>
+            <div className={classes.row}>
+                <label className={classes.lbl}>السكر</label>
                 <input {...register("diabites")} />
             </div>
-            <div>
-                <label>الوزن</label>
+            <div className={classes.row}>
+                <label className={classes.lbl}>الوزن</label>
                 <input  {...register("weight")} />
             </div>
-            <div>
-                <label>عمليات سابقه</label>
+            <div className={classes.row}>
+                <label className={classes.lbl}>عمليات سابقه</label>
                 <input  {...register("oldOperations")}/>
             </div>
-            <button>حفظ</button>
+            <button className={classes.button}>حفظ</button>
+            
         </form>
     );
 }

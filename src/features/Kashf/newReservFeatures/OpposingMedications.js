@@ -1,8 +1,10 @@
 import { useReducer, useState } from "react";
-import classes from "./OldDiasies.module.css";
+import classes from "./OpposingMedications.module.css";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addNewSymptom, getSymptoms } from "../../../services/apiSymptoms";
 import { addNewMedicine, getMedicines } from "../../../services/apiMedicine";
+import { FaDeleteLeft } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const initState={name:"", notes:""};
 function OpposingMedications({saveData, data=[]}){
@@ -20,13 +22,13 @@ function OpposingMedications({saveData, data=[]}){
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: addNewMedicine,
         onSuccess: ()=>{
-            alert("new medicine added succsfully");
+            toast.success("تمت اضافه دواء جديد الي القائمه");
             queryClient.invalidateQueries({
                 queryKey:['medicine']
             }); 
             
         },
-        onError:(err)=>alert(err.message),
+        onError:(err)=>toast.error(err.message),
     });
     // console.log(medicine);
     function reducer(state,action){
@@ -35,6 +37,8 @@ function OpposingMedications({saveData, data=[]}){
                 return {...state, name: action.payload};
             case "notes":
                 return {...state , notes: action.payload};
+            case "reset":
+                return initState;
             default:
                 return initState;
         }
@@ -43,17 +47,23 @@ function OpposingMedications({saveData, data=[]}){
     function onSubmit(e){
         e.preventDefault();
         if(!state.name) {
-            alert('add medidcine');
+            toast.error('اختر الدواء من القائمه');
             return;
         }
-        setMyMedicine(prev=>[...prev,state]);
+        if( !myMedicine.some(item => item.name === state.name )) {
+            setMyMedicine(prev=>[...prev,state]);
+            dispatch({type:"reset"})
+        }
+        else (toast.error('تمت الاضافه من قبل'))
+       
     }
     // console.log(newMedicine);
     return (
         <div>
             <form onSubmit={onSubmit} >
+                <div className={classes.row}>
                 <label>اختر الدواء</label>
-                <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
+                <input value={state.name} type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
                     // console.log(e.target.value);
                     dispatch({type:"name",payload: e.target.value})
                 }} />
@@ -62,14 +72,7 @@ function OpposingMedications({saveData, data=[]}){
                         {item.name}
                     </option>)}
                 </datalist>
-                {/* <select onChange={(e)=>{
-                    dispatch({type:"name", payload: e.target.value});
-                }} >
-                    {!isLoading&&medicine.map(item=>
-                    <option value={item.name}>
-                        {item.name}
-                    </option>)}
-                </select> */}
+                
                 {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
                 {isOpen &&<div>
                     <label >اسم الدواء</label>
@@ -88,13 +91,15 @@ function OpposingMedications({saveData, data=[]}){
                     }}>اضافه دواء جديد</button>
                     <button  type="button" onClick={()=>setIsOpen(false)}>اغلاق</button>
                 </div>}
-                <div>
+                </div>
+
+                <div className={classes.row}>
                     <label>ملاحظات</label>
-                    <input onChange={(e)=>{
+                    <input value={state.notes} onChange={(e)=>{
                          dispatch({type:"notes", payload: e.target.value});
                     }}  /> 
                 </div>
-                <button>اضافه</button>
+                <button className={`${classes.button} ${classes.addBtn}`}>اضافه</button>
                 
             </form>
             <table className={classes.customers}>
@@ -106,12 +111,12 @@ function OpposingMedications({saveData, data=[]}){
                 <tr>
                     <td>{item.name} </td>
                     <td>{item.notes} </td>
-                    <td><button onClick={()=>{
+                    <td><span className="spn" onClick={()=>{
                        setMyMedicine(prev=>prev.filter(x=>x!==item))
-                    }}>حذف</button></td>
+                    }}><FaDeleteLeft/></span></td>
                 </tr>)}
             </table>
-            <button onClick={(e)=>{
+            <button className={classes.button} onClick={(e)=>{
                 saveData("oppositeMedicines",myMedicine)
             }}>حفظ</button>
         </div>

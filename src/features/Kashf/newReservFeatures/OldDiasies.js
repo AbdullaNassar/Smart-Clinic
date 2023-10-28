@@ -4,6 +4,8 @@ import classes from "./OldDiasies.module.css";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addNewdisease, getDiseases } from "../../../services/apiDiseases";
 import SpinnerMini from "../../../UI/SpinnerMini";
+import { FaDeleteLeft } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const initState={name:"", notes:""};
 function OldDiasies({saveData,data=[]}){
@@ -23,13 +25,13 @@ function OldDiasies({saveData,data=[]}){
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: addNewdisease,
         onSuccess: ()=>{
-            alert("new disease added succsfully");
+            toast.success("تمت اضافه مرض جديد بنجاح");
             queryClient.invalidateQueries({
                 queryKey:['diseases']
             }); 
             
         },
-        onError:(err)=>alert(err.message),
+        onError:(err)=>toast.error(err.message),
     });
     // console.log(diseases);
     function reducer(state,action){
@@ -38,6 +40,8 @@ function OldDiasies({saveData,data=[]}){
                 return {...state, name: action.payload};
             case "notes":
                 return {...state , notes: action.payload};
+            case "reset":
+                return initState;
             default:
                 return initState;
         }
@@ -46,10 +50,15 @@ function OldDiasies({saveData,data=[]}){
     function onSubmit(e){
         e.preventDefault();
         if(!state.name) {
-            alert('add disea');
+            toast.error('اختر المرض من القائمه');
             return;
         }
-        setMyDiseas(prev=>[...prev,state]);
+        if( !myDiseas.some(item => item.name === state.name )) {
+            setMyDiseas(prev=>[...prev,state]);
+            dispatch({type:"reset"})
+        }
+        else (toast.error('تمت الاضافه من قبل'))
+        
     }
     console.log(myDiseas);
     // console.log(newDisea);
@@ -57,9 +66,10 @@ function OldDiasies({saveData,data=[]}){
     return (
         <div>
             <form onSubmit={onSubmit} >
-            <label>اختر المرض</label>
-           <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
-            // console.log(e.target.value);
+            <div className={classes.row}>
+            <label>اختر المرض:</label>
+           <input value={state.name} type="text" list="names" placeholder="الامراض..."  onChange={(e)=>{
+           
             dispatch({type:"name",payload: e.target.value})
            }} />
                 <datalist id="names"  >
@@ -67,22 +77,14 @@ function OldDiasies({saveData,data=[]}){
                         {item.name}
                     </option>)}
                 </datalist>
-                {/* <label>اختر المرض</label>
-                <select onChange={(e)=>{
-                    dispatch({type:"name", payload: e.target.value});
-                }} >
-                    {!isLoading&&diseases.map(item=>
-                    <option value={item.name}>
-                        {item.name}
-                    </option>)}
-                </select> */}
+                
                 {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
                 {isOpen &&<div>
                     <label >اسم المرض</label>
                     <input value={newDisea} onChange={(e)=>setNewDisea(e.target.value)}/>
                     <button  type="button" onClick={()=>{
                         if(newDisea===''){
-                            alert('ادخل اسم المرض');
+                            toast.error('ادخل اسم المرض المراد اضافته');
                             return;
                         }
                         const newDis={
@@ -94,13 +96,15 @@ function OldDiasies({saveData,data=[]}){
                     }}>اضافه مرض جديد</button>
                     <button  type="button" onClick={()=>setIsOpen(false)}>اغلاق</button>
                 </div>}
-                <div>
-                    <label>ملاحظات</label>
-                    <input onChange={(e)=>{
+                </div>
+
+                <div className={classes.row}>
+                    <label>ملاحظات:</label>
+                    <input value={state.notes} onChange={(e)=>{
                          dispatch({type:"notes", payload: e.target.value});
                     }}  /> 
                 </div>
-                <button>اضافه</button>
+                <button className={`${classes.button} ${classes.addBtn}`}>اضافه</button>
                 
             </form>
             <table className={classes.customers}>
@@ -113,14 +117,14 @@ function OldDiasies({saveData,data=[]}){
                     
                     <td>{item.name} </td>
                     <td>{item.notes} </td>
-                    <td><button onClick={()=>{
+                    <td><span className="spn" onClick={()=>{
                        setMyDiseas(prev=>prev.filter(x=>x!==item))
-                    }}>حذف</button></td>
+                    }}><FaDeleteLeft/></span></td>
                     
                 </tr>)}
                
             </table>
-            <button onClick={(e)=>{
+            <button className={classes.button} onClick={(e)=>{
                 saveData("oldDisease",myDiseas)
             }}>حفظ</button>
         </div>

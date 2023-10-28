@@ -4,7 +4,7 @@ function LogoHeader(){
     const navigate =useNavigate();
     return(
         <div onClick={()=>navigate('/')} className={classes.logo}>
-            <img src="https://p7.hiclipart.com/preview/957/974/456/hospital-logo-clinic-health-care-physician-business.jpg" alt="logo"/>
+            <img src="https://img.freepik.com/premium-vector/medical-halth-care-icon_602006-1945.jpg?w=740" alt="logo"/>
             <h2>العيادة</h2>
         </div>
     );

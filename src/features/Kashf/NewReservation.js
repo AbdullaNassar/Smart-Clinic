@@ -18,14 +18,27 @@ import { creteReservation, updateReservationColumn } from "../../services/apiRes
 import { getPatientInfo } from "../../services/apiPatients";
 import { getbookingInfo, updateBooking } from "../../services/apiBooking";
 import toast from "react-hot-toast";
+import { addNewClinicRevenues } from "../../services/apiMyRevenues";
+import { Button } from "@mui/material";
+import  { ConfirmationModal } from "../../UI/Modal";
 function NewReservation({patientID, bookingID,}){
-    // alert
+    const[isOpenModal,setIsOpenModal]=useState(false);
     console.log('ids');
     console.log(patientID,bookingID);
     const navigate = useNavigate();
     const { data, isLoading, error } = useQuery(['patientInfo', patientID], () => getPatientInfo(patientID));
     const { data:bookingInfo, isLoading:isLoadingBooking, error:errorBooking } = useQuery(['bookingInfo', bookingID], () => getbookingInfo(bookingID));
     console.log(bookingInfo);
+    const {isLoading:isAddingRevenue, mutate:mutateMyRevenue}=useMutation({
+        mutationFn: addNewClinicRevenues,
+        onSuccess: ()=>{
+            toast.success("new my Revenue added succsfully");
+            queryClient.invalidateQueries({
+                queryKey:['Revenues']
+            }); 
+        },
+        onError:(err)=>toast.error(err.message),
+    });
     const initData=
     {
         
@@ -37,7 +50,7 @@ function NewReservation({patientID, bookingID,}){
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: creteReservation,
         onSuccess: ()=>{
-            toast.success("new reservations added succsfully");
+            toast.success("تمت اضافة حجز جديد بنجاح");
             queryClient.invalidateQueries({
                 queryKey:['patients']
             }); 
@@ -125,18 +138,18 @@ function NewReservation({patientID, bookingID,}){
     return(
         <div className={classes.all}>
             {cur!==100&&<div className={classes.btns}>
-                <button onClick={()=>switchTab(0)}>بيانات المريض</button>
-                <button onClick={()=>switchTab(1)}>فحص سريع</button>
-                <button onClick={()=>switchTab(2)}>مراض سابقه</button>
-                <button onClick={()=>switchTab(3)}>الاعراض</button>
-                <button onClick={()=>switchTab(4)}>التشخيص</button>
-                <button onClick={()=>switchTab(5)}>الروشته العلاجيه</button>
-                <button onClick={()=>switchTab(6)}>التحاليل المطلوبه</button>
-                <button onClick={()=>switchTab(7)}>الاشعه المطلوبه</button>
-                <button onClick={()=>switchTab(8)}>الاكل المحدد</button>
-                <button onClick={()=>switchTab(9)}>الادويه المتعارضه</button>
-                <button onClick={()=>switchTab(10)}>طباعه</button>   
-                <button onClick={()=>{
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(0)}>بيانات المريض</Button >
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(1)}>فحص سريع</Button>
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(2)}>مراض سابقه</Button>
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(3)}>الاعراض</Button>
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(4)}>التشخيص</Button>
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(5)}>الروشته العلاجيه</Button>
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(6)}>التحاليل المطلوبه</Button>
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(7)}>الاشعه المطلوبه</Button>
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(8)}>الاكل المحدد</Button>
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(9)}>الادويه المتعارضه</Button>
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>switchTab(10)}>طباعه</Button>   
+                {/* <Button variant="text" style={{fontSize:"16px"}} onClick={()=>{
                      const id = bookingID;
                      const columnName = 'status';
                      const columnValue = "تم الدخول والخروج";
@@ -144,8 +157,30 @@ function NewReservation({patientID, bookingID,}){
                      mutation.mutate(params);
                      mutate(dataReserv);
                      navigate(-1);
-                }}>انهاء الكشف</button>     
+                }}>انهاء الكشف</Button>     */}
+                <Button variant="text" style={{fontSize:"16px"}} onClick={()=>{
+                      setIsOpenModal(true)
+                      
+                     }}>
+
+                        انهاء الكشف
+                     </Button> 
             </div>}
+            <ConfirmationModal
+                      isOpen={isOpenModal}
+                      onCancel={()=>setIsOpenModal(false)}
+                      onConfirm={()=>{
+                        const id = bookingID;
+                        const columnName = 'status';
+                        const columnValue = "تم الدخول والخروج";
+                        const params = [id, columnName, columnValue];
+                        mutation.mutate(params);
+                        mutate(dataReserv);
+                        navigate(-1);
+                        setIsOpenModal(false);
+                      
+                      }}
+                    />
             {cur===0 && <PatientInfo data={data} isLoading={isLoading} error={error} /> }
             {cur===1 && <QuickCheck data={dataReserv.quickCheck} saveData={saveData} /> }
             {cur===2 && <OldDiasies data={dataReserv.oldDisease} saveData={saveData} /> }

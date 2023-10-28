@@ -1,7 +1,9 @@
 import { useReducer, useState } from "react";
-import classes from "./OldDiasies.module.css";
+import classes from "./Xrays.module.css";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addNewXray, getXrays } from "../../../services/apiXrays";
+import { FaDeleteLeft } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const initState={name:"", notes:""};
 function Xrays({saveData, data=[]}){
@@ -18,13 +20,13 @@ function Xrays({saveData, data=[]}){
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: addNewXray,
         onSuccess: ()=>{
-            alert("new Xray added succsfully");
+            toast.success("تمت اضافه اشعه جديده للقائمه");
             queryClient.invalidateQueries({
                 queryKey:['xrays']
             }); 
             
         },
-        onError:(err)=>alert(err.message),
+        onError:(err)=>toast.error(err.message),
     });
     // console.log(xrays);
     function reducer(state,action){
@@ -33,6 +35,8 @@ function Xrays({saveData, data=[]}){
                 return {...state, name: action.payload};
             case "notes":
                 return {...state , notes: action.payload};
+            case "reset": 
+                return initState;
             default:
                 return initState;
         }
@@ -41,17 +45,23 @@ function Xrays({saveData, data=[]}){
     function onSubmit(e){
         e.preventDefault();
         if(!state.name) {
-            alert('add Xray');
+            toast.error('اختر اشعه من القائمه');
             return;
         }
-        setMyXrays(prev=>[...prev,state]);
+        if( !myXrays.some(item => item.name === state.name )){
+            setMyXrays(prev=>[...prev,state]);
+            dispatch({type:"reset"});
+        }
+        else (toast.error('تمت الاضافه من قبل'))
+        
     }
     // console.log(newXray);
     return (
         <div>
             <form onSubmit={onSubmit} >
-                <label>اختر الاشعه</label>
-                <input type="text" list="names" placeholder="Search names..."  onChange={(e)=>{
+                <div className={classes.row}>
+                <label>اختر الاشعه:</label>
+                <input value={state.name} type="text" list="names" placeholder="الاشعات ..."  onChange={(e)=>{
                     // console.log(e.target.value);
                     dispatch({type:"name",payload: e.target.value})
                 }} />
@@ -60,21 +70,14 @@ function Xrays({saveData, data=[]}){
                         {item.name}
                     </option>)}
                 </datalist>
-                {/* <select onChange={(e)=>{
-                    dispatch({type:"name", payload: e.target.value});
-                }} >
-                    {!isLoading&&xrays.map(item=>
-                    <option value={item.name}>
-                        {item.name}
-                    </option>)}
-                </select> */}
+                
                 {!isOpen &&<button type="button" onClick={()=>setIsOpen(true)}>+</button>}
                 {isOpen &&<div>
                     <label >اسم الاشعه</label>
                     <input value={newXray} onChange={(e)=>setNewXray(e.target.value)}/>
                     <button  type="button" onClick={()=>{
                         if(newXray===''){
-                            alert('ادخل اسم  الاشعه');
+                            toast.error('ادخل اسم  الاشعه');
                             return;
                         }
                         const newXr={
@@ -86,13 +89,15 @@ function Xrays({saveData, data=[]}){
                     }}>اضافه اشعه جديده</button>
                     <button  type="button" onClick={()=>setIsOpen(false)}>اغلاق</button>
                 </div>}
-                <div>
+                </div>
+
+                <div className={classes.row}>
                     <label>ملاحظات</label>
-                    <input onChange={(e)=>{
+                    <input value={state.notes} onChange={(e)=>{
                          dispatch({type:"notes", payload: e.target.value});
                     }}  /> 
                 </div>
-                <button>اضافه</button>
+                <button  className={`${classes.button} ${classes.addBtn}`}>اضافه</button>
                 
             </form>
             <table className={classes.customers}>
@@ -104,12 +109,12 @@ function Xrays({saveData, data=[]}){
                 <tr>
                     <td>{item.name} </td>
                     <td>{item.notes} </td>
-                    <td><button onClick={()=>{
+                    <td><span className="spn" onClick={()=>{
                        setMyXrays(prev=>prev.filter(x=>x!==item))
-                    }}>حذف</button></td>
+                    }}><FaDeleteLeft/></span></td>
                 </tr>)}
             </table>
-            <button onClick={(e)=>{
+            <button  className={classes.button}  onClick={(e)=>{
                 saveData("xrays",myXrays)
             }}>حفظ</button>
         </div>

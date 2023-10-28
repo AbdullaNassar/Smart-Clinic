@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { FaBell, FaPrint } from "react-icons/fa6";
+import { FaBell, FaCalendarDays, FaPrint } from "react-icons/fa6";
 import React, { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import classes from "./AllBookings.module.css";
+import classes from "./TodayBooking.module.css"
 import { deleteBooking,  getTodayBooking, updateBooking } from "../../services/apiBooking";
 import NewReservation from "../Kashf/NewReservation";
 import s1 from "../../sounds/Recording.m4a";
@@ -164,31 +164,27 @@ function TodayBooking(){
     else return(
         <div>
             <div className={classes.header}>
-                <div>
-                    <time>{formatDate(new Date())} </time>
+                
+                    <div className={classes.date}>
+                      <time>{formatDate(new Date())} </time>
+                      <span><FaCalendarDays/></span>
+                    </div>
+                    <div className={classes.ring}>
                     <span onClick={(e)=>generateRingSound()}><FaBell/></span>
                     <button onClick={(e)=>{
                       setCur(p=>p+1);
                       // generateRingSound();
                     }}>التالي</button>
-                    {/* <input type="number" onChange={(e)=>setCur(e.target.value)}/> */}
-                    <label>الرقم الحالي: {cur}</label>
-                    {/* <button onClick={()=>{
-                        const newDate = new Date(startDate);
-                        newDate.setDate(newDate.getDate() - 1);
-                        setStartDate(newDate);
-                    }}>-</button>
-                    <button onClick={()=>{
-                        const newDate = new Date(startDate);
-                        newDate.setDate(newDate.getDate() + 1);
-                        setStartDate(newDate);
-                    }}>+</button>
-                    <DatePicker selected={startDate} onChange={(date) => setStartDate((date))} /> */}
-                </div>
-                <div onClick={()=>window.print()} className={classes.print}>
-                    <label>طباعة</label>
+                    
+                    <label>الرقم الحالي: <span style={{fontWeight:"bold"}}>{cur}</span></label>
+                    </div>
+                   
+                    <div onClick={()=>window.print()} className={classes.print}>
+                    {/* <label>طباعة</label> */}
                     <span ><FaPrint/></span>
+                
                 </div>
+                
             </div>
             <div>
             <table className={classes.customers}>
@@ -214,6 +210,7 @@ function TodayBooking(){
                     <td>{item.paidAmount}</td>
                     <td>{item.price-item.paidAmount-item.discount}</td>
                     <td>{item.notes}</td>
+                    <div className={classes.btns}>
                     {item.status!=='تم الدخول والخروج'&&<button onClick={()=>{
                       setIsStart(true)
                       const ids={
@@ -229,7 +226,9 @@ function TodayBooking(){
                         mutation.mutate(params);
                       
                     }}>{item.status==='بالداخل عند الدكتور'?"فتح الكشف":"بدء الكشف"}</button>}
-                    <button>تعديل</button>
+                    <button onClick={()=>{
+                      navigate(`/updateBooking/${item.id}`)
+                    }}>تعديل</button>
                     {item.status!=='تم الدخول والخروج' &&
                      <button onClick={()=>{
                       setIsOpenModal(true)
@@ -242,6 +241,7 @@ function TodayBooking(){
                      <button onClick={()=>{
                       navigate(`/ReservationDetails?patID=${item.patientID}&bokID=${item.id}`)
                     }}>تعديل الكشف</button>
+                    </div>
 
                      <DeleteConfirmationModal
                       isOpen={isOpenModal}
@@ -252,6 +252,7 @@ function TodayBooking(){
                       
                       }}
                     />
+                    
                 
                      
                 </tr>)}

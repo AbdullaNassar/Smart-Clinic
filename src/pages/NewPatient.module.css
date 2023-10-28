@@ -1,28 +1,52 @@
-.form{
+.form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .formGroup {
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .radioGroup {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #777;
-    gap: 2rem;
-    padding: 1rem 0;
-}
-.item{
-    /* background: #eee; */
-    padding: 1rem;
-    border-radius: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-}
-.item input{
-    padding: 5px;
-}
-.form button{
-    font-size: 1rem;
-    width: 20%;
-    height: 3rem;
-    background: orange;
+    margin-top: 5px;
+  }
+  
+  .radioButton {
+    margin-right: 10px;
+  }
+  
+  .textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
     border: none;
-    border-radius: 5px;
-}
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }

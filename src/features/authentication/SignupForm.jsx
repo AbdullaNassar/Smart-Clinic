@@ -4,10 +4,12 @@ import Form from "../../UI/Form";
 import FormRow from "../../UI/FormRow";
 import Input from "../../UI/Input";
 import { useSignup } from "./useSignup";
+import { useNavigate } from "react-router-dom";
 
 // Email regex: /\S+@\S+\.\S+/
 
 function SignupForm() {
+  const navigate=useNavigate();
   const { signup, isLoading } = useSignup();
   const { register, formState, getValues, handleSubmit, reset } = useForm();
   const { errors } = formState;
@@ -23,7 +25,7 @@ function SignupForm() {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label="Full name" error={errors?.fullName?.message}>
+      <FormRow label="الاسم بالكامل" error={errors?.fullName?.message}>
         <Input
           type="text"
           id="fullName"
@@ -32,7 +34,7 @@ function SignupForm() {
         />
       </FormRow>
 
-      <FormRow label="Email address" error={errors?.email?.message}>
+      <FormRow label="البريد الالكتروني" error={errors?.email?.message}>
         <Input
           type="email"
           id="email"
@@ -48,7 +50,7 @@ function SignupForm() {
       </FormRow>
 
       <FormRow
-        label="Password (min 8 characters)"
+        label="كلمه السر"
         error={errors?.password?.message}
       >
         <Input
@@ -65,7 +67,7 @@ function SignupForm() {
         />
       </FormRow>
 
-      <FormRow label="Repeat password" error={errors?.passwordConfirm?.message}>
+      <FormRow label="اعاده كلمه السر" error={errors?.passwordConfirm?.message}>
         <Input
           type="password"
           id="passwordConfirm"
@@ -84,11 +86,13 @@ function SignupForm() {
           variation="secondary"
           type="reset"
           disabled={isLoading}
-          onClick={reset}
+          onClick={()=>{
+            navigate(-1);
+          }}
         >
-          Cancel
+          الغاء
         </Button>
-        <Button disabled={isLoading}>Create new user</Button>
+        <Button disabled={isLoading}>انشاء مستخدم جديد</Button>
       </FormRow>
     </Form>
   );
