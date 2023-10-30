@@ -10,6 +10,7 @@ import { getExpenses } from "../../services/apiExpenses";
 import MyFilter from "../../UI/MyFilter";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../../UI/Pagnition";
+import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 function ShowExpenses(){
   const[searchQuery,setSearchQuery]=useState(null);
 
@@ -192,6 +193,20 @@ case "all":{
   break;
 }
 case "week":{
+  const allDates = eachDayOfInterval({
+    start: subDays(new Date(), 7 - 1),
+    end: new Date(),
+  });
+
+  const filteredData = expenses.filter(obj =>
+    allDates.some(date => isSameDay(new Date(obj.date), date))
+  );
+  console.log(filteredData);
+
+  expensesList=filteredData;
+  expensesList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+
   const currentDate = new Date();
 
   // Calculate the date 7 days ago
@@ -208,10 +223,22 @@ case "week":{
     newDate.setDate(newDate.getDate() + 1);
     return objDate >= sevenDaysAgo && objDate<newDate ;
   });
-  expensesList=newList;
+  // expensesList=newList;
   break;
 }
 case "month":{
+  const allDates = eachDayOfInterval({
+    start: subDays(new Date(), 30 - 1),
+    end: new Date(),
+  });
+
+  const filteredData = expenses.filter(obj =>
+    allDates.some(date => isSameDay(new Date(obj.date), date))
+  );
+  console.log(filteredData);
+
+  expensesList=filteredData;
+  expensesList.sort((a, b) => new Date(b.date) - new Date(a.date));
   const currentDate = new Date();
 
   // Calculate the date 7 days ago
@@ -228,10 +255,22 @@ case "month":{
     newDate.setDate(newDate.getDate() + 1);
     return objDate >= sevenDaysAgo && objDate<newDate ;
   });
-  expensesList=newList;
+  // expensesList=newList;
   break;
 }
 case "3month":{
+  const allDates = eachDayOfInterval({
+    start: subDays(new Date(), 90 - 1),
+    end: new Date(),
+  });
+
+  const filteredData = expenses.filter(obj =>
+    allDates.some(date => isSameDay(new Date(obj.date), date))
+  );
+  console.log(filteredData);
+
+  expensesList=filteredData;
+  expensesList.sort((a, b) => new Date(b.date) - new Date(a.date));
   const currentDate = new Date();
 
   // Calculate the date 7 days ago
@@ -248,10 +287,23 @@ case "3month":{
     newDate.setDate(newDate.getDate() + 1);
     return objDate >= sevenDaysAgo && objDate<newDate ;
   });
-  expensesList=newList;
+  // expensesList=newList;
   break;
 }
 case "year":{
+  const allDates = eachDayOfInterval({
+    start: subDays(new Date(), 90 - 1),
+    end: new Date(),
+  });
+
+  const filteredData = expenses.filter(obj =>
+    allDates.some(date => isSameDay(new Date(obj.date), date))
+  );
+  console.log(filteredData);
+
+  expensesList=filteredData;
+  expensesList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
   const currentDate = new Date();
 
   // Calculate the date 7 days ago
@@ -268,10 +320,15 @@ case "year":{
     newDate.setDate(newDate.getDate() + 1);
     return objDate >= sevenDaysAgo && objDate<newDate ;
   });
-  expensesList=newList;
+  // expensesList=newList;
   break;
 }
 case "specfic":{
+  const filteredData = expenses.filter(obj =>
+    isSameDay(new Date(obj.date), new Date(startDate))
+ );
+ expensesList=filteredData;
+
   const currentDate = new Date(startDate);
   const currentDateString = currentDate.toISOString().split('T')[0];
 
@@ -283,7 +340,7 @@ case "specfic":{
     // Return true if the object's date is today
     return objDate === currentDateString;
   });
-  expensesList=newList
+  // expensesList=newList
   break;
 }
 
@@ -326,8 +383,11 @@ console.log(expensesList);
  return(
         <div>
           <div className="heading">
-            <h2 className="heading__title">المصروفات</h2>
-            <span><FaMoneyBill1/></span>
+            <div className="title">
+              <h2 className="heading__title">المصروفات</h2>
+              <span><FaMoneyBill1/></span>
+            </div>
+            <div style={{color:"black"}}>🚀 نتائج البحث: <span className="spn">{expensesCount}</span> </div>
           </div>
         
           <div className={classes.header}>

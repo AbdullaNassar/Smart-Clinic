@@ -28,11 +28,11 @@ function Main(){
                         </Button >
                     </Link>
 
-                    <Link to="/settings">
+                    {/* <Link to="/settings">
                         <Button variant="contained" style={{fontSize:"14px", width:"100%"}}>
                             الاعدادات
                         </Button>
-                    </Link>
+                    </Link> */}
 
                     <Link to="/signup">
                         <Button variant="contained" style={{fontSize:"14px", width:"100%"}}>

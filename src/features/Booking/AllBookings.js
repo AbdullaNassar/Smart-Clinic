@@ -13,6 +13,7 @@ import supabase from "../../services/supabase";
 import Pagination from "../../UI/Pagnition";
 import { getRevenues } from "../../services/apiRevenues";
 import MyFilter from "../../UI/MyFilter";
+import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 function AllBookings(){
   const navigate=useNavigate();
   const queryClient= useQueryClient();
@@ -54,8 +55,8 @@ function AllBookings(){
 
     function formatTime(date) {
         return new Intl.DateTimeFormat("en", {
-          month: "short",
-          year: "2-digit",
+          // month: "short",
+          // year: "2-digit",
           hour: "2-digit",
           minute: "2-digit",
           second: "2-digit",
@@ -73,6 +74,25 @@ function AllBookings(){
 
     let bookingsList=[];
 
+    const allDates = eachDayOfInterval({
+      start: subDays(new Date(), 1 - 1),
+      end: new Date(),
+    });
+    console.log(allDates);
+   
+  
+    // const data = allDates.map((date) => {
+    //   return {
+    //     label: format(date, "MMM dd"),
+    //     totalSales: bookings
+    //       .filter((booking) => isSameDay(date, new Date(booking.created_at)))
+    //       .reduce((acc, cur) => acc + cur.bookings.price, 0),
+    //     // bookings
+    //     //   .filter((booking) => isSameDay(date, new Date(booking.created_at)))
+    //     //   .reduce((acc, cur) => acc + cur.extrasPrice, 0),
+    //   };
+    // });
+  
   if(bookings!==undefined)switch(order){
     case "all":{
       const newList = bookings; // Create a copy of the original list
@@ -82,11 +102,24 @@ function AllBookings(){
       break;
     }
     case "week":{
+      const allDates = eachDayOfInterval({
+        start: subDays(new Date(), 7 - 1),
+        end: new Date(),
+      });
+
+      const filteredData = bookings.filter(obj =>
+        allDates.some(date => isSameDay(new Date(obj.date), date))
+      );
+      console.log(filteredData);
+
+      bookingsList=filteredData;
+      bookingsList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
       const currentDate = new Date();
 
       // Calculate the date 7 days ago
       const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(currentDate.getDate() - 7);
+      sevenDaysAgo.setDate(currentDate.getDate() - 8);
       
       // Filter the original list based on the date
       const newList = bookings.filter(obj => {
@@ -98,10 +131,22 @@ function AllBookings(){
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      bookingsList=newList;
+      // bookingsList=newList;
       break;
     }
     case "month":{
+      const allDates = eachDayOfInterval({
+        start: subDays(new Date(), 30 - 1),
+        end: new Date(),
+      });
+      const filteredData = bookings.filter(obj =>
+        allDates.some(date => isSameDay(new Date(obj.date), date))
+      );
+      console.log(filteredData);
+
+      bookingsList=filteredData;
+      bookingsList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
       const currentDate = new Date();
 
       // Calculate the date 7 days ago
@@ -118,10 +163,21 @@ function AllBookings(){
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      bookingsList=newList;
+      // bookingsList=newList;
       break;
     }
     case "3month":{
+      const allDates = eachDayOfInterval({
+        start: subDays(new Date(), 90 - 1),
+        end: new Date(),
+      });
+      const filteredData = bookings.filter(obj =>
+        allDates.some(date => isSameDay(new Date(obj.date), date))
+      );
+      console.log(filteredData);
+
+      bookingsList=filteredData;
+      bookingsList.sort((a, b) => new Date(b.date) - new Date(a.date));
       const currentDate = new Date();
 
       // Calculate the date 7 days ago
@@ -138,10 +194,22 @@ function AllBookings(){
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      bookingsList=newList;
+      // bookingsList=newList;
       break;
     }
     case "year":{
+      const allDates = eachDayOfInterval({
+        start: subDays(new Date(), 365 - 1),
+        end: new Date(),
+      });
+      const filteredData = bookings.filter(obj =>
+        allDates.some(date => isSameDay(new Date(obj.date), date))
+      );
+      console.log(filteredData);
+
+      bookingsList=filteredData;
+      bookingsList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
       const currentDate = new Date();
 
       // Calculate the date 7 days ago
@@ -158,10 +226,21 @@ function AllBookings(){
         newDate.setDate(newDate.getDate() + 1);
         return objDate >= sevenDaysAgo && objDate<newDate ;
       });
-      bookingsList=newList;
+      // bookingsList=newList;
       break;
     }
     case "specfic":{
+      const allDates = eachDayOfInterval({
+        start: subDays(new Date(startDate), 1 - 1),
+        end: new Date(startDate),
+      });
+      const filteredData = bookings.filter(obj =>
+         isSameDay(new Date(obj.date), new Date(startDate))
+      );
+      console.log(filteredData);
+
+      bookingsList=filteredData;
+
       const currentDate = new Date(startDate);
       const currentDateString = currentDate.toISOString().split('T')[0];
 
@@ -173,7 +252,7 @@ function AllBookings(){
         // Return true if the object's date is today
         return objDate === currentDateString;
       });
-      bookingsList=newList
+      // bookingsList=newList
       break;
     }
 
@@ -217,8 +296,11 @@ function AllBookings(){
     else return(
         <div>
           <div className="heading">
-            <h2 className="heading__title">جميع الحجوزات</h2>
-            <span color={{color:"#04AA6D;"}}><FaRegCalendarCheck/></span>
+            <div className="title">
+              <h2 className="heading__title">جميع الحجوزات</h2>
+              <span color={{color:"#04AA6D;"}}><FaRegCalendarCheck/></span>
+            </div>
+            <div style={{color:"black"}}>🚀 نتائج البحث: <span className="spn">{bookingsCount}</span> </div>
           </div>
             <div className={classes.header}>
                   <div>
@@ -308,13 +390,14 @@ function AllBookings(){
                     <th>نوع الحجز</th>
                     <th>حاله الحجز</th>
                     <th>التاريخ</th>
+                    <th>موعد الحجز</th>
                     <th>المبلغ</th>
                     <th>الخصم</th>
                     <th>المدفوع</th>
                     <th>المتبقي</th>
                     <th>ملاحظات</th>
                 </tr>
-                {!isLoading &&bookingsList.map((item,idx)=>
+                {!isLoading&&bookingsList!==undefined &&bookingsList.map((item,idx)=>
                 <tr>
                     <td>{(page-1)*10+idx+1}</td>
                     <td>{item.patients.name}</td>
@@ -324,6 +407,7 @@ function AllBookings(){
                     <td>{item.type}</td>
                     <td>{item.status}</td>
                     <td><time>{formatDate(item.date)}</time></td>
+                    <td><p>{formatTime(new Date(item.date))}</p></td>
                     <td>{item.price}</td>
                     <td>{item.discount}</td>
                     <td>{item.paidAmount}</td>

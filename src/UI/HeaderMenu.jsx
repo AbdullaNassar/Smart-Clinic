@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 const StyledHeaderMenu = styled.ul`
   display: flex;
   gap: 0.4rem;
+  margin-bottom: 0;
+  padding-left: 0.5rem;
 `;
 
 function HeaderMenu() {
@@ -14,11 +16,11 @@ function HeaderMenu() {
 
   return (
     <StyledHeaderMenu>
-      <li>
+      {/* <li>
         <ButtonIcon onClick={() => navigate("/")}>
           <HiOutlineUser />
         </ButtonIcon>
-      </li>
+      </li> */}
       
       <li>
         <Logout />

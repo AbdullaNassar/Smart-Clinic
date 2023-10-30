@@ -58,13 +58,15 @@ function NewExpense(){
     const {errors}=formState;
 
     function onSubmit(data){
-        data.date=date;
+        // startDate.setHours(startDate.getHours() + 2);
+        data.date=startDate;
         data.price = Number(data.price);  
         data.discount=Number(data.discount);  
         data.paidAmount=Number(data.paidAmount);  
         console.log(data);
         mutateMyExpense(data);
         reset();
+        
         // navigate(-1);
     }
     if(loadingExpenses)return <h2>Loading...</h2>

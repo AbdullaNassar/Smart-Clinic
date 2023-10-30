@@ -60,8 +60,9 @@ button{
   background-color: #f2f2f2;
   padding: 20px;
   display: flex;
-  gap: 1rem;
+  /* gap: 1rem; */
   color: blue;
+  justify-content: space-between;
 }
 .heading__title{
   color: #333333;
@@ -69,4 +70,11 @@ button{
   font-weight: bold;
   margin: 0;
   
+}
+.heading .title{
+  display:flex;
+  justify-content: space-between;
+}
+.heading .spn{
+  font-weight: bold;
 }

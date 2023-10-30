@@ -13,14 +13,18 @@ export async function getBooking(){
 
 export async function getTodayBooking(){
   const currentDate = new Date().toISOString().slice(0, 10); // Get today's date
+  
   const startOfToday = new Date(currentDate).toISOString(); // Start of today
   const endOfToday = new Date(currentDate + 'T23:59:59.999Z').toISOString(); // End of today
-
+  console.log(currentDate);
+  console.log(startOfToday);
+  console.log(endOfToday);
   const {data,error}=await supabase 
   .from('bookings')
   .select('*,patients(*)')
   .gte('date', startOfToday) // Greater than or equal to the start of today
-  .lte('date', endOfToday); // Less than or equal to the end of today
+  .lte('date', endOfToday) // Less than or equal to the end of today
+  .order('id', { ascending: true });
 
   if(error){
     throw new Error('bookings cannot be loaded');

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import classes from "./PatientDetails.module.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getPatientInfo } from "../../services/apiPatients";
 import { getBooking } from "../../services/apiBooking";
-import { FaPrint } from "react-icons/fa6";
+import { FaPrint, FaSquareWhatsapp } from "react-icons/fa6";
 function PatientDetails(){
     const {id} =useParams();
     const { data, isLoading, error } = useQuery(['patientInfo', id], () => getPatientInfo(id));
@@ -37,6 +37,9 @@ function PatientDetails(){
                 <label>السن {data?.age}</label>
                 <label>رقم الهاتف: {data.phone}</label>
                 <label>عدد الزيارات: {filteredList.length}</label>
+                <Link to={`https://wa.me/${data.phone}`} target="_blank">
+                    <span style={{color:"green", fontSize:"30px"}}><FaSquareWhatsapp/></span>
+                </Link>
             </div>}
             <div className={classes.details}>
                 <div className={classes.title}>

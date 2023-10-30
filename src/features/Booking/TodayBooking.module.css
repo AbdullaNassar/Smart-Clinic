@@ -6,11 +6,12 @@
     padding: 2rem;
     background: #eee;
     border-radius: 5px;
+    align-items: center;
 }
 .header .date{
     display: flex;
     gap: 0.7rem;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
 }
 .date span{
@@ -36,6 +37,10 @@
     }
 }
 
+.ring .spn:hover{
+    cursor: pointer;
+
+}
 
 
 .customers {

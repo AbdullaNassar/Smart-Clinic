@@ -198,8 +198,11 @@ console.log(RevenuesList);
  return(
         <div>
           <div className="heading">
-            <h2 className="heading__title">الايرادات</h2>
-            <span><FaMoneyBillTrendUp/></span>
+            <div className="title">
+              <h2 className="heading__title">الايرادات</h2>
+              <span><FaMoneyBillTrendUp/></span>
+            </div>
+            <div style={{color:"black"}}>🚀 نتائج البحث: <span className="spn">{expensesCount}</span> </div>
           </div>
         
           <div className={classes.header}>

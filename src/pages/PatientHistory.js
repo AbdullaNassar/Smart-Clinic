@@ -4,8 +4,8 @@ import classes from "./PatientHistory.module.css";
 import { getPatients } from "../services/apiPatients";
 import { useQuery } from "@tanstack/react-query";
 import { getReservations } from "../services/apiReservation";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { FaPrint } from "react-icons/fa6";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { FaPrint, FaSquareWhatsapp } from "react-icons/fa6";
 import Pagination from "../UI/Pagnition";
 
 function PatientHostory(){
@@ -89,7 +89,12 @@ function PatientHostory(){
                     <td>{item.notes}</td>
                     <td><button className='btnOutlined' onClick={()=>{
                         navigate(`/patientDetails/${item.id}`)
-                    }}>تفاصيل</button></td>
+                    }}>تفاصيل</button>
+                    <Link to={`https://wa.me/${item.phone}`} target="_blank">
+                          <span style={{color:"green"}}><FaSquareWhatsapp/></span>
+                        </Link>
+                    </td>
+                    
                 </tr>)}
             </table>}
             {filteredList!==undefined&&<Pagination count={bookingsCount}/>}

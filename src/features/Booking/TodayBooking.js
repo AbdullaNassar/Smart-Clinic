@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaBell, FaCalendarDays, FaPrint } from "react-icons/fa6";
 import React, { useEffect } from 'react';
@@ -16,11 +16,24 @@ import s7 from "../../sounds/Recording(7).m4a";
 import s8 from "../../sounds/Recording(8).m4a";
 import s9 from "../../sounds/Recording(9).m4a";
 import s10 from "../../sounds/Recording(10).m4a";
+import ring from "../../sounds/ring.mp3";
 import DeleteConfirmationModal from "../../UI/Modal";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTodayActivity } from "./useTodayActivity";
+import Tag from "../../UI/Tag";
 function TodayBooking(){
+  const whatsappLink = `https://wa.me/+201288612529`;
+
+  const currentDate = new Date();
+
+  const options = { timeZone: 'Africa/Cairo', dateStyle: 'full' };
+  const arabicLocale = 'ar-EG';
+  const dateString = currentDate.toLocaleDateString(arabicLocale, options);
+  console.log(dateString);
+
+  const audioRef = useRef(null);
+ 
   const navigate=useNavigate();
   const[isOpenModal,setIsOpenModal]=useState(false);
   const[cur,setCur]=useState(1);
@@ -35,12 +48,12 @@ function TodayBooking(){
     },
     onError: err=>toast.error(err.message)
 })
-
+console.log(new Date());
 
   const[IDs,setIDs]=useState();
    
     const[isStart,setIsStart]=useState(false);
-    const {isLoading, data:bookings, error}= useQuery({
+    let {isLoading, data:bookings, error}= useQuery({
         queryKey:['booking'],
         queryFn: getTodayBooking,
     })
@@ -57,6 +70,8 @@ function TodayBooking(){
           },
         });
 
+       
+
  useEffect(function(){
   if(bookings!==undefined){
   for(let i=0;i<bookings.length;i++){
@@ -70,25 +85,25 @@ function TodayBooking(){
  },[bookings])
 
  const generateRingSound = () => {
-    // Create an AudioContext instance
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  
-    // Create an oscillator node
-    const oscillator = audioContext.createOscillator();
-    oscillator.type = 'sine'; // Set the oscillator type to "sine" for a simple tone
-  
-    // Connect the oscillator to the audio context's destination (i.e., speakers)
-    oscillator.connect(audioContext.destination);
-  
-    // Start the oscillator
-    oscillator.start();
-  
-    // Stop the oscillator after a specified duration (e.g., 1 second)
-    setTimeout(() => {
-      oscillator.stop();
-    }, 1000); // Adjust the duration as needed
+ 
+let audio = new Audio(ring);
+audio.onended = handleSoundEnded;
+audioRef.current = audio;
+audio.play();
+    
+  };
+  const handleSoundEnded = () => {
+    let audio = new Audio(ring);
+audio.onended = funcAudio;
+audioRef.current = audio;
+audio.play();
+  };
 
-    let audio ;
+
+
+  function funcAudio(){
+    let audio;
+    
     switch(cur){
       case 1:{
         audio = new Audio(s1);
@@ -133,7 +148,8 @@ function TodayBooking(){
       default:
     }
       audio.play();
-  };
+  }
+
     const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
         day: "numeric",
@@ -143,14 +159,56 @@ function TodayBooking(){
 
     function formatTime(date) {
         return new Intl.DateTimeFormat("en", {
-          month: "short",
-          year: "2-digit",
+          // month: "short",
+          // year: "2-digit",
           hour: "2-digit",
           minute: "2-digit",
-          second: "2-digit",
+          // second: "2-digit",
         }).format(date);
       }
-   console.log(bookings)
+   console.log(formatTime(new Date()));
+    
+   let bookingsList=[];
+   let now =0;
+  if(bookings!==undefined){
+      for(let i=0;i<bookings.length;i++){
+        if(bookings[i].status==='تم الدخول والخروج'){
+          bookingsList.push(bookings[i]);
+        }
+      }
+      bookings = bookings.filter(item => item.status !== "تم الدخول والخروج");
+
+      for(let i=0;i<bookings.length;i++){
+        if(bookings[i].type==='حجز مستعجل'){
+          bookingsList.push(bookings[i]);
+        }
+      }
+      bookings = bookings.filter(item => item.type !== "حجز مستعجل");
+
+      for(let i=0;i<bookings.length;i++){
+        bookingsList.push(bookings[i]);
+      }
+
+
+     
+      
+        now =bookingsList.length;
+        for(let i=bookingsList.length-1;i>=0;i--){
+          if(bookingsList[i].status==='تم الدخول والخروج'){
+            console.log('ok', i+2);
+            now=i+2;
+            break;
+          }
+
+          if(bookingsList[i].status==='بالداخل عند الدكتور'){
+            console.log('here', i+1);
+            now =i+1;
+            break;
+          }
+        }
+      
+  }
+
    if(isStart){
         // console.log(IDs);
         return(
@@ -166,17 +224,18 @@ function TodayBooking(){
             <div className={classes.header}>
                 
                     <div className={classes.date}>
-                      <time>{formatDate(new Date())} </time>
+                      <h3>{dateString}</h3>
+                      {/* <time>{formatDate(new Date())} </time> */}
                       <span><FaCalendarDays/></span>
                     </div>
                     <div className={classes.ring}>
-                    <span onClick={(e)=>generateRingSound()}><FaBell/></span>
+                    <span className={classes.spn} onClick={(e)=>generateRingSound()}><FaBell/></span>
                     <button onClick={(e)=>{
                       setCur(p=>p+1);
                       // generateRingSound();
                     }}>التالي</button>
                     
-                    <label>الرقم الحالي: <span style={{fontWeight:"bold"}}>{cur}</span></label>
+                    <label>الرقم الحالي: <span style={{fontWeight:"bold"}}>{now}</span></label>
                     </div>
                    
                     <div onClick={()=>window.print()} className={classes.print}>
@@ -189,8 +248,10 @@ function TodayBooking(){
             <div>
             <table className={classes.customers}>
                 <tr>
+                    <th></th>
                     <th>الاسم</th>
                     <th>رقم الحجز</th>
+                    <th>الوقت</th>
                     <th>نوع الحجز</th>
                     <th>حاله الحجز</th>
                     <th>المبلغ</th>
@@ -199,12 +260,18 @@ function TodayBooking(){
                     <th>المتبقي</th>
                     <th>ملاحظات</th>
                 </tr>
-                {!isLoading &&bookings.map((item,idx)=>
+                {!isLoading &&bookingsList.map((item,idx)=>
                 <tr>
-                    <td>{item.patients.name}</td>
+                    <td>{item.id} </td>
+                    <td style={{fontWeight:"bold"}}>{item.patients.name}</td>
                     <td>{idx+1}</td>
+                    {/* <p>{item.date}</p> */}
+                    <p>{formatTime(new Date(item.date))}</p>
+                    {/* <td><p>{formatTime(item.date)}</p></td> */}
                     <td>{item.type}</td>
-                    <td>{item.status}</td>
+                    <td> {item.status === "تم الدخول والخروج"?<Tag type="green">تم الدخول والخروج</Tag>:item.status === "لم يتم الدخول للدكتور"?<Tag type="blue">انتظار</Tag>:<Tag type="red">بالداخل عند الدكتور</Tag>} </td>
+                    {/* <td>{item.status === "لم يتم الدخول للدكتور" && <Tag type="blue">انتظار</Tag>}</td> */}
+                    {/* <td>{item.status === "بالداخل عند الدكتور" && <Tag type="red">بالداخل عند الدكتور</Tag>}</td> */}
                     <td>{item.price}</td>
                     <td>{item.discount}</td>
                     <td>{item.paidAmount}</td>
@@ -241,6 +308,8 @@ function TodayBooking(){
                      <button onClick={()=>{
                       navigate(`/ReservationDetails?patID=${item.patientID}&bokID=${item.id}`)
                     }}>تعديل الكشف</button>
+
+                        
                     </div>
 
                      <DeleteConfirmationModal

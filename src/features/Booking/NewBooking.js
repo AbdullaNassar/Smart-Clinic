@@ -13,6 +13,7 @@ import Button  from "../../UI/Button";
 import classes from "./NewBooking.module.css"
 // import { Button } from "@mui/material";
 import { FaPersonCirclePlus } from "react-icons/fa6";
+import { addNewRevenue, getRevenues } from "../../services/apiRevenues";
 const Error = styled.span`
   font-size: 1.4rem;
   color: var(--color-red-700);
@@ -23,11 +24,33 @@ function NewBooking(){
     
     const navigate=useNavigate();
     const [startDate, setStartDate] = useState(new Date());
-    // console.log(startDate);
+    const[isOpenType,setIsopenType]=useState(false);
+    const[newType,setNewType]=useState(null);
+
+    console.log(startDate);
+    const egyptTimezone = 'Africa/Cairo';
+    const egyptDate = startDate.toLocaleString('en-US', { timeZone: egyptTimezone });
     const {isLoading, data:patients, error}= useQuery({
         queryKey:['patients'],
         queryFn: getPatients,
     })
+
+    const {isLoading: loadingExpensesType, data:revenueType, error:errorRevenuesType}= useQuery({
+        queryKey:['Revenues'],
+        queryFn: getRevenues,
+    })
+
+    const queryClient=useQueryClient();
+    const {isLoading:isAddingType, mutate:mutateType}=useMutation({
+        mutationFn: addNewRevenue,
+        onSuccess: ()=>{
+            toast.success("تمت الاضافه");
+            queryClient.invalidateQueries({
+                queryKey:['Revenues']
+            }); 
+        },
+        onError:(err)=>toast.error(err.message),
+    });
     
     const{register ,formState, handleSubmit,reset, watch}=useForm({
         defaultValues:{
@@ -35,7 +58,7 @@ function NewBooking(){
         }
     });
     const {errors}=formState;
-    const queryClient=useQueryClient();
+    
     const {isLoading:isAdding, mutate}=useMutation({
         mutationFn: createBooking,
         onSuccess: ()=>{
@@ -48,8 +71,14 @@ function NewBooking(){
         onError:(err)=>toast.error(err.message),
     });
     if(isLoading)return <Spinner/>
+    
     function onSubmit(data){
+        // console.log(startDate);
+        // setStartDate(startDate=>startDate.setHours(startDate.getHours() + 2)); 
+        // console.log(startDate);
         data.date=startDate;
+        // setStartDate(startDate=>startDate.setHours(startDate.getHours() - 2));
+        
         data.status='لم يتم الدخول للدكتور'
         data.price = Number(data.price);  
         data.discount=Number(data.discount);  
@@ -57,14 +86,16 @@ function NewBooking(){
 
         console.log(data);
         mutate(data);
+        navigate(-1);
     }
 
     return(
         
         <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <div className={classes.info}>
-
+            {/* <p>Current Date in Egypt: {egyptDate}</p> */}
             <div>
+
             <div  className={classes.formGroup}>
                 <label htmlFor="name" className={classes.label}>
                     المريض:
@@ -78,11 +109,7 @@ function NewBooking(){
                     </option>)}
                 </datalist>
                 
-                {/* {!isLoading&&<select value={value} onChange={(e)=>setValue(e.target.value)} id="patientID" >
-                    {patients!==undefined &&patients.map(patient=><option value={patient.id}>
-                        {patient.name===undefined?"":patient.name}
-                    </option>)}
-                </select>} */}
+                
                  <Link to="/newPatient" className={classes.lnk}>
                     <span><FaPersonCirclePlus/></span>
                     {/* <BsFillPersonPlusFill/> */}
@@ -97,11 +124,36 @@ function NewBooking(){
                     نوع الحجز:
                 </label>
                 <select className={classes.input} id="type" {...register("type")}>
-                    <option>حجز عادي</option>
-                    <option>حجز مستعجل</option>
-                    <option>اعادة كشف</option>
+                    {revenueType!==undefined&&revenueType.map(item=>
+                        <option value={item.name}>
+                            {item.name}
+                        </option>)}
+                    
                 </select>
+            {/* {!isOpenType &&<button className={classes.btn} type='button' onClick={()=>setIsopenType(true)}>+</button>} */}
             </div>
+            {isOpenType&&
+                <div className={classes.formGroup}>
+                    <label htmlFor="newRev" className={classes.label}>
+                         ادخل اسم الحجز الجديد:
+                    </label>
+                    <input value={newType} onChange={(e)=>setNewType(e.target.value)}/>
+                    <button className={classes.btn} type='button' onClick={()=>{
+                        if(newType===null){
+                            toast.error('ادخل اسم الحجز الجديد')
+                        }
+                        else{
+                            const newDis={
+                                "name":newType,
+                            }
+                            mutateType(newDis);
+                            setNewType(null);
+                            setIsopenType(false);
+                        }
+                    }}>اضافه</button>
+                    <button className={classes.btn} type='button'  onClick={()=>setIsopenType(false)}>اغلاق</button>
+                
+                </div> }
             
             <div  className={classes.formGroup}>
             <label htmlFor="date" className={classes.label}>
