@@ -29,11 +29,11 @@
 .ring button{
     color: white;
     border: none;
-    background: #1976D2;
+    background: #04AA6D;
     padding: 2px 15px;
     border-radius: 5px;
     &:hover{
-        background-color: #2f659b;
+        background-color: #04774d;
     }
 }
 

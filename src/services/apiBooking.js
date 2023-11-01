@@ -16,14 +16,22 @@ export async function getTodayBooking(){
   
   const startOfToday = new Date(currentDate).toISOString(); // Start of today
   const endOfToday = new Date(currentDate + 'T23:59:59.999Z').toISOString(); // End of today
-  console.log(currentDate);
-  console.log(startOfToday);
-  console.log(endOfToday);
+  // console.log(currentDate);
+  // console.log(new Date());
+  // console.log(startOfToday);
+  // console.log(endOfToday);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set time to midnight
+  console.log(today);
+
   const {data,error}=await supabase 
   .from('bookings')
   .select('*,patients(*)')
+  // .eq('date', new Date().toLocaleDateString('en-EG')) 
   .gte('date', startOfToday) // Greater than or equal to the start of today
   .lte('date', endOfToday) // Less than or equal to the end of today
+  // .gte('date', today.toISOString()) // Greater than or equal to today's date
+  // .lte('date', new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString())
   .order('id', { ascending: true });
 
   if(error){

@@ -18,7 +18,8 @@ const FilterButton = styled.button`
   ${(props) =>
     props.active &&
     css`
-    background-color: #04AA6D;
+     background-color: ${(props) => props.backgroundColor || '#04AA6D'};
+    /* background-color: #04AA6D; */
       /* background-color: var(--color-brand-600); */
       color: var(--color-brand-50);
     `}
@@ -31,13 +32,14 @@ const FilterButton = styled.button`
   transition: all 0.3s;
 
   &:hover:not(:disabled) {
-    background-color: #04AA6D;
+    background-color: ${(props) => props.hoverBackgroundColor || '#04AA6D'};
+    /* background-color: #04AA6D; */
     /* background-color: var(--color-brand-600); */
     color: var(--color-brand-50);
   }
 `;
 
-function MyFilter({ filterField, options, }) {
+function MyFilter({ filterField, options,backgroundColor, hoverBackgroundColor }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentFilter = searchParams.get(filterField) || options.at(0).value;
 
@@ -51,7 +53,7 @@ function MyFilter({ filterField, options, }) {
   return (
     <StyledFilter>
       {options.map((option) => (
-        <FilterButton
+        <FilterButton  backgroundColor={backgroundColor} hoverBackgroundColor={hoverBackgroundColor}
           key={option.value}
           onClick={() => handleClick(option.value)}
           active={option.value === currentFilter}

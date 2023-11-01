@@ -35,6 +35,8 @@
     background: teal;
     width: 50px;
     padding: 3px 5px;
+    margin-top: 0;
+    margin-bottom: 1rem;
   }
   
   .addBtn:hover{
@@ -58,6 +60,6 @@
       padding-top: 12px;
       padding-bottom: 12px;
       text-align: left;
-      background-color: #04AA6D;
+      background-color: #1976D2;
       color: white;
   }

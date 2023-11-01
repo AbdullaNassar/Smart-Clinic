@@ -11,6 +11,10 @@ const StyledHeader = styled.header`
   display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media print {
+    display: none;
+  }
 `;
 
 function Header() {

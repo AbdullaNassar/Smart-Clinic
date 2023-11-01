@@ -5,6 +5,7 @@ import Input from "../../UI/Input"
 import Button from "../../UI/Button"
 import { useLogin } from "./useLogin";
 import SpinnerMini from "../../UI/SpinnerMini";
+import toast from "react-hot-toast";
 
 
 function LoginForm() {
@@ -14,7 +15,14 @@ function LoginForm() {
   const{login, isLoading}=useLogin();
   function handleSubmit(e) {
     e.preventDefault();
-    if(!email || !password)return;
+    if(!email){
+      toast.error("ادخل البريد الالكتروني")
+      return;
+    }
+    if(!password){
+      toast.error('ادخل كلمة السر')
+      return;
+    }
     
     login({email,password})
    

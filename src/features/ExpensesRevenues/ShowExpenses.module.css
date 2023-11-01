@@ -38,12 +38,12 @@
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #04AA6D;
+    background-color: #6A994E;
     color: white;
 }
 
 .results{
-    background: #1976D2;
+    background: #4c7434;
     color: white;
     font-weight: bold;
 }
@@ -51,7 +51,7 @@
     cursor: pointer;
 }
 .print span{
-    color: green;
+    color: #6A994E;
 }
 
 .heading {
@@ -72,5 +72,5 @@
   }
   .date button:hover{
     color: white;
-    background-color: #04AA6D;
+    background-color: #6A994E;
   }
