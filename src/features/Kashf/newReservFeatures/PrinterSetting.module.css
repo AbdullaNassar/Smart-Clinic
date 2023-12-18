@@ -1,44 +1,42 @@
-Checkbox.module.css
+Checkbox.module.css .checkboxContainer {
+  margin-bottom: 10px;
+}
 
-.checkboxContainer {
-    margin-bottom: 10px;
-  }
-  
-  .checkboxLabel {
-    display: flex;
-    align-items: center;
-  }
-  
-  .checkboxInput {
-    display: none;
-  }
-  
-  .checkboxCustom {
-    width: 18px;
-    height: 18px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    background-color: #fff;
-    margin-right: 8px;
-  }
-  
-  .checkboxInput:checked + .checkboxCustom {
-    background-color: #007bff;
-  }
-  
-  .checkboxText {
-    font-size: 14px;
-  }
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+}
 
-  .info{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-left: 1rem;
-  }
-  
-  .row{
-    display: flex;
-    gap: 0.8rem;
-    font-weight: bold;
-  }
+.checkboxInput {
+  display: none;
+}
+
+.checkboxCustom {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #fff;
+  margin-right: 8px;
+}
+
+.checkboxInput:checked + .checkboxCustom {
+  background-color: #007bff;
+}
+
+.checkboxText {
+  font-size: 14px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-left: 1rem;
+}
+
+.row {
+  display: flex;
+  gap: 0.8rem;
+  font-weight: bold;
+}

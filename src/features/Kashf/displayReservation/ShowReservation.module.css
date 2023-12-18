@@ -1,23 +1,22 @@
-.all{
-    display:flex;
+.all {
+  display: flex;
 }
-.btns{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    
-    /* margin: 1rem; */
-    height: 86vh;
-    overflow: auto;
-    padding: 1rem 2rem;
-    width: 15%;
+.btns {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  /* margin: 1rem; */
+  height: 86vh;
+  overflow: auto;
+  padding: 1rem 2rem;
+  width: 15%;
 }
-@media print{
-    .btns{
-        display: none;
-    }
-    
+@media print {
+  .btns {
+    display: none;
   }
-.btns button{
-    height: 4rem;
+}
+.btns button {
+  height: 4rem;
 }

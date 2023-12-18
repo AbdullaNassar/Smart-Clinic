@@ -1,31 +1,29 @@
 import { useState } from "react";
-import Form from "../../UI/Form"
-import FormRow from "../../UI/FormRow"
-import Input from "../../UI/Input"
-import Button from "../../UI/Button"
+import Form from "../../UI/Form";
+import FormRow from "../../UI/FormRow";
+import Input from "../../UI/Input";
+import Button from "../../UI/Button";
 import { useLogin } from "./useLogin";
 import SpinnerMini from "../../UI/SpinnerMini";
 import toast from "react-hot-toast";
 
-
 function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("abdo@gmail.com");
+  const [password, setPassword] = useState("12345678");
 
-  const{login, isLoading}=useLogin();
+  const { login, isLoading } = useLogin();
   function handleSubmit(e) {
     e.preventDefault();
-    if(!email){
-      toast.error("ادخل البريد الالكتروني")
+    if (!email) {
+      toast.error("ادخل البريد الالكتروني");
       return;
     }
-    if(!password){
-      toast.error('ادخل كلمة السر')
+    if (!password) {
+      toast.error("ادخل كلمة السر");
       return;
     }
-    
-    login({email,password})
-   
+
+    login({ email, password });
   }
 
   return (
@@ -52,7 +50,9 @@ function LoginForm() {
         />
       </FormRow>
       <FormRow orientation="vertical">
-        <Button size="large">{isLoading?<SpinnerMini/>:"تسجيل دخول" }</Button>
+        <Button size="large">
+          {isLoading ? <SpinnerMini /> : "تسجيل دخول"}
+        </Button>
       </FormRow>
     </Form>
   );

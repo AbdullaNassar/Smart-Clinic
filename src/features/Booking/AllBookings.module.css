@@ -1,22 +1,22 @@
-.header{
-    margin: 2rem 1rem;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: center;
+.header {
+  margin: 2rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-.header label{
-    margin-right: 1rem;
+.header label {
+  margin-right: 1rem;
 }
 
-.date button{
-    padding: 0px 3px;
-    border: 1px solid black;
+.date button {
+  padding: 0px 3px;
+  border: 1px solid black;
 }
-.date button:hover{
-    color: white;
-    background-color: #04AA6D;
+.date button:hover {
+  color: white;
+  background-color: #04aa6d;
 }
 /* .header button{
     width: 2rem;
@@ -30,64 +30,68 @@
 } */
 
 .customers {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }  
-.customers td, .customers th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-.customers tr:nth-child(even){background-color: #f2f2f2;}
-  
-.customers tr:hover {background-color: #ddd;}
-  
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+.customers td,
 .customers th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #04AA6D;
-    color: white;
+  border: 1px solid #ddd;
+  padding: 8px;
 }
-.print{
-    cursor: pointer;
+
+.customers tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
-.print span{
-    color: green;
+
+.customers tr:hover {
+  background-color: #ddd;
+}
+
+.customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
+}
+.print {
+  cursor: pointer;
+}
+.print span {
+  color: green;
 }
 
 .searchContainer {
-    display: flex;
-    align-items: center;
-    max-width: 400px;
-    /* margin: 0 auto; */
-    padding: 10px;
-  }
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+  /* margin: 0 auto; */
+  padding: 10px;
+}
 .label {
-    font-weight: bold;
-    margin-right: 10px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.input {
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .searchContainer {
+    flex-direction: column;
+    align-items: stretch;
   }
-  
+
+  .label {
+    margin-bottom: 5px;
+  }
+
   .input {
-    flex-grow: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    margin-top: 5px;
   }
-  
-  @media (max-width: 768px) {
-    .searchContainer {
-      flex-direction: column;
-      align-items: stretch;
-    }
-  
-    .label {
-      margin-bottom: 5px;
-    }
-  
-    .input {
-      margin-top: 5px;
-    }
-  }
-  
+}

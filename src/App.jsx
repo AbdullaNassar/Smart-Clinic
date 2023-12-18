@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import NewPatient from "./pages/NewPatient";
@@ -30,57 +29,60 @@ import SignupForm from "./features/authentication/SignupForm";
 import { Toaster } from "react-hot-toast";
 import AppLayout from "./UI/AppLayout";
 import UpdateBooking from "./features/Booking/UpdateBooking";
-const queryClient =new QueryClient({
-  defaultOptions:{
-    queries:{
+import Store from "./features/store/Store";
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
       // staleTime:60*1000
-      staleTime:0
-    }
-  }
-})
+      staleTime: 0,
+    },
+  },
+});
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false}/>
-    <PatientProvider>
-      <GlobalStyles/>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            element={
-              <ProtectedRoute>
-                <AppLayout/>
-               </ProtectedRoute>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <PatientProvider>
+        <GlobalStyles />
+        <BrowserRouter>
+          <Routes>
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
               }
-          >
-              
-              <Route path="/" element={<Main/>}/>
-              <Route path="/newPatient" element={<NewPatient/>} />
-              <Route path="/patients" element={<Patients/>} />
-              <Route path="/patientHistory" element={<PatientHostory/>}/>
-              <Route path="/booking" element={<Booking/>} />
-              <Route path="/todayBooking" element={<TodayBooking/>}/>
-              <Route path="/allBookings" element={<AllBookings/>}/>
-              <Route path="/newBooking" element={<NewBooking/>} />
-              <Route path="/updateBooking/:id" element={<UpdateBooking/>} />
-              <Route path="/reservations" element={<Reservation/>} />
-              <Route path="/newReservations" element={<NewReservation/>} />
-              <Route path="/allReservations" element={<AllReservations/>} />
-              <Route path="/ReservationDetails" element={<ShowReservation/>} />
+            >
+              <Route path="/" element={<Main />} />
+              <Route path="/newPatient" element={<NewPatient />} />
+              <Route path="/patients" element={<Patients />} />
+              <Route path="/patientHistory" element={<PatientHostory />} />
+              <Route path="/booking" element={<Booking />} />
+              <Route path="/todayBooking" element={<TodayBooking />} />
+              <Route path="/allBookings" element={<AllBookings />} />
+              <Route path="/newBooking" element={<NewBooking />} />
+              <Route path="/updateBooking/:id" element={<UpdateBooking />} />
+              <Route path="/reservations" element={<Reservation />} />
+              <Route path="/newReservations" element={<NewReservation />} />
+              <Route path="/allReservations" element={<AllReservations />} />
+              <Route path="/ReservationDetails" element={<ShowReservation />} />
               {/* <Route path="/dailyInfo" element={<DailyInfo/>}/> */}
-              <Route path="/patientDetails/:id" element={<PatientDetails/>} />
-              <Route path="/ExpensesRevenues" element={<ExpensesRevenues/>}/>
-              <Route path="/ExpensesRevenues/newExpense"element={<NewExpense/>} />
-              <Route path="/ExpensesRevenues/newRevenue"element={<NewRevenue/>} />
-              <Route path="/ExpensesRevenues/expenses"element={<ShowExpenses/>} />
-              <Route path="/ExpensesRevenues/revenues"element={<ShowRevenues/>} />
-              <Route path="/settings" element={<Settings/>} />
-              <Route path="/signup" element={<SignupForm/>} />
-          </Route>
-          <Route path="/login" element={<Login/>} />
-        </Routes>
-      </BrowserRouter>
-      <Toaster
+              <Route path="/patientDetails/:id" element={<PatientDetails />} />
+              <Route path="/ExpensesRevenues" element={<ExpensesRevenues />} />
+              <Route path="/newExpense" element={<NewExpense />} />
+              <Route
+                path="/ExpensesRevenues/newRevenue"
+                element={<NewRevenue />}
+              />
+              <Route path="/expenses" element={<ShowExpenses />} />
+              <Route path="/revenues" element={<ShowRevenues />} />
+              <Route path="/store" element={<Store />} />
+              <Route path="/signup" element={<SignupForm />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster
           position="top-center"
           gutter={12}
           containerStyle={{ margin: "8px" }}
@@ -100,7 +102,7 @@ function App() {
             },
           }}
         />
-    </PatientProvider>
+      </PatientProvider>
     </QueryClientProvider>
   );
 }

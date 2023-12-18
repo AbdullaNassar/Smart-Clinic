@@ -1,76 +1,74 @@
-.all{
-    padding: 1rem;
-    width: 100%;
-    gap: 1.5rem;
+.all {
+  padding: 1rem;
+  width: 100%;
+  gap: 1.5rem;
 }
-.header{
-    display: flex;
-    justify-content: space-between;
-    color: #2177C8;
-    min-height: 8rem;
-    align-items: center;
-    flex-wrap: wrap;
+.header {
+  display: flex;
+  justify-content: space-between;
+  color: #2177c8;
+  min-height: 8rem;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .logo {
-    font-size: 3rem;
+  font-size: 3rem;
 }
-.info{
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
-    /* align-items: center; */
-    font-weight: bold;
+.info {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  /* align-items: center; */
+  font-weight: bold;
 }
-.info .col{
-    display: flex;
-    flex-direction: column;
+.info .col {
+  display: flex;
+  flex-direction: column;
 }
 
-.card{
-    display: flex;
-    /* flex-wrap: wrap; */
-    /* gap: 1rem; */
-    /* gap: 1rem; */
-    /* justify-content: center; */
-    /* align-items: center; */
-    justify-content: space-between;
-    margin-top: 3rem;
+.card {
+  display: flex;
+  /* flex-wrap: wrap; */
+  /* gap: 1rem; */
+  /* gap: 1rem; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  justify-content: space-between;
+  margin-top: 3rem;
 }
-.card .box{
-    flex-basis: 15%;
-    margin: 1rem 0;
+.card .box {
+  flex-basis: 15%;
+  margin: 1rem 0;
 }
 .customTable {
-    border-collapse: collapse; /* Collapse borders into a single border */
-    border: 1px solid black; /* Add a border to the table */
-  }
-  .customTable caption{
-    font-weight: bold;
-  }
-  
-  .customTable th{
-    background-color: #2177C8; /* Set the background color of the header row to blue */
-    color: white;
-  }
-  .customTable td{
-    border: 1px solid black;
-    padding: 8px;
-  }
+  border-collapse: collapse; /* Collapse borders into a single border */
+  border: 1px solid black; /* Add a border to the table */
+}
+.customTable caption {
+  font-weight: bold;
+}
 
-  .footer{
-    display: flex;
-    justify-content: space-between;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
-  .footer .col{
-    display: flex;
-    flex-direction: column;
-  }
-  .footer .col label{
-    color: #2177C8;
-  }
+.customTable th {
+  background-color: #2177c8; /* Set the background color of the header row to blue */
+  color: white;
+}
+.customTable td {
+  border: 1px solid black;
+  padding: 8px;
+}
 
-  
+.footer {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+.footer .col {
+  display: flex;
+  flex-direction: column;
+}
+.footer .col label {
+  color: #2177c8;
+}

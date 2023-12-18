@@ -22,7 +22,6 @@ const StyledToday = styled.div`
   padding-top: 2.4rem;
   overflow: scroll;
   /* overflow-x: hidden; */
-
 `;
 
 const TodayList = styled.ul`
@@ -47,7 +46,6 @@ const NoActivity = styled.p`
 function TodayActivity() {
   const { activities, isLoading } = useTodayActivity();
   console.log(activities);
-  
 
   return (
     <StyledToday>

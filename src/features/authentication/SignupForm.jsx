@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 // Email regex: /\S+@\S+\.\S+/
 
 function SignupForm() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const { signup, isLoading } = useSignup();
   const { register, formState, getValues, handleSubmit, reset } = useForm();
   const { errors } = formState;
@@ -49,10 +49,7 @@ function SignupForm() {
         />
       </FormRow>
 
-      <FormRow
-        label="كلمه السر"
-        error={errors?.password?.message}
-      >
+      <FormRow label="كلمه السر" error={errors?.password?.message}>
         <Input
           type="password"
           id="password"
@@ -86,7 +83,7 @@ function SignupForm() {
           variation="secondary"
           type="reset"
           disabled={isLoading}
-          onClick={()=>{
+          onClick={() => {
             navigate(-1);
           }}
         >

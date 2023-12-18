@@ -1,88 +1,86 @@
-
-
 .form {
-    width: 90%;
-    /* max-width: 400px; */
-    margin-top: 1rem;
-    margin-left: 6px;
-    /* margin: 0 auto; */
-  }
-.info{
+  width: 90%;
+  /* max-width: 400px; */
+  margin-top: 1rem;
+  margin-left: 6px;
+  /* margin: 0 auto; */
+}
+.info {
   display: block;
-    
-}  
-
-
-  .formGroup {
-    margin-bottom: 20px;
-  }
-  
-  .label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  .lbl{
-    margin-right: 5px;
-    font-weight: bold;
-    margin-bottom: 5px;
-
-  }
-  
-  .input {
-    width: 80%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 1rem;
-  }
-  
-  .radioGroup {
-    display: flex;
-    margin-top: 5px;
-  }
-  
-  .radioButton {
-    margin-right: 10px;
-  }
-  
-  .textarea {
-    width: 80%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-    min-height: 11rem;
-  }
-  
-  .button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 40%;
-  }
-  
-  .button:hover {
-    background-color: #0056b3;
-  }
-.lnk{
-    font-size: 25px;
-    color: #1871CD;
 }
 
-.btn{
-    border: 1px solid black;
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.lbl {
+  margin-right: 5px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 1rem;
+}
+
+.radioGroup {
+  display: flex;
+  margin-top: 5px;
+}
+.radioGroup {
+  display: flex;
+  margin-top: 5px;
+}
+.radioButton {
+  margin-right: 10px;
+}
+
+.textarea {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  /* min-height: 11rem; */
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 40%;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+.lnk {
+  font-size: 25px;
+  color: #1871cd;
+}
+
+.btn {
+  border: 1px solid black;
 }
 
 @media (min-width: 500px) {
-  .info{
+  .info {
     display: flex;
     gap: 20%;
   }
-  .btns{
+  .btns {
     width: 66%;
     /* background: red; */
     /* margin-top: 2rem; */
@@ -95,5 +93,4 @@
     margin-top: 2rem;
     margin-left: 12rem;
   } */
-  
 }

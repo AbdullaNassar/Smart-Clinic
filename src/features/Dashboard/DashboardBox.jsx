@@ -14,4 +14,3 @@ const DashboardBox = styled.div`
 `;
 
 export default DashboardBox;
-

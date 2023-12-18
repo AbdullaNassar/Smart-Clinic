@@ -1,0 +1,25 @@
+.styledTable {
+  width: 70%;
+  border-collapse: collapse;
+  font-size: 1.5rem;
+}
+
+.styledTable thead th {
+  background-color: #f2f2f2;
+  border-bottom: 2px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.styledTable tbody td {
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem;
+}
+
+.styledTable tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.styledTable tbody tr:hover {
+  background-color: #e5e5e5;
+}

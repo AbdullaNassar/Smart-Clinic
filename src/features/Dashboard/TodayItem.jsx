@@ -31,9 +31,13 @@ function TodayItem({ activity }) {
 
   return (
     <StyledTodayItem>
-      {status === "تم الدخول والخروج" && <Tag type="green">تم الدخول والخروج</Tag>}
+      {status === "تم الدخول والخروج" && (
+        <Tag type="green">تم الدخول والخروج</Tag>
+      )}
       {status === "لم يتم الدخول للدكتور" && <Tag type="blue">انتظار</Tag>}
-      {status === "بالداخل عند الدكتور" && <Tag type="red">بالداخل عند الدكتور</Tag>}
+      {status === "بالداخل عند الدكتور" && (
+        <Tag type="red">بالداخل عند الدكتور</Tag>
+      )}
 
       {/* <Flag src={guests.countryFlag} alt={`Flag of ${guests.country}`} /> */}
       <Guest>{patients?.name}</Guest>

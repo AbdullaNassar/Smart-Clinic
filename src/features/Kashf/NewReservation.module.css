@@ -1,32 +1,30 @@
-.all{
-    /* background: #eee; */
-    min-height: 87vh;
-    max-height: 87vh;
-    padding: 1rem 0;
-    display: flex;
-    
+.all {
+  /* background: #eee; */
+  min-height: 87vh;
+  max-height: 87vh;
+  padding: 1rem 0;
+  display: flex;
 }
-.btns{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    
-    /* margin: 1rem; */
-    height: 86vh;
-    overflow: auto;
-    padding: 1rem 2rem;
-    width: 15%;
+.btns {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  /* margin: 1rem; */
+  height: 86vh;
+  overflow: auto;
+  padding: 1rem 2rem;
+  width: 25rem;
 }
-@media print{
-    .btns{
-        display: none;
-    }
-    
+@media print {
+  .btns {
+    display: none;
   }
-.btns button{
-    border: none;
-    background: transparent;
 }
-.btns button:hover{
-    background-color: #E5F2FF;
+.btns button {
+  border: none;
+  background: transparent;
+}
+.btns button:hover {
+  background-color: #e5f2ff;
 }

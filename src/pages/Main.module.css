@@ -1,62 +1,62 @@
-.all{
-    background: #eee;
+.all {
+  /* background: #eee;
     padding: 1rem;
     min-height: 100vh;
 
-    /* temprory */
+  
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; */
 }
-.header{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
-.main{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
-.btns{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 10rem;
-    margin-top: 1rem;
+.btns {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 10rem;
+  margin-top: 1rem;
 }
-.btns button{
-    height: 4rem;
+.btns button {
+  height: 4rem;
 }
-.current{
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.current {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
-.current .cur label{
-    margin-right: 1rem;
+.current .cur label {
+  margin-right: 1rem;
 }
-.current textarea{
-    min-height: 10rem;
-    width: 20rem;
+.current textarea {
+  min-height: 10rem;
+  width: 20rem;
 }
-.current .save{
-    width: 70%;
-    height: 2rem;
-    border-radius: 5px;
-    border: none;
+.current .save {
+  width: 70%;
+  height: 2rem;
+  border-radius: 5px;
+  border: none;
 }
-.display{
-    display: flex;
-    flex-direction: column;
+.display {
+  display: flex;
+  flex-direction: column;
 }
-.display .item{
-    display: flex;
-    gap: 0.5rem;
+.display .item {
+  display: flex;
+  gap: 0.5rem;
 }
 
-.content{
-    display:flex;
-    flex-direction: column;
-    gap: 2rem;
-    width: 80%;
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  /* width: 80%; */
 }
