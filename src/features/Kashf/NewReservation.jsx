@@ -25,7 +25,10 @@ import { addNewClinicRevenues } from "../../services/apiMyRevenues";
 import { Button } from "@mui/material";
 import { ConfirmationModal } from "../../UI/Modal";
 import PrinterSetting from "./newReservFeatures/PrinterSetting";
-function NewReservation({ patientID, bookingID }) {
+function NewReservation() {
+  const [searchParams] = useSearchParams();
+  const patientID = searchParams.get("patID");
+  const bookingID = searchParams.get("bokID");
   const [all, setAll] = useState(false);
   const [quick, setQuick] = useState(false);
   const [diagnosis, setDiagonsis] = useState(false);

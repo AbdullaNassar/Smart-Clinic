@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getPatientInfo } from "../../services/apiPatients";
 import { getBooking } from "../../services/apiBooking";
 import { FaPrint, FaSquareWhatsapp } from "react-icons/fa6";
+import { formatCurrency } from "../../utils/helper";
 function PatientDetails() {
   const { id } = useParams();
   const { data, isLoading, error } = useQuery(["patientInfo", id], () =>
@@ -44,9 +45,9 @@ function PatientDetails() {
           <h3>{data?.name}</h3>
           <label>النوع: {data?.gender}</label>
           <label>السن {data?.age}</label>
-          <label>رقم الهاتف: {data.phone}</label>
+          <label>رقم الهاتف: {data?.phone}</label>
           <label>عدد الزيارات: {filteredList.length}</label>
-          <Link to={`https://wa.me/+20${data.phone}`} target="_blank">
+          <Link to={`https://wa.me/+20${data?.phone}`} target="_blank">
             <span style={{ color: "green", fontSize: "30px" }}>
               <FaSquareWhatsapp />
             </span>
@@ -69,14 +70,16 @@ function PatientDetails() {
             {filteredList !== undefined &&
               filteredList.map((item, idx) => (
                 <div className={classes.card}>
-                  <div>{idx + 1}</div>
+                  <div className={classes.cardNO}>{idx + 1}</div>
                   <div>
                     {/* <label>تاريخ الزياره: </label> */}
                     <time>{formatDate(item.date)}</time>
                   </div>
                   <label>{item.type}</label>
-                  <label>السعر: {item.price}</label>
+                  {/* <label>السعر:{item.price}</label> */}
+                  <label>{formatCurrency(item.price)}</label>
                   <button
+                    className={classes.button}
                     onClick={() => {
                       navigate(
                         `/ReservationDetails?patID=${id}&bokID=${item.id}`

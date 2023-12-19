@@ -1,5 +1,5 @@
 .header {
-  margin: 1rem;
+  margin: 1rem 0;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -78,4 +78,10 @@
 .date button:hover {
   color: white;
   background-color: #6a994e;
+}
+.search {
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  border: 1px solid #ccc;
+  margin-right: -12%;
 }

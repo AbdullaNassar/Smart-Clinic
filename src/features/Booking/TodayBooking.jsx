@@ -261,28 +261,19 @@ function TodayBooking() {
   }
   // const [searchParams, setSearchParams] = useSearchParams();
   searchParams.set("openReservation", false);
-  if (isStart) {
-    // searchParams.set("openReservation", true);
-    // setSearchParams(searchParams);
-    return (
-      <>
-        <NewReservation patientID={IDs.patientID} bookingID={IDs.bookingID} />
-        {/* <button className="no-print" onClick={(e)=>setIsStart(e=>!e)}>انهاء الكشف</button> */}
-      </>
-    );
-  } else
-    return (
-      <div>
-        <div className={classes.header}>
-          <div className={classes.date}>
-            <h3>{formattedDate}</h3>
-            {/* <h3>{dateString}</h3> */}
-            {/* <time>{formatDate(new Date())} </time> */}
-            <span style={{ color: "#1b7bc2" }}>
-              <FaCalendarDays />
-            </span>
-          </div>
-          {/* <div className={classes.ring}>
+
+  return (
+    <div>
+      <div className={classes.header}>
+        <div className={classes.date}>
+          <h3>{formattedDate}</h3>
+          {/* <h3>{dateString}</h3> */}
+          {/* <time>{formatDate(new Date())} </time> */}
+          <span style={{ color: "#1b7bc2" }}>
+            <FaCalendarDays />
+          </span>
+        </div>
+        {/* <div className={classes.ring}>
             <span className={classes.spn}>
               <FaBell />
             </span>
@@ -300,126 +291,118 @@ function TodayBooking() {
             </label>
           </div> */}
 
-          <div onClick={() => window.print()} className={classes.print}>
-            {/* <label>طباعة</label> */}
-            <span>
-              <FaPrint />
-            </span>
-          </div>
+        <div onClick={() => window.print()} className={classes.print}>
+          {/* <label>طباعة</label> */}
+          <span>
+            <FaPrint />
+          </span>
         </div>
-        <div>
-          <table className={classes.customers}>
-            <tr>
-              <th>رقم الحجز</th>
-              {/* <th>تاريخ الحجز</th> */}
-              <th>الاسم</th>
-              {/* <th>رقم الحجز</th> */}
-              <th>الوقت</th>
-              <th>نوع الحجز</th>
-              <th>حاله الحجز</th>
-              <th>المبلغ</th>
-              <th>الخصم</th>
-              <th>المدفوع</th>
-              <th>المتبقي</th>
-              <th>ملاحظات</th>
-              <th>ملاحظات</th>
-            </tr>
-            {!isLoading &&
-              bookingsList.map((item, idx) => (
-                <tr>
-                  <td>{idx + 1} </td>
-                  {/* <td>{formatDate(new Date(item.date))} </td> */}
-                  <td>{item.patients.name}</td>
-                  {/* <td>{idx + 1}</td> */}
-                  {/* <p>{item.date}</p> */}
-                  <p>{formatTime(new Date(item.date))}</p>
-                  {/* <td><p>{formatTime(item.date)}</p></td> */}
-                  <td>{item.type}</td>
-                  <td>
-                    {" "}
-                    {item.status === "تم الدخول والخروج" ? (
-                      <Tag type="green">تم الدخول والخروج</Tag>
-                    ) : item.status === "لم يتم الدخول للدكتور" ? (
-                      <Tag type="blue">انتظار</Tag>
-                    ) : (
-                      <Tag type="red">بالداخل عند الدكتور</Tag>
-                    )}{" "}
-                  </td>
-                  {/* <td>{item.status === "لم يتم الدخول للدكتور" && <Tag type="blue">انتظار</Tag>}</td> */}
-                  {/* <td>{item.status === "بالداخل عند الدكتور" && <Tag type="red">بالداخل عند الدكتور</Tag>}</td> */}
-                  <td>{formatCurrency(item.price)}</td>
-                  <td>{formatCurrency(item.discount)}</td>
-                  <td>{formatCurrency(item.paidAmount)}</td>
-                  <td>
-                    {formatCurrency(
-                      item.price - item.paidAmount - item.discount
-                    )}
-                  </td>
-                  <td>{item.notes}</td>
-                  <div className={classes.btns}>
-                    {item.status !== "تم الدخول والخروج" && (
-                      <button
-                        onClick={() => {
-                          setIsStart(true);
-                          const ids = {
-                            bookingID: item.id,
-                            patientID: item.patientID,
-                          };
-                          setIDs(ids);
-                          const id = item.id;
-                          const columnName = "status";
-                          const columnValue = "بالداخل عند الدكتور";
-                          const params = [id, columnName, columnValue];
-                          console.log("here");
-                          mutation.mutate(params);
-                        }}
-                      >
-                        {item.status === "بالداخل عند الدكتور"
-                          ? "فتح "
-                          : "بدء "}
-                      </button>
-                    )}
+      </div>
+      <div>
+        <table className={classes.customers}>
+          <tr>
+            <th>رقم الحجز</th>
+            {/* <th>تاريخ الحجز</th> */}
+            <th>الاسم</th>
+            {/* <th>رقم الحجز</th> */}
+            <th>الوقت</th>
+            <th>نوع الحجز</th>
+            <th>حاله الحجز</th>
+            <th>المبلغ</th>
+            <th>الخصم</th>
+            <th>المدفوع</th>
+            <th>المتبقي</th>
+            <th>ملاحظات</th>
+            <th>ملاحظات</th>
+          </tr>
+          {!isLoading &&
+            bookingsList.map((item, idx) => (
+              <tr>
+                <td>{idx + 1} </td>
+                {/* <td>{formatDate(new Date(item.date))} </td> */}
+                <td>{item.patients.name}</td>
+                {/* <td>{idx + 1}</td> */}
+                {/* <p>{item.date}</p> */}
+                <p>{formatTime(new Date(item.date))}</p>
+                {/* <td><p>{formatTime(item.date)}</p></td> */}
+                <td>{item.type}</td>
+                <td>
+                  {" "}
+                  {item.status === "تم الدخول والخروج" ? (
+                    <Tag type="green">تم الدخول والخروج</Tag>
+                  ) : item.status === "لم يتم الدخول للدكتور" ? (
+                    <Tag type="blue">انتظار</Tag>
+                  ) : (
+                    <Tag type="red">بالداخل عند الدكتور</Tag>
+                  )}{" "}
+                </td>
+                {/* <td>{item.status === "لم يتم الدخول للدكتور" && <Tag type="blue">انتظار</Tag>}</td> */}
+                {/* <td>{item.status === "بالداخل عند الدكتور" && <Tag type="red">بالداخل عند الدكتور</Tag>}</td> */}
+                <td>{formatCurrency(item.price)}</td>
+                <td>{formatCurrency(item.discount)}</td>
+                <td>{formatCurrency(item.paidAmount)}</td>
+                <td>
+                  {formatCurrency(item.price - item.paidAmount - item.discount)}
+                </td>
+                <td>{item.notes}</td>
+                <div className={classes.btns}>
+                  {item.status !== "تم الدخول والخروج" && (
                     <button
                       onClick={() => {
+                        const id = item.id;
+                        const columnName = "status";
+                        const columnValue = "بالداخل عند الدكتور";
+                        const params = [id, columnName, columnValue];
+                        mutation.mutate(params);
                         navigate(
-                          `/ReservationDetails?patID=${item.patientID}&bokID=${item.id}`
+                          `/newReservations?patID=${item.patientID}&bokID=${item.id}`
                         );
                       }}
                     >
-                      <FaRegFolderOpen />
+                      {item.status === "بالداخل عند الدكتور" ? "فتح " : "بدء "}
                     </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      navigate(
+                        `/ReservationDetails?patID=${item.patientID}&bokID=${item.id}`
+                      );
+                    }}
+                  >
+                    <FaRegFolderOpen />
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate(`/updateBooking/${item.id}`);
+                    }}
+                  >
+                    <TbUserEdit />
+                  </button>
+                  {item.status !== "تم الدخول والخروج" && (
                     <button
                       onClick={() => {
-                        navigate(`/updateBooking/${item.id}`);
+                        setIsOpenModal(true);
                       }}
                     >
-                      <TbUserEdit />
+                      <AiOutlineDelete />
                     </button>
-                    {item.status !== "تم الدخول والخروج" && (
-                      <button
-                        onClick={() => {
-                          setIsOpenModal(true);
-                        }}
-                      >
-                        <AiOutlineDelete />
-                      </button>
-                    )}
-                  </div>
+                  )}
+                </div>
 
-                  <DeleteConfirmationModal
-                    isOpen={isOpenModal}
-                    onCancel={() => setIsOpenModal(false)}
-                    onConfirm={() => {
-                      mutate(item.id);
-                      setIsOpenModal(false);
-                    }}
-                  />
-                </tr>
-              ))}
-          </table>
-        </div>
-        {bookingsList !== undefined && <Pagination count={bookingsCount} />}
+                <DeleteConfirmationModal
+                  isOpen={isOpenModal}
+                  onCancel={() => setIsOpenModal(false)}
+                  onConfirm={() => {
+                    mutate(item.id);
+                    setIsOpenModal(false);
+                  }}
+                />
+              </tr>
+            ))}
+        </table>
       </div>
-    );
+      {bookingsList !== undefined && <Pagination count={bookingsCount} />}
+    </div>
+  );
 }
 export default TodayBooking;

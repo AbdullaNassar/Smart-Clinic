@@ -8,7 +8,12 @@ import { createBooking } from "../services/apiBooking";
 import { createNewPatient } from "../services/apiPatients";
 import toast from "react-hot-toast";
 import FormRow from "../UI/FormRow";
+import { AddPatientModal } from "../UI/Modal";
 function NewPatient() {
+  const { closePatientModal } = usePatient();
+  const navigate = useNavigate();
+  const { isAddPatientModal } = usePatient();
+
   const { register, formState, handleSubmit, reset } = useForm();
   const { errors } = formState;
   const queryClient = useQueryClient();
@@ -28,81 +33,91 @@ function NewPatient() {
     console.log(data);
     mutate(data);
   }
-  return (
-    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-      <div className={classes.formGroup}>
-        <label htmlFor="name" className={classes.label}>
-          الاسم:
-        </label>
-        <FormRow error={errors?.name?.message}>
-          <input
-            type="text"
-            id="name"
-            className={classes.input}
-            {...register("name", { required: "ادخل اسم المريض" })}
-          />
-        </FormRow>
-      </div>
-      <div className={classes.formGroup}>
-        <label htmlFor="phone" className={classes.label}>
-          رقم الهاتف:
-        </label>
-        <input
-          type="text"
-          id="phone"
-          className={classes.input}
-          {...register("phone")}
-        />
-      </div>
-      <div className={classes.formGroup}>
-        <label htmlFor="age" className={classes.label}>
-          السن:
-        </label>
-        <input
-          type="number"
-          id="age"
-          className={classes.input}
-          {...register("age")}
-        />
-      </div>
-      <div className={classes.formGroup}>
-        <label className={classes.label}>النوع:</label>
-        <div className={classes.radioGroup}>
-          <label htmlFor="male" className={classes.radioButton}>
-            <input
-              type="radio"
-              id="male"
-              value="male"
-              {...register("gender")}
-            />
-            ذكر
-          </label>
 
-          <label htmlFor="female" className={classes.radioButton}>
-            <input
-              type="radio"
-              id="female"
-              value="female"
-              {...register("gender")}
-            />
-            انثي
-          </label>
-        </div>
-      </div>
-      <div className={classes.formGroup}>
-        <label htmlFor="notes" className={classes.label}>
-          ملاجظات:
-        </label>
-        <textarea
-          id="notes"
-          className={classes.textarea}
-          {...register("notes")}
-        />
-      </div>
-      <button type="submit" className={classes.button}>
-        تسجيل مريض جديد
-      </button>
-    </form>
+  function onCancel() {
+    navigate(-1);
+    closePatientModal();
+  }
+  return (
+    // <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+    //   <div className={classes.formGroup}>
+    //     <label htmlFor="name" className={classes.label}>
+    //       الاسم:
+    //     </label>
+    //     <FormRow error={errors?.name?.message}>
+    //       <input
+    //         type="text"
+    //         id="name"
+    //         className={classes.input}
+    //         {...register("name", { required: "ادخل اسم المريض" })}
+    //       />
+    //     </FormRow>
+    //   </div>
+    //   <div className={classes.formGroup}>
+    //     <label htmlFor="phone" className={classes.label}>
+    //       رقم الهاتف:
+    //     </label>
+    //     <input
+    //       type="text"
+    //       id="phone"
+    //       className={classes.input}
+    //       {...register("phone")}
+    //     />
+    //   </div>
+    //   <div className={classes.formGroup}>
+    //     <label htmlFor="age" className={classes.label}>
+    //       السن:
+    //     </label>
+    //     <input
+    //       type="number"
+    //       id="age"
+    //       className={classes.input}
+    //       {...register("age")}
+    //     />
+    //   </div>
+    //   <div className={classes.formGroup}>
+    //     <label className={classes.label}>النوع:</label>
+    //     <div className={classes.radioGroup}>
+    //       <label htmlFor="male" className={classes.radioButton}>
+    //         <input
+    //           type="radio"
+    //           id="male"
+    //           value="male"
+    //           {...register("gender")}
+    //         />
+    //         ذكر
+    //       </label>
+
+    //       <label htmlFor="female" className={classes.radioButton}>
+    //         <input
+    //           type="radio"
+    //           id="female"
+    //           value="female"
+    //           {...register("gender")}
+    //         />
+    //         انثي
+    //       </label>
+    //     </div>
+    //   </div>
+    //   <div className={classes.formGroup}>
+    //     <label htmlFor="notes" className={classes.label}>
+    //       ملاجظات:
+    //     </label>
+    //     <textarea
+    //       id="notes"
+    //       className={classes.textarea}
+    //       {...register("notes")}
+    //     />
+    //   </div>
+    //   <button type="submit" className={classes.button}>
+    //     تسجيل مريض جديد
+    //   </button>
+    //   <button type="button" onClick={() => setIsOpenModal((e) => !e)}>
+    //     Open Modal
+    //   </button>
+
+    // </form>
+    <AddPatientModal isOpen={isAddPatientModal} onCancel={onCancel} />
   );
 }
 export default NewPatient;

@@ -15,12 +15,16 @@ import classes from "./NewBooking.module.css";
 import { FaPersonCirclePlus } from "react-icons/fa6";
 import { addNewRevenue, getRevenues } from "../../services/apiRevenues";
 import { TbClockPlus } from "react-icons/tb";
+import { usePatient } from "../../contexts/PatientContext";
+import { AddPatientModal } from "../../UI/Modal";
 const Error = styled.span`
   font-size: 1.4rem;
   color: var(--color-red-700);
 `;
 
 function NewBooking() {
+  const { isAddPatientModal, closePatientModal, openPatientModal } =
+    usePatient();
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const [isOpenType, setIsopenType] = useState(false);
@@ -98,6 +102,10 @@ function NewBooking() {
     navigate(-1);
   }
 
+  function onCancel() {
+    closePatientModal();
+  }
+
   return (
     <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
       <div className={classes.heading}>
@@ -133,13 +141,12 @@ function NewBooking() {
                 ))}
             </datalist>
 
-            <Link to="/newPatient" className={classes.lnk}>
-              <span>
-                <FaPersonCirclePlus />
-              </span>
-              {/* <BsFillPersonPlusFill/> */}
-              {/* <Button variant="contained">+</Button> */}
-            </Link>
+            <span className={classes.lnk} onClick={openPatientModal}>
+              <FaPersonCirclePlus />
+            </span>
+            {/* <BsFillPersonPlusFill/> */}
+            {/* <Button variant="contained">+</Button> */}
+
             {errors?.patientID?.message && <Error>ادخل اسم المريض</Error>}
             {/* </FormRow> */}
           </div>
@@ -252,7 +259,7 @@ function NewBooking() {
               </FormRow>
             </div>
             <div className={classes.formGroup}>
-              <label className={classes.label}>المبلغ الاجمالي</label>
+              <label className={classes.label}> الاجمالي</label>
               <FormRow>
                 <input
                   className={classes.input}
@@ -313,11 +320,17 @@ function NewBooking() {
         />
       </div>
       <div className={classes.btns}>
-        <Button variation="secondary" onClick={() => navigate(-1)}>
+        <Button
+          className={classes.cncl}
+          variation="secondary"
+          onClick={() => navigate(-1)}
+        >
           الغاء
         </Button>
         <button className={classes.button}>حجز</button>
       </div>
+
+      <AddPatientModal isOpen={isAddPatientModal} onCancel={onCancel} />
     </form>
   );
 }

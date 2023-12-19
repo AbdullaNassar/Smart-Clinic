@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
+import { useLocation } from "react-router-dom";
 // import Uploader from "../data/Uploader";
 
 const StyledSidebar = styled.aside`
@@ -22,6 +23,15 @@ const StyledSidebar = styled.aside`
 `;
 
 function Sidebar() {
+  const location = useLocation();
+  console.log(location.pathname);
+
+  if (
+    location.pathname === "/ReservationDetails" ||
+    location.pathname === "/newReservations" ||
+    location.pathname.includes("/patientDetails")
+  )
+    return null;
   return (
     <StyledSidebar>
       {/* <Logo /> */}

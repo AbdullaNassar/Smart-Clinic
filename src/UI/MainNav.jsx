@@ -29,6 +29,7 @@ import { AiOutlineCalendar, AiTwotoneDatabase } from "react-icons/ai";
 import { RiDatabase2Line, RiShoppingCartLine } from "react-icons/ri";
 import { CiMoneyCheck1 } from "react-icons/ci";
 import { useState } from "react";
+import { usePatient } from "../contexts/PatientContext";
 
 const NavList = styled.ul`
   display: flex;
@@ -102,7 +103,7 @@ function MainNav() {
   const [appointOpen, setAppointOpen] = useState(true);
   const [patientOpen, setPatientOpen] = useState(true);
   const [financeOpen, setFinanceOpen] = useState(false);
-
+  const { openPatientModal } = usePatient();
   return (
     <nav>
       <NavList>
@@ -186,7 +187,7 @@ function MainNav() {
           </StyledDiv>
           {patientOpen && (
             <ul className={`${classes.pad} ${classes.flex}`}>
-              <li>
+              <li onClick={() => openPatientModal()}>
                 <StyledNavLink to="/newPatient">
                   <span>
                     <HiOutlineChevronDown

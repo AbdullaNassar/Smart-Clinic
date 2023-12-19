@@ -15,7 +15,8 @@ import Pagination from "../../UI/Pagnition";
 import { useSearchParams } from "react-router-dom";
 import MyFilter from "../../UI/MyFilter";
 import { formatCurrency } from "../../utils/helper";
-
+// #198dc1 blue color
+// #198dc1 blue dark
 function ShowRevenues() {
   const [searchQuery, setSearchQuery] = useState(null);
 
@@ -224,7 +225,7 @@ function ShowRevenues() {
       <div className="heading">
         <div className="title">
           <h2 className="heading__title">الايرادات</h2>
-          <span style={{ color: "#198dc1" }}>
+          <span style={{ color: "#04aa6d" }}>
             <FaMoneyBillTrendUp />
           </span>
         </div>
@@ -236,6 +237,7 @@ function ShowRevenues() {
       <div className={classes.header}>
         <div>
           <input
+            className={classes.search}
             placeholder="بحث..."
             type="text"
             id="search"
@@ -261,8 +263,8 @@ function ShowRevenues() {
               { value: "3month", label: "اخر 3 شهور" },
               { value: "year", label: "اخر سنه" },
             ]}
-            backgroundColor="#198dc1"
-            hoverBackgroundColor="#198dc1"
+            backgroundColor="#04aa6d"
+            hoverBackgroundColor="#04aa6d"
           />
         </div>
 
@@ -329,7 +331,7 @@ function ShowRevenues() {
 
         <div className={classes.print}>
           {/* <label>طباعة</label> */}
-          <span onClick={() => window.print()} style={{ color: "#198dc1" }}>
+          <span onClick={() => window.print()} style={{ color: "#04aa6d" }}>
             <FaPrint />
           </span>
         </div>

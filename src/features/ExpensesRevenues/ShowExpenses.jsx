@@ -411,6 +411,7 @@ function ShowExpenses() {
       <div className={classes.header}>
         <div>
           <input
+            className={classes.search}
             placeholder="بحث..."
             type="text"
             id="search"

@@ -1,5 +1,5 @@
 .header {
-  margin: 1rem;
+  margin: 1rem 0;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -8,6 +8,13 @@
 
 .header label {
   margin-right: 1rem;
+}
+
+.search {
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  border: 1px solid #ccc;
+  margin-right: -12%;
 }
 /* .header button{
     width: 2rem;
@@ -43,12 +50,12 @@
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #198dc1;
+  background-color: #04aa6d;
   color: white;
 }
 
 .results {
-  background: #1976d2;
+  background: #029b63;
   color: white;
   font-weight: bold;
 }
@@ -77,5 +84,5 @@
 }
 .date button:hover {
   color: white;
-  background-color: #198dc1;
+  background-color: #04aa6d;
 }

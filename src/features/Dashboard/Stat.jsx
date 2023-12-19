@@ -1,4 +1,14 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+const scaleUpCenter = keyframes`
+  0% {
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+`;
 
 const StyledStat = styled.div`
   /* Box */
@@ -13,6 +23,8 @@ const StyledStat = styled.div`
   grid-template-rows: auto auto;
   column-gap: 1.6rem;
   row-gap: 0.4rem;
+
+  animation: ${scaleUpCenter} 0.5s ease-in-out;
 `;
 
 const Icon = styled.div`
