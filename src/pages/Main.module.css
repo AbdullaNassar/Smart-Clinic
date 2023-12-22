@@ -6,6 +6,8 @@
   
     display: flex;
     justify-content: space-between; */
+
+  min-height: 87vh;
 }
 .header {
   display: flex;

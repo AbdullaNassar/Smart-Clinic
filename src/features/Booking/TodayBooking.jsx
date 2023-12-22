@@ -85,9 +85,6 @@ function TodayBooking() {
   });
   console.log(new Date());
 
-  const [IDs, setIDs] = useState();
-
-  const [isStart, setIsStart] = useState(false);
   let {
     isLoading,
     data: bookings,
@@ -209,42 +206,42 @@ function TodayBooking() {
       isSameDay(new Date(obj.date), new Date())
     );
   }
-  let bookingsList = [];
-  let now = 0;
-  if (bookings !== undefined) {
-    for (let i = 0; i < bookings.length; i++) {
-      if (bookings[i].status === "تم الدخول والخروج") {
-        bookingsList.push(bookings[i]);
-      }
-    }
-    bookings = bookings.filter((item) => item.status !== "تم الدخول والخروج");
+  let bookingsList = bookings;
+  // let now = 0;
+  // if (bookings !== undefined) {
+  //   for (let i = 0; i < bookings.length; i++) {
+  //     if (bookings[i].status === "تم الدخول والخروج") {
+  //       bookingsList.push(bookings[i]);
+  //     }
+  //   }
+  //   bookings = bookings.filter((item) => item.status !== "تم الدخول والخروج");
 
-    for (let i = 0; i < bookings.length; i++) {
-      if (bookings[i].type === "حجز مستعجل") {
-        bookingsList.push(bookings[i]);
-      }
-    }
-    bookings = bookings.filter((item) => item.type !== "حجز مستعجل");
+  //   for (let i = 0; i < bookings.length; i++) {
+  //     if (bookings[i].type === "حجز مستعجل") {
+  //       bookingsList.push(bookings[i]);
+  //     }
+  //   }
+  //   bookings = bookings.filter((item) => item.type !== "حجز مستعجل");
 
-    for (let i = 0; i < bookings.length; i++) {
-      bookingsList.push(bookings[i]);
-    }
+  //   for (let i = 0; i < bookings.length; i++) {
+  //     bookingsList.push(bookings[i]);
+  //   }
 
-    now = 1;
-    for (let i = bookingsList.length - 1; i >= 0; i--) {
-      if (bookingsList[i].status === "تم الدخول والخروج") {
-        console.log("ok", i + 2);
-        now = i + 2;
-        break;
-      }
+  //   now = 1;
+  //   for (let i = bookingsList.length - 1; i >= 0; i--) {
+  //     if (bookingsList[i].status === "تم الدخول والخروج") {
+  //       console.log("ok", i + 2);
+  //       now = i + 2;
+  //       break;
+  //     }
 
-      if (bookingsList[i].status === "بالداخل عند الدكتور") {
-        console.log("here", i + 1);
-        now = i + 1;
-        break;
-      }
-    }
-  }
+  //     if (bookingsList[i].status === "بالداخل عند الدكتور") {
+  //       console.log("here", i + 1);
+  //       now = i + 1;
+  //       break;
+  //     }
+  //   }
+  // }
 
   let bookingsCount = 0;
   if (bookingsList !== undefined) {
@@ -263,7 +260,7 @@ function TodayBooking() {
   searchParams.set("openReservation", false);
 
   return (
-    <div>
+    <div className={classes.all}>
       <div className={classes.header}>
         <div className={classes.date}>
           <h3>{formattedDate}</h3>
@@ -301,7 +298,7 @@ function TodayBooking() {
       <div>
         <table className={classes.customers}>
           <tr>
-            <th>رقم الحجز</th>
+            <th></th>
             {/* <th>تاريخ الحجز</th> */}
             <th>الاسم</th>
             {/* <th>رقم الحجز</th> */}
@@ -313,12 +310,12 @@ function TodayBooking() {
             <th>المدفوع</th>
             <th>المتبقي</th>
             <th>ملاحظات</th>
-            <th>ملاحظات</th>
+            <th></th>
           </tr>
           {!isLoading &&
             bookingsList.map((item, idx) => (
               <tr>
-                <td>{idx + 1} </td>
+                <td>{idx + 1}. </td>
                 {/* <td>{formatDate(new Date(item.date))} </td> */}
                 <td>{item.patients.name}</td>
                 {/* <td>{idx + 1}</td> */}
@@ -362,15 +359,17 @@ function TodayBooking() {
                       {item.status === "بالداخل عند الدكتور" ? "فتح " : "بدء "}
                     </button>
                   )}
-                  <button
-                    onClick={() => {
-                      navigate(
-                        `/ReservationDetails?patID=${item.patientID}&bokID=${item.id}`
-                      );
-                    }}
-                  >
-                    <FaRegFolderOpen />
-                  </button>
+                  {item.status === "تم الدخول والخروج" && (
+                    <button
+                      onClick={() => {
+                        navigate(
+                          `/ReservationDetails?patID=${item.patientID}&bokID=${item.id}`
+                        );
+                      }}
+                    >
+                      <FaRegFolderOpen />
+                    </button>
+                  )}
                   <button
                     onClick={() => {
                       navigate(`/updateBooking/${item.id}`);
@@ -380,6 +379,7 @@ function TodayBooking() {
                   </button>
                   {item.status !== "تم الدخول والخروج" && (
                     <button
+                      className={classes.hoverElement}
                       onClick={() => {
                         setIsOpenModal(true);
                       }}

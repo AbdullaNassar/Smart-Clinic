@@ -1,3 +1,8 @@
+.all {
+  -webkit-animation: fade-in 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: fade-in 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  min-height: 87vh;
+}
 .header {
   margin: 2rem 1rem;
   display: flex;
@@ -16,7 +21,7 @@
 }
 .date button:hover {
   color: white;
-  background-color: #04aa6d;
+  background-color: #67a8d8;
 }
 /* .header button{
     width: 2rem;
@@ -30,14 +35,25 @@
 } */
 
 .customers {
-  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
   border-collapse: collapse;
   width: 100%;
+  background-color: #fff;
+  color: black;
 }
 .customers td,
 .customers th {
   border: 1px solid #ddd;
   padding: 8px;
+}
+.customers th {
+  /* border: 1px solid #ddd; */
+}
+
+.customers td {
+  border: 1px solid #ddd;
+  background-color: #f2f2f2;
+  /* background-color: #fff; */
 }
 
 .customers tr:nth-child(even) {
@@ -52,8 +68,9 @@
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #04aa6d;
-  color: white;
+  font-weight: 400;
+  /* background-color: #04aa6d; */
+  /* color: white; */
 }
 .print {
   cursor: pointer;
@@ -93,5 +110,34 @@
 
   .input {
     margin-top: 5px;
+  }
+}
+
+.folderIcon {
+  background: transparent;
+  border: 1px solid var(--color-primary-light);
+  padding: 5px;
+  margin-right: 5px;
+}
+.search {
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  border: 1px solid #ccc;
+  margin-right: -12%;
+}
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

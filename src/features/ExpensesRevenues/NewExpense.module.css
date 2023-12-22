@@ -1,96 +1,119 @@
+.all {
+  padding: 5rem;
+  background: var(--color-seven);
+}
+
 .form {
-  width: 90%;
-  /* max-width: 400px; */
-  margin-top: 1rem;
-  margin-left: 6px;
-  /* margin: 0 auto; */
-}
-.info {
-  display: block;
-}
-
-.formGroup {
-  margin-bottom: 20px;
-}
-
-.label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-.lbl {
-  margin-right: 5px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.input {
-  width: 80%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 1rem;
-}
-
-.radioGroup {
+  background: #fff;
+  padding: 2rem;
   display: flex;
-  margin-top: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
 }
-.radioGroup {
+
+.heading {
+  border-bottom: 1px solid #a5a5a5;
+  width: 60%;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.customer {
   display: flex;
-  margin-top: 5px;
-}
-.radioButton {
-  margin-right: 10px;
-}
-
-.textarea {
-  width: 80%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: vertical;
-  /* min-height: 11rem; */
+  width: 60%;
+  justify-content: space-around;
+  border-bottom: 1px solid #a5a5a5;
 }
 
-.button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
+.customer__heading {
+  color: #495d69;
+}
+
+.customer__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.customer__input {
+  margin-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 6px;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 40%;
+
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-secondary);
+  /* background: #cfeaf3; */
+  padding: 0.5rem 1rem;
 }
 
-.button:hover {
-  background-color: #0056b3;
+.product {
+  margin-top: 3rem;
+  display: flex;
+  width: 60%;
+  justify-content: space-around;
+  /* border-bottom: 1px solid #a5a5a5; */
 }
-.lnk {
-  font-size: 25px;
-  color: #1871cd;
+
+.product__nameContainer {
+  margin-left: 3rem;
+}
+
+.product__radio {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.product__name {
+  width: 18rem;
+}
+.product__nameBtn {
+  background: transparent;
+  border: 1px solid;
+  border-radius: 3px;
+  margin-left: 6px;
+}
+
+.product__heading {
+  color: #495d69;
+}
+
+.product__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.product__input {
+  align-self: flex-end;
+  margin-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 6px;
+  border: none;
+
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-secondary);
+  /* background: #cfeaf3; */
+  padding: 0.5rem 1rem;
+}
+
+.product__date {
+  margin-left: 3rem;
 }
 
 .btn {
-  border: 1px solid black;
+  padding: 0.5rem 4rem;
+  background: #67a8d8;
+  border: none;
+  color: white;
+  font-weight: 700;
+  border-radius: 100px;
+  transition: all 0.3s;
 }
 
-@media (min-width: 500px) {
-  .info {
-    display: flex;
-    gap: 20%;
-  }
-  .btns {
-    width: 66%;
-    /* background: red; */
-    /* margin-top: 2rem; */
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    /* margin-bottom: 2rem; */
-  }
-  /* .button{
-    margin-top: 2rem;
-    margin-left: 12rem;
-  } */
+.btn:hover {
+  background-color: #3482bb;
 }

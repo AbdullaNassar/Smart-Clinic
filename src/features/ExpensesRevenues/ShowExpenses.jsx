@@ -185,7 +185,7 @@ function ShowExpenses() {
   const order = !searchParams.get("last") ? "all" : searchParams.get("last");
 
   // const[order,setOrder]=useState('all');
-  const [type, setType] = useState("all");
+  const [type, setType] = useState("");
 
   let expensesList = [];
 
@@ -353,7 +353,7 @@ function ShowExpenses() {
         console.log("cant find order way");
     }
 
-  if (expensesList !== undefined && type !== "all") {
+  if (expensesList !== undefined && type !== "all" && type !== "") {
     console.log("here");
     const newList = expensesList.filter((item) => item.expenseType === type);
     expensesList = newList;
@@ -395,10 +395,10 @@ function ShowExpenses() {
   }
   console.log(expensesList);
   return (
-    <div>
+    <div className={classes.all}>
       <div className="heading">
         <div className="title">
-          <h2 className="heading__title">المصروفات</h2>
+          <h2 className="heading__title textAnimation">المصروفات</h2>
           <span style={{ color: "#6A994E" }}>
             <FaMoneyBill1 />
           </span>
@@ -443,7 +443,7 @@ function ShowExpenses() {
         </div>
 
         <div>
-          <label>نوع المصروف</label>
+          {/* <label>نوع المصروف</label> */}
           <select
             value={type}
             onChange={(e) => {
@@ -452,6 +452,9 @@ function ShowExpenses() {
               setType(e.target.value);
             }}
           >
+            <option value="" disabled selected>
+              نوع المصروف
+            </option>
             <option value="all">all</option>
             {expensesType !== undefined &&
               expensesType.map((item) => (
@@ -584,7 +587,7 @@ function ShowExpenses() {
           {expensesList !== undefined &&
             expensesList.map((item, idx) => (
               <tr>
-                <td>{idx + 1}</td>
+                <td>{idx + 1}.</td>
                 <td>{item.expenseType}</td>
                 <td>{item.expenseName}</td>
                 <td>

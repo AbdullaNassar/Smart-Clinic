@@ -1,7 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import ReactDatePicker from "react-datepicker";
-import { addNewExpense, getExpenses } from "../../services/apiExpenses";
+import {
+  addNewExpense,
+  getExpenses,
+  updateInventoryItem,
+  updateQuantity,
+} from "../../services/apiExpenses";
 import { useForm } from "react-hook-form";
 import { addNewClinicExpenses } from "../../services/apiMyExpenses";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +15,15 @@ import classes from "./NewExpense.module.css";
 import FormRow from "../../UI/FormRow";
 import Button from "../../UI/Button";
 import styled from "styled-components";
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
 const Error = styled.span`
   font-size: 1.4rem;
   color: var(--color-red-700);
@@ -21,12 +35,19 @@ function NewExpense() {
   const [date, setDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [addExpense, setAddExpense] = useState("");
+
+  const { register, formState, handleSubmit, reset, watch } = useForm({
+    defaultValues: {
+      discount: 0,
+    },
+  });
+
   const {
     isAddingExpense: loadingExpenses,
     data: expenses,
     error: errorExpenses,
   } = useQuery({
-    queryKey: ["Expenses"],
+    queryKey: ["items"],
     queryFn: getExpenses,
   });
   const queryClient = useQueryClient();
@@ -35,7 +56,7 @@ function NewExpense() {
     onSuccess: () => {
       toast.success("تمت الاضافه");
       queryClient.invalidateQueries({
-        queryKey: ["Expenses"],
+        queryKey: ["items"],
       });
     },
     onError: (err) => toast.error(err.message),
@@ -47,21 +68,24 @@ function NewExpense() {
     onSuccess: () => {
       toast.success("تمت اضافه عمليه شراء جديده بنجاح");
       queryClient.invalidateQueries({
-        queryKey: ["Expenses"],
+        queryKey: ["items"],
       });
+      reset();
     },
     onError: (err) => toast.error(err.message),
   });
+
+  const mutationStore = useMutation(updateInventoryItem);
+
   // console.log(expenses);
 
-  const { register, formState, handleSubmit, reset, watch } = useForm({
-    defaultValues: {
-      discount: 0,
-    },
-  });
   const { errors } = formState;
 
   function onSubmit(data) {
+    const [variable1, variable2] = data.expenseGroup.split("&");
+    data.expenseType = variable1;
+    // data.id = Number(variable2);
+
     // startDate.setHours(startDate.getHours() + 2);
     data.date = startDate;
     data.price = Number(data.price);
@@ -71,39 +95,71 @@ function NewExpense() {
     data.isStore = data.isStore === "yes" ? true : false;
     console.log(data);
     mutateMyExpense(data);
-    // reset();
 
-    // navigate(-1);
+    if (data.isStore === true) {
+      const quan = data.quantity;
+      // mutationStore.mutate({variable2, data.quantity});
+      // mutationStore.mutate({ variable2, quan });
+      updateQuantity(variable2, quan, true);
+    }
   }
   if (loadingExpenses) return <h2>Loading...</h2>;
   if (errorExpenses) return <h2>Error on loading expenses</h2>;
   return (
-    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-      <div className={classes.info}>
-        <div>
-          <div className={classes.formGroup}>
-            <label htmlFor="type" className={classes.label}>
-              نوع المصروف:
-            </label>
-            <select
-              className={classes.input}
-              id="type"
-              {...register("expenseType")}
-            >
-              {expenses &&
-                expenses.map((item) => (
-                  <option value={item.name}>{item.name}</option>
-                ))}
-            </select>
-            {!isOpen && (
-              <button
-                className={classes.btn}
-                type="button"
-                onClick={() => setIsOpen(true)}
+    <div className={classes.all}>
+      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+        <div className={classes.heading}>
+          {" "}
+          <h2>عملية شرائيه</h2>
+        </div>
+        <div className={classes.customer}>
+          <h3 className={classes.customer__heading}>المورد</h3>
+          <div className={classes.customer__info}>
+            <input
+              className={classes.customer__input}
+              type="text"
+              placeholder="اسم المورد"
+              {...register("supplierName")}
+            />
+            <input
+              className={classes.customer__input}
+              type="number"
+              placeholder="رقم الهاتف"
+              {...register("supplierPhone")}
+            />
+            <input
+              className={classes.customer__input}
+              type="text"
+              placeholder="العنوان"
+              {...register("supplierAddress")}
+            />
+          </div>
+        </div>
+        <div className={classes.product}>
+          <h3 className={classes.product__heading}>المنتج</h3>
+
+          <div className={classes.product__info}>
+            <div className={classes.product__nameContainer}>
+              <select
+                {...register("expenseGroup")}
+                className={`${classes.product__input} ${classes.product__name}`}
               >
-                +
-              </button>
-            )}
+                {expenses &&
+                  expenses.map((item) => (
+                    <option value={`${item.name}&${item.id}`}>
+                      {item.name}
+                    </option>
+                  ))}
+              </select>
+              {!isOpen && (
+                <button
+                  onClick={() => setIsOpen(true)}
+                  className={classes.product__nameBtn}
+                >
+                  +
+                </button>
+              )}
+            </div>
             {isOpen && (
               <div>
                 <label>ادخل نوع المصروف</label>
@@ -112,7 +168,7 @@ function NewExpense() {
                   onChange={(e) => setAddExpense(e.target.value)}
                 />
                 <button
-                  className={classes.btn}
+                  // className={classes.btn}
                   type="button"
                   onClick={() => {
                     if (addExpense === "") {
@@ -127,10 +183,10 @@ function NewExpense() {
                     setIsOpen(false);
                   }}
                 >
-                  اضافه مصروف جديد
+                  اضافه
                 </button>
                 <button
-                  className={classes.btn}
+                  // className={classes.btn}
                   type="button"
                   onClick={() => setIsOpen(false)}
                 >
@@ -138,186 +194,135 @@ function NewExpense() {
                 </button>
               </div>
             )}
-          </div>
-          <div className={classes.formGroup}>
-            <label htmlFor="name" className={classes.label}>
-              اسم المصروف:
-            </label>
-            <FormRow error={errors?.expenseName?.message}>
-              <input
-                className={classes.input}
-                type="text"
-                id="name"
-                disabled={isAddingExpense}
-                {...register("expenseName", { required: "ادخل اسم المصروف" })}
+
+            <input
+              className={classes.product__input}
+              type="number"
+              placeholder="الكميه"
+              {...register("quantity", { required: "ادخل الكميه" })}
+            />
+
+            {/* <div className={classes.formGroup}>
+              <label className={classes.label}>اضافه للمخزن</label>
+              <div className={classes.radioGroup}>
+                <label htmlFor="yes" className={classes.radioButton}>
+                  <input
+                    type="radio"
+                    id="yes"
+                    value="yes"
+                    {...register("isStore")}
+                  />
+                  نعم
+                </label>
+
+                <label htmlFor="no" className={classes.radioButton}>
+                  <input
+                    type="radio"
+                    id="no"
+                    value="no"
+                    {...register("isStore")}
+                  />
+                  لا
+                </label>
+              </div>
+            </div> */}
+            <div className={classes.product__date}>
+              <ReactDatePicker
+                className={classes.product__input}
+                id="date"
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
               />
-            </FormRow>
+            </div>
 
-            {/* {errors?.expenseName?.message&& <Error>ادخل اسم المريض</Error>} */}
-            {/* </FormRow> */}
-          </div>
-          <div className={classes.formGroup}>
-            <label htmlFor="quantity" className={classes.label}>
-              الكميه:
-            </label>
-            <FormRow error={errors?.quantity?.message}>
-              <input
-                className={classes.input}
-                type="number"
-                id="quantity"
-                disabled={isAddingExpense}
-                {...register("quantity", { required: "ادخل الكميه" })}
-              />
-            </FormRow>
+            <input
+              className={classes.product__input}
+              type="text"
+              placeholder="المبلغ"
+              {...register("price", {
+                required: "ادخل سعر ألمصروف",
+              })}
+            />
+            <input
+              className={classes.product__input}
+              type="text"
+              placeholder="الخصم"
+              disabled={isAddingExpense}
+              {...register("discount", {
+                min: {
+                  value: 0,
+                  message: "can't type negative value",
+                },
+              })}
+              max={watch("price")}
+            />
+            <input
+              style={{ border: "none" }}
+              className={classes.product__input}
+              placeholder="الاجمالي"
+              value={watch("price") - watch("discount")}
+              type="number"
+              disabled={true}
+            />
+            <input
+              className={classes.product__input}
+              type="number"
+              placeholder="المدفوع"
+              disabled={isAddingExpense}
+              {...register("paidAmount", {
+                required: "ادخل المبلغ المدفوع",
+                min: {
+                  value: 0,
+                  message: "can't type negative value",
+                },
+              })}
+            />
+            <input
+              className={classes.product__input}
+              type="number"
+              placeholder="المتبقي"
+              disabled={true}
+              style={{ border: "none" }}
+              value={watch("price") - watch("discount") - watch("paidAmount")}
+            />
 
-            {/* {errors?.expenseName?.message&& <Error>ادخل اسم المريض</Error>} */}
-            {/* </FormRow> */}
-          </div>
-          <div className={classes.formGroup}>
-            <label className={classes.label}>اضافه للمخزن:</label>
-            <div className={classes.radioGroup}>
-              <label htmlFor="yes" className={classes.radioButton}>
-                <input
-                  type="radio"
-                  id="yes"
-                  value="yes"
-                  {...register("isStore")}
-                />
-                نعم
-              </label>
-
-              <label htmlFor="no" className={classes.radioButton}>
-                <input
-                  type="radio"
-                  id="no"
-                  value="no"
-                  {...register("isStore")}
-                />
-                لا
-              </label>
+            <div className={classes.product__radio}>
+              <FormControl>
+                <FormLabel id="demo-row-radio-buttons-group-label">
+                  <Typography variant="h6" style={{ fontSize: "18px" }}>
+                    اضافة للمخزن
+                  </Typography>
+                </FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  defaultValue="yes"
+                >
+                  <FormControlLabel
+                    value="yes"
+                    control={<Radio defaultChecked />}
+                    label={
+                      <Typography style={{ fontSize: "16px" }}>نعم</Typography>
+                    }
+                    {...register("isStore")}
+                  />
+                  <FormControlLabel
+                    value="no"
+                    control={<Radio />}
+                    label={
+                      <Typography style={{ fontSize: "16px" }}>لا</Typography>
+                    }
+                    {...register("isStore")}
+                  />
+                </RadioGroup>
+              </FormControl>
             </div>
           </div>
-
-          <div className={classes.formGroup}>
-            <label htmlFor="date" className={classes.label}>
-              التاريخ:
-            </label>
-            <ReactDatePicker
-              className={classes.input}
-              id="date"
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-            />
-          </div>
-
-          <div className={classes.formGroup}>
-            <label htmlFor="notes" className={classes.label}>
-              ملاحظات:
-            </label>
-            <input
-              disabled={isAddingExpense}
-              id="notes"
-              className={classes.textarea}
-              {...register("notes")}
-            />
-          </div>
         </div>
-
-        <div>
-          <div className={classes.formGroup}>
-            <label htmlFor="price" className={classes.label}>
-              المبلغ:
-            </label>
-            <FormRow error={errors?.price?.message}>
-              <input
-                className={classes.input}
-                type="number"
-                id="price"
-                disabled={isAddingExpense}
-                {...register("price", {
-                  required: "ادخل سعر ألمصروف",
-                  // min:{
-                  //     value:50,
-                  //     message:"السعر يجب ان يزيد عن 50 جنيه",
-
-                  // }
-                })}
-              />
-            </FormRow>
-            {/* {errors?.price?.message&& <Error>ادخل احا المصروف</Error>} */}
-          </div>
-          <div className={classes.formGroup}>
-            <label htmlFor="discount" className={classes.label}>
-              الخصم:
-            </label>
-            <FormRow error={errors?.discount?.message}>
-              <input
-                className={classes.input}
-                type="number"
-                id="discount"
-                disabled={isAddingExpense}
-                {...register("discount", {
-                  min: {
-                    value: 0,
-                    message: "can't type negative value",
-                  },
-                })}
-                max={watch("price")}
-              />
-            </FormRow>
-          </div>
-          <div className={classes.formGroup}>
-            <label className={classes.label}>المبلغ بعد الخصم:</label>
-            <FormRow>
-              <input
-                className={classes.input}
-                value={watch("price") - watch("discount")}
-                type="number"
-                disabled={true}
-              />
-            </FormRow>
-          </div>
-          <div className={classes.formGroup}>
-            <label htmlFor="paidAmount" className={classes.label}>
-              المدفوع:
-            </label>
-            <FormRow error={errors?.paidAmount?.message}>
-              <input
-                className={classes.input}
-                type="number"
-                id="paidAmount"
-                disabled={isAddingExpense}
-                {...register("paidAmount", {
-                  required: "ادخل المبلغ المدفوع",
-                  min: {
-                    value: 0,
-                    message: "can't type negative value",
-                  },
-                })}
-              />
-            </FormRow>
-          </div>
-
-          <div>
-            <label className={classes.label}>المتبقي:</label>
-            <FormRow>
-              <input
-                className={classes.input}
-                value={watch("price") - watch("discount") - watch("paidAmount")}
-                type="number"
-                disabled={true}
-              />
-            </FormRow>
-          </div>
-        </div>
-      </div>
-      <div className={classes.btns}>
-        <Button variation="secondary" onClick={() => navigate(-1)}>
-          الغاء
-        </Button>
-        <button className={classes.button}>اضافه</button>
-      </div>
-    </form>
+        <button className={classes.btn}>تأكيد</button>
+      </form>
+    </div>
   );
 }
 export default NewExpense;

@@ -71,7 +71,7 @@ function PatientDetails() {
               filteredList.map((item, idx) => (
                 <div className={classes.card}>
                   <div className={classes.cardNO}>{idx + 1}</div>
-                  <div>
+                  <div style={{ fontWeight: "500" }}>
                     {/* <label>تاريخ الزياره: </label> */}
                     <time>{formatDate(item.date)}</time>
                   </div>

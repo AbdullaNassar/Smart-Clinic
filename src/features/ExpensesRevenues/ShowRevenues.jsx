@@ -15,6 +15,7 @@ import Pagination from "../../UI/Pagnition";
 import { useSearchParams } from "react-router-dom";
 import MyFilter from "../../UI/MyFilter";
 import { formatCurrency } from "../../utils/helper";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 // #198dc1 blue color
 // #198dc1 blue dark
 function ShowRevenues() {
@@ -63,7 +64,7 @@ function ShowRevenues() {
   const order = !searchParams.get("last") ? "all" : searchParams.get("last");
 
   // const[order,setOrder]=useState('all');
-  const [type, setType] = useState("all");
+  const [type, setType] = useState("");
 
   let RevenuesList = [];
 
@@ -178,7 +179,7 @@ function ShowRevenues() {
         console.log("cant find order way");
     }
 
-  if (RevenuesList !== undefined && type !== "all") {
+  if (RevenuesList !== undefined && type !== "all" && type !== "") {
     console.log("here");
     const newList = RevenuesList.filter((item) => item.bookings.type === type);
     RevenuesList = newList;
@@ -221,10 +222,10 @@ function ShowRevenues() {
   }
   console.log(RevenuesList);
   return (
-    <div>
+    <div className={classes.all}>
       <div className="heading">
         <div className="title">
-          <h2 className="heading__title">الايرادات</h2>
+          <h2 className="heading__title textAnimation">الايرادات</h2>
           <span style={{ color: "#04aa6d" }}>
             <FaMoneyBillTrendUp />
           </span>
@@ -269,7 +270,7 @@ function ShowRevenues() {
         </div>
 
         <div>
-          <label>نوع المصروف</label>
+          {/* <label>نوع الايراد</label> */}
           <select
             value={type}
             onChange={(e) => {
@@ -278,13 +279,43 @@ function ShowRevenues() {
               setType(e.target.value);
             }}
           >
+            <option value="" disabled selected>
+              نوع الايراد
+            </option>
             <option value="all">all</option>
             {revenueType !== undefined &&
               revenueType.map((item) => (
-                <option value={item.name}>{item.name}</option>
+                <option value={item.name} key={item.name}>
+                  {item.name}
+                </option>
               ))}
           </select>
         </div>
+
+        {/* <Box sx={{ minWidth: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">نوع الايراد</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Age"
+              value={type}
+              onChange={(e) => {
+                searchParams.set("page", 1);
+                setSearchParams(searchParams);
+                setType(e.target.value);
+              }}
+            >
+              <MenuItem value="all">all</MenuItem>
+              {revenueType !== undefined &&
+                revenueType.map((item) => (
+                  <MenuItem key={item.name} value={item.name}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        </Box> */}
 
         <div className={classes.date}>
           {/* {order==='specfic'&& <time>{formatDate(startDate)} </time>} */}
@@ -370,7 +401,7 @@ function ShowRevenues() {
           {RevenuesList !== undefined &&
             RevenuesList.map((item, idx) => (
               <tr>
-                <td>{idx + 1}</td>
+                <td>{idx + 1}.</td>
                 <td>{item.patients.name}</td>
                 <td>{item.bookings.type}</td>
                 <td>

@@ -38,6 +38,7 @@ const NavList = styled.ul`
 
   & > * {
     padding: 0 rem;
+    border-bottom: 1px solid #d7d5d5;
   }
 `;
 
@@ -52,8 +53,10 @@ const StyledDiv = styled.div`
   padding: 1.2rem 0.8rem;
   transition: all 0.3s;
   & svg {
-    width: 2.4rem;
-    height: 2.4rem;
+    /* width: 2.4rem; */
+    /* height: 2.4rem; */
+    width: 2rem;
+    height: 2rem;
     color: var(--color-grey-400);
     transition: all 0.3s;
   }
@@ -84,8 +87,10 @@ const StyledNavLink = styled(NavLink)`
   }
 
   & svg {
-    width: 2.4rem;
-    height: 2.4rem;
+    /* width: 2.4rem; */
+    /* height: 2.4rem; */
+    width: 2rem;
+    height: 2rem;
     color: var(--color-grey-400);
     transition: all 0.3s;
   }
@@ -102,10 +107,11 @@ const StyledNavLink = styled(NavLink)`
 function MainNav() {
   const [appointOpen, setAppointOpen] = useState(true);
   const [patientOpen, setPatientOpen] = useState(true);
-  const [financeOpen, setFinanceOpen] = useState(false);
+  const [financeOpen, setFinanceOpen] = useState(true);
   const { openPatientModal } = usePatient();
   return (
     <nav>
+      <div></div>
       <NavList>
         <li>
           <StyledNavLink to="/">
@@ -117,7 +123,7 @@ function MainNav() {
           </StyledNavLink>
         </li>
         <li>
-          <StyledDiv>
+          {/* <StyledDiv>
             <span
               className={classes.open}
               onClick={() => setAppointOpen((e) => !e)}
@@ -131,12 +137,12 @@ function MainNav() {
             <HiOutlineClock />
             <span className={classes.mgRight}>المواعيد</span>
 
-            {/*  */}
-          </StyledDiv>
+          
+          </StyledDiv> */}
 
           {appointOpen && (
             <ul className={`${classes.pad} ${classes.flex}`}>
-              <li>
+              {/* <li>
                 <StyledNavLink to="/newBooking">
                   <span>
                     <HiOutlineChevronDown
@@ -145,8 +151,21 @@ function MainNav() {
                   </span>
                   <span>اضافة حجز</span>
                 </StyledNavLink>
-              </li>
+              </li> */}
+
               <li>
+                <StyledNavLink to="/newBooking">
+                  <span>
+                    <HiOutlineChevronDown
+                      style={{ height: "2rem", opacity: "0" }}
+                    />
+                  </span>
+                  <HiOutlineSquaresPlus />
+                  <span>اضافة حجز</span>
+                </StyledNavLink>
+              </li>
+
+              {/* <li>
                 <StyledNavLink to="/todayBooking">
                   <span>
                     <HiOutlineChevronDown
@@ -155,8 +174,20 @@ function MainNav() {
                   </span>
                   <span>مواعيد اليوم</span>
                 </StyledNavLink>
-              </li>
+              </li> */}
+
               <li>
+                <StyledNavLink to="/todayBooking">
+                  <span>
+                    <HiOutlineChevronDown
+                      style={{ height: "2rem", opacity: "0" }}
+                    />
+                  </span>
+                  <HiOutlineClock />
+                  <span>مواعيد اليوم</span>
+                </StyledNavLink>
+              </li>
+              {/* <li>
                 <StyledNavLink to="/allBookings">
                   <span>
                     <HiOutlineChevronDown
@@ -165,13 +196,24 @@ function MainNav() {
                   </span>
                   <span>قائمه المواعيد</span>
                 </StyledNavLink>
+              </li> */}
+              <li>
+                <StyledNavLink to="/allBookings">
+                  <span>
+                    <HiOutlineChevronDown
+                      style={{ height: "2rem", opacity: "0" }}
+                    />
+                  </span>
+                  <HiOutlineCalendarDays />
+                  <span>قائمه المواعيد</span>
+                </StyledNavLink>
               </li>
             </ul>
           )}
         </li>
 
         <li>
-          <StyledDiv>
+          {/* <StyledDiv>
             <span
               className={classes.open}
               onClick={() => setPatientOpen((e) => !e)}
@@ -184,20 +226,35 @@ function MainNav() {
             </span>
             <HiOutlineUserGroup />
             <span className={classes.mgRight}>المرضي</span>
-          </StyledDiv>
+          </StyledDiv> */}
           {patientOpen && (
             <ul className={`${classes.pad} ${classes.flex}`}>
               <li onClick={() => openPatientModal()}>
                 <StyledNavLink to="/newPatient">
                   <span>
                     <HiOutlineChevronDown
-                      style={{ height: "1rem", width: "5.5rem", opacity: "0" }}
+                      style={{ height: "2rem", opacity: "0" }}
                     />
                   </span>
+
+                  <HiOutlineUserPlus />
+
                   <span>اضافة مريض</span>
                 </StyledNavLink>
               </li>
-              <li>
+
+              {/* <li>
+                <StyledNavLink to="/newPatient">
+                  <span>
+                    <HiOutlineChevronDown
+                      style={{ height: "2rem", opacity: "0" }}
+                    />
+                  </span>
+                  <HiOutlineHome />
+                  <span>اضافة مريض</span>
+                </StyledNavLink>
+              </li> */}
+              {/* <li>
                 <StyledNavLink to="/patientHistory">
                   <span>
                     <HiOutlineChevronDown
@@ -206,13 +263,24 @@ function MainNav() {
                   </span>
                   <span>سجلات المرضي</span>
                 </StyledNavLink>
+              </li> */}
+              <li>
+                <StyledNavLink to="/patientHistory">
+                  <span>
+                    <HiOutlineChevronDown
+                      style={{ height: "2rem", opacity: "0" }}
+                    />
+                  </span>
+                  <HiOutlineUserGroup />
+                  <span>سجلات المرضي</span>
+                </StyledNavLink>
               </li>
             </ul>
           )}
         </li>
 
         <li>
-          <StyledDiv>
+          {/* <StyledDiv>
             <span
               className={classes.open}
               onClick={() => setFinanceOpen((e) => !e)}
@@ -225,20 +293,31 @@ function MainNav() {
             </span>
             <HiOutlineCurrencyPound />
             <span className={classes.mgRight}>الماليات</span>
-          </StyledDiv>
+          </StyledDiv> */}
           {financeOpen && (
             <ul className={`${classes.pad} ${classes.flex}`}>
-              <li>
+              {/* <li>
                 <StyledNavLink to="/revenues">
                   <span>
                     <HiOutlineChevronDown
-                      style={{ height: "1rem", width: "5.5rem", opacity: "0" }}
+                      style={{ height: "1rem", width: "5.5rem", opacity: "1" }}
                     />
                   </span>
                   <span>الايرادات</span>
                 </StyledNavLink>
-              </li>
+              </li> */}
               <li>
+                <StyledNavLink to="/revenues">
+                  <span>
+                    <HiOutlineChevronDown
+                      style={{ height: "2rem", opacity: "0" }}
+                    />
+                  </span>
+                  <HiOutlineCurrencyPound />
+                  <span>الايرادات</span>
+                </StyledNavLink>
+              </li>
+              {/* <li>
                 <StyledNavLink to="/expenses">
                   <span>
                     <HiOutlineChevronDown
@@ -247,22 +326,44 @@ function MainNav() {
                   </span>
                   <span>المصروفات</span>
                 </StyledNavLink>
-              </li>
+              </li> */}
               <li>
+                <StyledNavLink to="/expenses">
+                  <span>
+                    <HiOutlineChevronDown
+                      style={{ height: "2rem", opacity: "0" }}
+                    />
+                  </span>
+                  <CiMoneyCheck1 />
+                  <span>المصروفات</span>
+                </StyledNavLink>
+              </li>
+              {/* <li>
                 <StyledNavLink to="/newExpense">
                   <span>
                     <HiOutlineChevronDown
                       style={{ height: "1rem", width: "5.5rem", opacity: "0" }}
                     />
                   </span>
-                  <span>تسجيل عمليه شرائيه</span>
+                  <span>تسجيل عمليه نقديه</span>
+                </StyledNavLink>
+              </li> */}
+              <li>
+                <StyledNavLink to="/newExpense">
+                  <span>
+                    <HiOutlineChevronDown
+                      style={{ height: "2rem", opacity: "0" }}
+                    />
+                  </span>
+                  <HiOutlineDocumentPlus />
+                  <span>تسجيل عملية نقديه</span>
                 </StyledNavLink>
               </li>
             </ul>
           )}
         </li>
         <li>
-          <StyledNavLink to="/settings">
+          <StyledNavLink to="/store">
             <span>
               <HiOutlineChevronDown style={{ height: "2rem", opacity: "0" }} />
             </span>

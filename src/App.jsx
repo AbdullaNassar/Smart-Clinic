@@ -21,7 +21,7 @@ import NewExpense from "./features/ExpensesRevenues/NewExpense";
 import NewRevenue from "./features/ExpensesRevenues/NewRevenue";
 import ShowExpenses from "./features/ExpensesRevenues/ShowExpenses";
 import ShowRevenues from "./features/ExpensesRevenues/ShowRevenues";
-import Settings from "./features/seetings/Settings";
+// import Settings from "./features/seetings/Settings";
 import Login from "./pages/Login";
 import GlobalStyles from "./styles/GlobalStyles";
 import ProtectedRoute from "./UI/ProtectedRoute";

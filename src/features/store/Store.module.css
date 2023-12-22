@@ -1,25 +1,125 @@
-.styledTable {
-  width: 70%;
-  border-collapse: collapse;
-  font-size: 1.5rem;
+.all {
+  background: var(--color-seven);
+  padding: 2rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 87vh;
 }
 
-.styledTable thead th {
-  background-color: #f2f2f2;
-  border-bottom: 2px solid #ddd;
-  padding: 0.5rem;
+.heading {
+  margin-bottom: 1rem;
+}
+
+.filter {
+  display: flex;
+  gap: 2rem;
+  font-weight: 600;
+}
+
+.table {
+  background: #fffffe;
+  padding: 0rem;
+
   text-align: left;
+  border-collapse: collapse;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.styledTable tbody td {
+.expire {
+  border-collapse: unset;
+  border: 1px solid var(--color-eight);
+}
+
+.table th {
+  background: #e7eff3;
+}
+
+.table td,
+.table th {
+  padding: 1rem;
+  font-weight: 500;
+}
+
+.table td {
   border-bottom: 1px solid #ddd;
-  padding: 0.5rem;
 }
 
-.styledTable tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+.bdBottom {
+  border-bottom: 1px solid black;
+}
+.btn {
+  transition: all 0.3s;
+}
+.btn:hover {
+  border-bottom: 1px solid black;
 }
 
-.styledTable tbody tr:hover {
-  background-color: #e5e5e5;
+.options {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.times {
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 0 0.3rem;
+}
+
+.save {
+  background: transparent;
+  border: 1px solid black;
+  outline: none;
+  border-radius: 3px;
+  padding: 0 0.3rem;
+  transition: all 0.3s;
+}
+
+.save:hover {
+  transform: translateY(-3px);
+}
+
+.icon {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  transition: all 0.3s;
+}
+.icon:hover {
+  border: none;
+  transform: scale(1.1);
+}
+.icon:focus {
+  border: none;
+  outline: 0;
+}
+
+.mgRight {
+  margin-right: 1rem;
+}
+
+.search {
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  border: 1px solid #ccc;
+  margin-right: -12%;
+}
+.filterSearch {
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchAdd {
+  display: flex;
+}
+.newBtn {
+  background: #9fd4ef;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 1.6rem;
+  color: white;
+  font-family: inherit;
+  font-weight: 500;
 }

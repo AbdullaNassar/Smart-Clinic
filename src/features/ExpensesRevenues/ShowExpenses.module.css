@@ -1,3 +1,7 @@
+.all {
+  min-height: 87vh;
+}
+
 .header {
   margin: 1rem 0;
   display: flex;

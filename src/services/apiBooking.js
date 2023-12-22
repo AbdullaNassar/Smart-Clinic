@@ -65,7 +65,7 @@ const { error } = await supabase
 .delete()
 .eq('id', id)
 if(error){
-    throw new Error('bookings cannot be deleted');
+    throw new Error(error.message);
   }
 }
 
