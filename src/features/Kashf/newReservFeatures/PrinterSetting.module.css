@@ -1,5 +1,5 @@
 Checkbox.module.css .checkboxContainer {
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 
 .checkboxLabel {
@@ -12,12 +12,12 @@ Checkbox.module.css .checkboxContainer {
 }
 
 .checkboxCustom {
-  width: 18px;
-  height: 18px;
+  width: 1.8rem;
+  height: 1.8rem;
   border: 1px solid #ccc;
   border-radius: 3px;
   background-color: #fff;
-  margin-right: 8px;
+  margin-right: 0.8rem;
 }
 
 .checkboxInput:checked + .checkboxCustom {
@@ -25,7 +25,7 @@ Checkbox.module.css .checkboxContainer {
 }
 
 .checkboxText {
-  font-size: 14px;
+  font-size: 1.4rem;
 }
 
 .info {

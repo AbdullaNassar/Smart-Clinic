@@ -2,7 +2,8 @@ import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 import { useLocation } from "react-router-dom";
-// import Uploader from "../data/Uploader";
+import { useState } from "react";
+import { RiMenu2Fill } from "react-icons/ri";
 
 const StyledSidebar = styled.aside`
   background-color: var(--color-grey-0);
@@ -25,20 +26,31 @@ const StyledSidebar = styled.aside`
 
 function Sidebar() {
   const location = useLocation();
-  console.log(location.pathname);
+  // console.log(location.pathname);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
 
   if (
     location.pathname === "/ReservationDetails" ||
     location.pathname === "/newReservations" ||
     location.pathname.includes("/patientDetails")
   )
+    // if (!isSidebarOpen)
+    // return (
+    //   <span>
+    //     <RiMenu2Fill />
+    //   </span>
+    // );
     return null;
   return (
     <StyledSidebar>
-      {/* <Logo /> */}
       <MainNav />
-
-      {/* <Uploader /> */}
+      <button className="toggle-button" onClick={toggleSidebar}>
+        <span className="toggle-icon"></span>
+      </button>
     </StyledSidebar>
   );
 }

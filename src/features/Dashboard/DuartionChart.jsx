@@ -28,7 +28,7 @@ const ChartBox = styled.div`
   }
 
   /* my style */
-  width: 500px;
+  width: 50rem;
   margin-right: 25px;
 `;
 

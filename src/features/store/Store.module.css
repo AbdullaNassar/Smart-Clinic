@@ -123,3 +123,7 @@
   font-family: inherit;
   font-weight: 500;
 }
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+}

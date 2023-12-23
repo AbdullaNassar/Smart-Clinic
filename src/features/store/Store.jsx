@@ -71,6 +71,9 @@ function Store() {
     }
   );
 
+  if (items !== undefined && toggleFilter) {
+    items = items.filter((item) => item.quantity <= 5);
+  }
   if (items !== undefined && searchQuery !== null) {
     //  console.log(searchQuery);
     items = items.filter((item) =>
@@ -209,29 +212,31 @@ function Store() {
                   {/* <FaCirclePlus /> */}
                   <AiFillPlusCircle />
                 </button>
-                {itemList[idx] != 0 && (
-                  <button
-                    className={classes.save}
-                    onClick={() => {
-                      if (itemList[idx] > item.quantity) {
-                        toast.error(
-                          // `لا  توجد ${itemList[idx]} ${item.name} في المخزن`
-                          `not found ${itemList[idx]} ${item.name} in inventory `
-                        );
-                      } else {
-                        const updatedItem = {
-                          value: itemList[idx],
-                          id: item.id,
-                        };
-                        console.log(updatedItem);
-                        updateMutation.mutate(updatedItem);
-                      }
-                      // updateQuantity(item.id, decreaseItem[idx], false);
-                    }}
-                  >
-                    حفظ
-                  </button>
-                )}
+
+                <button
+                  // className={classes.save}
+                  className={`${classes.save} ${
+                    itemList[idx] == 0 ? classes.hidden : ""
+                  }`}
+                  onClick={() => {
+                    if (itemList[idx] > item.quantity) {
+                      toast.error(
+                        // `لا  توجد ${itemList[idx]} ${item.name} في المخزن`
+                        `not found ${itemList[idx]} ${item.name} in inventory `
+                      );
+                    } else {
+                      const updatedItem = {
+                        value: itemList[idx],
+                        id: item.id,
+                      };
+                      console.log(updatedItem);
+                      updateMutation.mutate(updatedItem);
+                    }
+                    // updateQuantity(item.id, decreaseItem[idx], false);
+                  }}
+                >
+                  حفظ
+                </button>
               </td>
 
               <td>{item.name}</td>

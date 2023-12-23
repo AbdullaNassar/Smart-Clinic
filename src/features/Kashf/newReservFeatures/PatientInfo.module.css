@@ -1,5 +1,5 @@
 .row {
-  margin-bottom: 12px;
+  margin-bottom: 1.2rem;
 }
 
 .row label {
@@ -8,7 +8,7 @@
 }
 
 .button {
-  padding: 10px 20px;
+  padding: 1rem 2rem;
   background-color: #1976d2;
   color: #fff;
   border: none;

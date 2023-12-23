@@ -1,5 +1,5 @@
 .row {
-  margin-bottom: 12px;
+  margin-bottom: 1.2rem;
 }
 
 .row label {
@@ -8,15 +8,15 @@
 }
 
 .row textarea {
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  height: 130px;
-  width: 400px;
+  height: 13rem;
+  width: 40rem;
 }
 
 .button {
-  padding: 10px 20px;
+  padding: 1rem 2rem;
   background-color: #1976d2;
   color: #fff;
   border: none;

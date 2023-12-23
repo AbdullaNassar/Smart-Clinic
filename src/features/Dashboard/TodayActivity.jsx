@@ -21,6 +21,7 @@ const StyledToday = styled.div`
   grid-column: 1 / span 2;
   padding-top: 2.4rem;
   overflow: scroll;
+  width: 50rem;
   /* overflow-x: hidden; */
 `;
 

@@ -41,7 +41,7 @@ function TodayBooking() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
 
-  console.log(new Date());
+  // console.log(new Date());
 
   const optionss = {
     weekday: "long",
@@ -65,7 +65,7 @@ function TodayBooking() {
   const options = { timeZone: "Africa/Cairo", dateStyle: "full" };
   const arabicLocale = "ar-EG";
   const dateString = currentDate.toLocaleDateString(arabicLocale, options);
-  console.log(dateString);
+  // console.log(dateString);
 
   const audioRef = useRef(null);
 
@@ -83,7 +83,7 @@ function TodayBooking() {
     },
     onError: (err) => toast.error(err.message),
   });
-  console.log(new Date());
+  // console.log(new Date());
 
   let {
     isLoading,
@@ -96,7 +96,7 @@ function TodayBooking() {
 
   // const { activities, isLoading:loadingActivity } = useTodayActivity();
   // console.log(activities);
-  // console.log(bookings)
+  // console.log(bookings);
   const mutation = useMutation((params) => updateBooking(...params), {
     onSuccess: () => {
       // toast.success('Column updated successfully!');
@@ -199,7 +199,7 @@ function TodayBooking() {
     }).format(date);
   }
 
-  console.log(formatTime(new Date()));
+  // console.log(formatTime(new Date()));
 
   if (bookings !== undefined) {
     bookings = bookings.filter((obj) =>
@@ -230,13 +230,13 @@ function TodayBooking() {
   //   now = 1;
   //   for (let i = bookingsList.length - 1; i >= 0; i--) {
   //     if (bookingsList[i].status === "تم الدخول والخروج") {
-  //       console.log("ok", i + 2);
+  // console.log("ok", i + 2);
   //       now = i + 2;
   //       break;
   //     }
 
   //     if (bookingsList[i].status === "بالداخل عند الدكتور") {
-  //       console.log("here", i + 1);
+  // console.log("here", i + 1);
   //       now = i + 1;
   //       break;
   //     }
@@ -246,6 +246,8 @@ function TodayBooking() {
   let bookingsCount = 0;
   if (bookingsList !== undefined) {
     bookingsCount = bookingsList.length;
+    bookingsList.sort((a, b) => a.id - b.id);
+    console.log(bookingsList);
     let x = [];
     for (
       let from = (page - 1) * 10, count = 0;
@@ -256,6 +258,7 @@ function TodayBooking() {
     }
     bookingsList = x;
   }
+
   // const [searchParams, setSearchParams] = useSearchParams();
   searchParams.set("openReservation", false);
 

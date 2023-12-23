@@ -39,7 +39,7 @@
 .customers td,
 .customers th {
   border: 1px solid #ddd;
-  padding: 7px;
+  padding: 0.7rem;
 }
 
 .customers tr:nth-child(even) {
@@ -51,8 +51,8 @@
 }
 
 .customers th {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
   text-align: left;
   background-color: #04aa6d;
   color: white;
@@ -72,18 +72,18 @@
 
 .heading {
   background-color: #f2f2f2;
-  padding: 20px;
+  padding: 2rem;
   text-align: center;
 }
 
 .heading__title {
   color: #333333;
-  font-size: 32px;
+  font-size: 3.2rem;
   font-weight: bold;
   margin: 0;
 }
 .date button {
-  padding: 0px 3px;
+  padding: 0px 0.3rem;
   border: 1px solid black;
 }
 .date button:hover {

@@ -31,24 +31,24 @@
 }
 
 .formGroup {
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
 }
 
 .label {
   display: block;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
 }
 .lbl {
-  margin-right: 5px;
+  margin-right: 0.5rem;
   /* font-weight: bold; */
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
 }
 
 .input {
   width: 80%;
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   margin-right: 1rem;
@@ -57,16 +57,16 @@
 
 .radioGroup {
   display: flex;
-  margin-top: 5px;
+  margin-top: 0.5rem;
 }
 
 .radioButton {
-  margin-right: 10px;
+  margin-right: 1rem;
 }
 
 .textarea {
   width: 96%;
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
@@ -74,7 +74,7 @@
 }
 
 .button {
-  padding: 10px 20px;
+  padding: 1rem 2rem;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -87,7 +87,7 @@
   background-color: #0056b3;
 }
 .lnk {
-  font-size: 25px;
+  font-size: 2.5rem;
   cursor: pointer;
   /* color: #1871cd; */
 }

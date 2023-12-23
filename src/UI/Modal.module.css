@@ -28,7 +28,7 @@
 .content {
   background-color: white;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 0.8rem;
   /* text-align: center; */
   width: 50%;
   position: relative;
@@ -39,7 +39,7 @@
 }
 
 .content p {
-  font-size: 18px;
+  font-size: 1.8rem;
 }
 
 .actions .delete {
@@ -69,7 +69,7 @@
   background-color: green;
 }
 .cncl {
-  padding: 10px 20px;
+  padding: 1rem 2rem;
   box-shadow: var(--shadow-sm);
   /* background-color: #007bff; */
   color: #fff;
@@ -107,21 +107,21 @@
 }
 
 .formGroup {
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
 }
 .mgBottom {
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
 }
 
 .label {
   display: block;
   font-weight: 800;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
 }
 
 .input {
   width: 100%;
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   height: 3.5rem;
@@ -129,16 +129,16 @@
 
 .radioGroup {
   display: flex;
-  margin-top: 5px;
+  margin-top: 0.5rem;
 }
 
 .radioButton {
-  margin-right: 10px;
+  margin-right: 1rem;
 }
 
 .textarea {
   width: 100%;
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
@@ -194,7 +194,7 @@
 .contentPrice {
   background-color: white;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 0.8rem;
   /* text-align: center; */
   width: 29%;
   /* width: fit-content; */
