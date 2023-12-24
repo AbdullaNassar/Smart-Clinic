@@ -16,6 +16,14 @@ const StyledDashboardLayout = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto 34rem auto;
   gap: 2.4rem;
+
+  @media (max-width: 1000px) {
+    grid-template-rows: auto auto 34rem 34rem;
+  }
+
+  @media (max-width: 750px) {
+    grid-template-columns: auto;
+  }
 `;
 
 function DashboardLayout() {
@@ -36,8 +44,13 @@ function DashboardLayout() {
       />
 
       <TodayActivity />
-      <DurationChart confirmedStays={bookings} />
-      <SalesChart bookings={bookings} numDays={numDays} />
+      <TodayActivity />
+
+      {/* <DurationChart confirmedStays={bookings} /> */}
+
+      <div style={{ gridColumn: "1/-1" }}>
+        <SalesChart bookings={bookings} numDays={numDays} />
+      </div>
     </StyledDashboardLayout>
   );
 }

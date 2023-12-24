@@ -10,7 +10,7 @@ function Diagnosis({ saveData, data = {} }) {
     saveData("diagnosis", daaata);
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className={classes.all}>
       <div className={classes.row}>
         <label>التشخيص:</label>
         <textarea {...register("details")} />

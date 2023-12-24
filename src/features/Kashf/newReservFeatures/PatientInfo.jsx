@@ -4,7 +4,7 @@ function PatientInfo({ data, isLoading, error }) {
   // console.log(data);
   if (isLoading) return <p>Loading...</p>;
   return (
-    <div>
+    <div className={classes.all}>
       <div className={classes.row}>
         <label>اسم المريض:</label>
         <input disabled={true} value={data?.name} />

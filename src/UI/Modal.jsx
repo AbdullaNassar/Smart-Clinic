@@ -13,6 +13,7 @@ import { MdAccountCircle, MdMonetizationOn } from "react-icons/md";
 import { HiMiniUserPlus } from "react-icons/hi2";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
+import MainNav from "./MainNav";
 
 export function ConfirmationModal({ isOpen, onCancel, onConfirm }) {
   if (!isOpen) {
@@ -279,6 +280,27 @@ export function AddPatientModal({ isOpen, onCancel, onConfirm }) {
             </button>
           </div>
         </form>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+export function SidebarModal({ isOpen, onCancel }) {
+  if (!isOpen) {
+    return null;
+  }
+
+  return ReactDOM.createPortal(
+    <div className={classes.sidebarModal}>
+      <div className={classes.sidebarContent}>
+        <div className={classes.sidebar__heading}>
+          <h2>القائمه</h2>
+          <div style={{ fontSize: "2.6rem" }} onClick={onCancel}>
+            &times;
+          </div>
+        </div>
+        <MainNav modal={true} onClick={onCancel} />
       </div>
     </div>,
     document.body

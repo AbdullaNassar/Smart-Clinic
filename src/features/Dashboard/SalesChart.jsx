@@ -22,6 +22,11 @@ const StyledSalesChart = styled(DashboardBox)`
   & .recharts-cartesian-grid-vertical line {
     stroke: var(--color-grey-300);
   }
+
+  @media (max-width: 1000px) {
+    /* max-width: 50rem; */
+    max-width: 100%;
+  }
 `;
 
 function SalesChart({ bookings, numDays }) {
@@ -66,7 +71,7 @@ function SalesChart({ bookings, numDays }) {
         {format(allDates.at(-1), "MMM dd yyyy")}{" "}
       </Heading>
 
-      <ResponsiveContainer height={300} width="100%">
+      <ResponsiveContainer height={300} width="90%">
         <AreaChart data={data}>
           <XAxis
             dataKey="label"

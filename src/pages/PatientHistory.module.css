@@ -1,14 +1,30 @@
 .all {
   min-height: 87vh;
+  font-size: 1.6rem;
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
 }
 .search {
   display: flex;
   justify-content: space-between;
   padding: 1rem;
   align-items: center;
+
+  @media (max-width: 600px) {
+    padding: 0;
+    justify-content: start;
+    gap: 2rem;
+  }
 }
 .search span {
   color: green;
+}
+
+.searchIcon {
+  @media (max-width: 800px) {
+    display: none;
+  }
 }
 .search span:hover {
   cursor: pointer;
@@ -25,6 +41,10 @@
 .customers th {
   border: 1px solid #ddd;
   padding: 0.8rem;
+
+  @media (max-width: 600px) {
+    padding: 0.3rem;
+  }
 }
 
 .customers tr:nth-child(even) {

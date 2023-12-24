@@ -64,7 +64,7 @@ function MedicalTests({ saveData, data = [] }) {
   // console.log(newMedicalTest);
   return (
     <div>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className={classes.all}>
         <div className={classes.row}>
           <label>اختر التحليل:</label>
           <input

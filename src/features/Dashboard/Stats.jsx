@@ -6,6 +6,7 @@ import {
 } from "react-icons/hi2";
 import Stat from "./Stat";
 import { formatCurrency } from "../../utils/helper";
+import classes from "./Stats.module.css";
 
 function Stats({ bookings = [], confirmedStays, numDays, cabinCount }) {
   // 1.
@@ -32,13 +33,15 @@ function Stats({ bookings = [], confirmedStays, numDays, cabinCount }) {
         icon={<HiOutlineBriefcase />}
         value={numBookings}
       />
-      <Stat
-        title="الايرادات"
-        color="green"
-        icon={<HiOutlineBanknotes />}
-        value={formatCurrency(sales)}
-        // value={formatCurrency(2400)}
-      />
+      <div className={classes.gap}>
+        <Stat
+          title="الايرادات"
+          color="green"
+          icon={<HiOutlineBanknotes />}
+          value={formatCurrency(sales)}
+          // value={formatCurrency(2400)}
+        />
+      </div>
       {/* <Stat
           title="Check ins"
           color="indigo"

@@ -16,6 +16,10 @@ const StyledHeader = styled.header`
   @media print {
     display: none;
   }
+
+  @media (max-width: 400px) {
+    padding: 0;
+  }
 `;
 
 function Header() {

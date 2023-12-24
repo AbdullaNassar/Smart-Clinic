@@ -22,6 +22,10 @@ const StyledToday = styled.div`
   padding-top: 2.4rem;
   overflow: scroll;
   width: 50rem;
+
+  @media (max-width: 1000px) {
+    width: 90%;
+  }
   /* overflow-x: hidden; */
 `;
 
@@ -42,6 +46,11 @@ const NoActivity = styled.p`
   font-size: 1.8rem;
   font-weight: 500;
   margin-top: 0.8rem;
+
+  @media (max-width: 1000px) {
+    grid-row: 3/4;
+    grid-column: 1/2;
+  }
 `;
 
 function TodayActivity() {

@@ -2,9 +2,10 @@ import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiMenu2Fill } from "react-icons/ri";
-
+import classes from "./Sidebar.module.css";
+import { SidebarModal } from "./Modal";
 const StyledSidebar = styled.aside`
   background-color: var(--color-grey-0);
   /* padding: 3.2rem 0rem; */
@@ -17,7 +18,15 @@ const StyledSidebar = styled.aside`
   gap: 3.2rem;
   max-height: 90vh;
   overflow: scroll;
-  min-width: 30.6rem;
+  min-width: 5rem;
+  @media (min-width: 1300px) {
+    min-width: 30.6rem;
+  }
+  @media (max-width: 1000px) {
+    /* grid-row: 2/-1;
+    grid-column: 1/2;
+    min-width: 20em; */
+  }
 
   @media print {
     display: none;
@@ -26,31 +35,27 @@ const StyledSidebar = styled.aside`
 
 function Sidebar() {
   const location = useLocation();
-  // console.log(location.pathname);
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   if (
     location.pathname === "/ReservationDetails" ||
     location.pathname === "/newReservations" ||
     location.pathname.includes("/patientDetails")
-  )
-    // if (!isSidebarOpen)
-    // return (
-    //   <span>
-    //     <RiMenu2Fill />
-    //   </span>
-    // );
+  ) {
     return null;
+  }
+
   return (
     <StyledSidebar>
+      <span className={classes.menuIcon} onClick={() => setIsOpenModal(true)}>
+        <RiMenu2Fill />
+      </span>
       <MainNav />
-      <button className="toggle-button" onClick={toggleSidebar}>
-        <span className="toggle-icon"></span>
-      </button>
+
+      <SidebarModal
+        isOpen={isOpenModal}
+        onCancel={() => setIsOpenModal(false)}
+      />
     </StyledSidebar>
   );
 }

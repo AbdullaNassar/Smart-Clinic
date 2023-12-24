@@ -1,6 +1,10 @@
 .all {
   padding: 5rem;
   background: var(--color-seven);
+  font-size: 1.6rem;
+  @media (max-width: 600px) {
+    padding: 1rem;
+  }
 }
 
 .form {
@@ -25,6 +29,10 @@
   width: 60%;
   justify-content: space-around;
   border-bottom: 1px solid #a5a5a5;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
 
 .customer__heading {
@@ -55,6 +63,10 @@
   width: 60%;
   justify-content: space-around;
   /* border-bottom: 1px solid #a5a5a5; */
+  @media (max-width: 600px) {
+    /* flex-direction: column;
+    gap: 1rem; */
+  }
 }
 
 .product__nameContainer {

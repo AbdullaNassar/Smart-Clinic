@@ -61,7 +61,7 @@ function Food({ saveData, data = [] }) {
 
   // console.log(newFood);
   return (
-    <div>
+    <div className={classes.all}>
       <div className={classes.menu}>
         <form onSubmit={onSubmit}>
           <div className={classes.row}>

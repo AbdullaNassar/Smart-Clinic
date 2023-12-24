@@ -67,6 +67,11 @@ button {
     background-color 0.3s ease,
     color 0.3s ease;
 
+  @media (max-width: 600px) {
+    padding: 4px;
+    font-size: 10px;
+  }
+
   /* Hover state */
   &:hover {
     background-color: var(--color-six); /* Primary color */
@@ -85,6 +90,12 @@ button {
   /* gap: 1rem; */
   color: blue;
   justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: 600px) {
+    justify-content: flex-start;
+    gap: 4rem;
+  }
 }
 .heading__title {
   color: #333333;
@@ -94,7 +105,7 @@ button {
 }
 .heading .title {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   gap: 1rem;
 }

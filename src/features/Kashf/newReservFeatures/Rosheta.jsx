@@ -71,7 +71,7 @@ function Rosheta({ saveData, data = [] }) {
   if (isLoading) return <h2>Loading...</h2>;
   return (
     <div>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className={classes.all}>
         <div className={classes.row}>
           <label>اختر الدواء:</label>
           <input

@@ -1,6 +1,13 @@
 .all {
+  /* background: #eee; */
+  min-height: 87vh;
+  max-height: 87vh;
+  padding: 1rem 0;
   display: flex;
-  width: 80rem;
+  font-size: 1.6rem;
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
 }
 .btns {
   display: flex;
@@ -11,7 +18,19 @@
   height: 86vh;
   overflow: auto;
   padding: 1rem 2rem;
-  width: 30%;
+  width: 25rem;
+
+  @media (max-width: 600px) {
+    width: auto;
+    padding: 1rem;
+  }
+}
+
+.btn {
+  font-size: 1.6rem;
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
 }
 @media print {
   .btns {
@@ -19,5 +38,9 @@
   }
 }
 .btns button {
-  height: 4rem;
+  border: none;
+  background: transparent;
+}
+.btns button:hover {
+  background-color: #e5f2ff;
 }

@@ -10,6 +10,14 @@
   animation: fade-in 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 
   min-height: 87vh;
+  font-size: 1.6rem;
+
+  @media (max-width: 1000px) {
+    font-size: 1rem;
+  }
+  @media (max-width: 600px) {
+    font-size: 0.8rem;
+  }
 }
 
 .header {
@@ -21,6 +29,9 @@
   background: #eee;
   border-radius: 5px;
   align-items: center;
+  @media (max-width: 600px) {
+    padding: 1rem;
+  }
 }
 .header .date {
   display: flex;
@@ -65,6 +76,9 @@
 .customers th {
   border: 1px solid #ddd;
   padding: 0.8rem;
+  @media (max-width: 400px) {
+    padding: 0;
+  }
 }
 
 .customers tr:nth-child(even) {

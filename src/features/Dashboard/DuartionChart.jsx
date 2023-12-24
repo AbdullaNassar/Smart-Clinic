@@ -30,6 +30,11 @@ const ChartBox = styled.div`
   /* my style */
   width: 50rem;
   margin-right: 25px;
+
+  @media (max-width: 1000px) {
+    grid-row: 4/5;
+    grid-column: 1/2;
+  }
 `;
 
 const startDataLight = [

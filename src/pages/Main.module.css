@@ -8,6 +8,10 @@
     justify-content: space-between; */
 
   min-height: 87vh;
+
+  @media (max-width: 1000px) {
+    padding-left: 2rem;
+  }
 }
 .header {
   display: flex;

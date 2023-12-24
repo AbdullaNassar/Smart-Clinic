@@ -13,7 +13,7 @@ function QuickCheck({ saveData, data = {} }) {
 
   console.log(data);
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className={classes.all}>
       <div className={classes.row}>
         <label className={classes.lbl}>ضغط الدم:</label>
         <input {...register("pressure")} />

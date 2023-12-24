@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   /* margin: 0 auto; */
+  font-size: 1.6rem;
 
   animation: fade-in-left 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
@@ -17,6 +18,10 @@
   align-items: center;
   gap: 1rem;
   margin: 0 0 3rem;
+
+  @media (max-width: 1000px) {
+    margin-top: 2rem;
+  }
 }
 .info {
   display: grid;
@@ -28,6 +33,10 @@
   padding-left: 4rem;
   justify-content: center;
   /* margin-bottom: 3rem; */
+
+  @media (max-width: 600px) {
+    padding-left: 1rem;
+  }
 }
 
 .formGroup {
@@ -92,26 +101,16 @@
   /* color: #1871cd; */
 }
 
-@media (min-width: 500px) {
-  /* .info {
-    display: flex;
-    gap: 20%;
-  } */
-  .btns {
-    width: 66%;
-    /* background: red; */
-    /* margin-top: 2rem; */
-    display: flex;
-    justify-content: center;
+.btns {
+  width: 66%;
+  display: flex;
+  justify-content: center;
+  @media (max-width: 600px) {
+    width: 100%;
     gap: 2rem;
-
-    /* margin-bottom: 2rem; */
   }
-  /* .button{
-    margin-top: 2rem;
-    margin-left: 12rem;
-  } */
 }
+
 .btn {
   border: 1px solid black;
 }
@@ -135,6 +134,9 @@
 .note {
   width: 100%;
   padding-left: 4rem;
+  @media (max-width: 600px) {
+    padding-left: 1rem;
+  }
 }
 .cncl:hover {
   background-color: #dfdfdf;

@@ -59,7 +59,7 @@ function Symptoms({ saveData, data = [] }) {
   // console.log(newSymptom);
   return (
     <div>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className={classes.all}>
         <div className={classes.row}>
           <label>اختر العرض المرضي</label>
           <input

@@ -1,0 +1,8 @@
+.menuIcon {
+  @media (min-width: 1300px) {
+    display: none;
+    visibility: hidden;
+  }
+  font-size: 2.6rem;
+  text-align: center;
+}

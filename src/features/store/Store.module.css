@@ -5,6 +5,7 @@
   flex-direction: column;
   gap: 2rem;
   min-height: 87vh;
+  font-size: 1.6rem;
 }
 
 .heading {
@@ -109,10 +110,14 @@
 .filterSearch {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
 .searchAdd {
   display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 .newBtn {
   background: #9fd4ef;

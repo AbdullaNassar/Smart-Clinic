@@ -81,7 +81,7 @@ function PatientHostory() {
               setSearchParams(searchParams);
             }}
           />
-          <span>
+          <span className={classes.searchIcon}>
             <IoSearchOutline />
           </span>
         </div>

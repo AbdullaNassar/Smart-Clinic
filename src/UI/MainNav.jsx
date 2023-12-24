@@ -104,16 +104,15 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-function MainNav() {
+function MainNav({ modal, onClick }) {
   const [appointOpen, setAppointOpen] = useState(true);
   const [patientOpen, setPatientOpen] = useState(true);
   const [financeOpen, setFinanceOpen] = useState(true);
   const { openPatientModal } = usePatient();
   return (
-    <nav>
-      <div></div>
+    <nav className={`${!modal ? classes.navHidden : ""}`}>
       <NavList>
-        <li>
+        <li onClick={onClick}>
           <StyledNavLink to="/">
             <span>
               <HiOutlineChevronDown style={{ height: "2rem", opacity: "0" }} />
@@ -122,7 +121,7 @@ function MainNav() {
             <span>نظره عامه</span>
           </StyledNavLink>
         </li>
-        <li>
+        <li onClick={onClick}>
           {/* <StyledDiv>
             <span
               className={classes.open}
@@ -153,7 +152,7 @@ function MainNav() {
                 </StyledNavLink>
               </li> */}
 
-              <li>
+              <li onClick={onClick}>
                 <StyledNavLink to="/newBooking">
                   <span>
                     <HiOutlineChevronDown
@@ -176,7 +175,7 @@ function MainNav() {
                 </StyledNavLink>
               </li> */}
 
-              <li>
+              <li onClick={onClick}>
                 <StyledNavLink to="/todayBooking">
                   <span>
                     <HiOutlineChevronDown
@@ -197,7 +196,7 @@ function MainNav() {
                   <span>قائمه المواعيد</span>
                 </StyledNavLink>
               </li> */}
-              <li>
+              <li onClick={onClick}>
                 <StyledNavLink to="/allBookings">
                   <span>
                     <HiOutlineChevronDown
@@ -212,7 +211,7 @@ function MainNav() {
           )}
         </li>
 
-        <li>
+        <li onClick={onClick}>
           {/* <StyledDiv>
             <span
               className={classes.open}
@@ -229,7 +228,12 @@ function MainNav() {
           </StyledDiv> */}
           {patientOpen && (
             <ul className={`${classes.pad} ${classes.flex}`}>
-              <li onClick={() => openPatientModal()}>
+              <li
+                onClick={() => {
+                  openPatientModal();
+                  onClick();
+                }}
+              >
                 <StyledNavLink to="/newPatient">
                   <span>
                     <HiOutlineChevronDown
@@ -264,7 +268,7 @@ function MainNav() {
                   <span>سجلات المرضي</span>
                 </StyledNavLink>
               </li> */}
-              <li>
+              <li onClick={onClick}>
                 <StyledNavLink to="/patientHistory">
                   <span>
                     <HiOutlineChevronDown
@@ -306,7 +310,7 @@ function MainNav() {
                   <span>الايرادات</span>
                 </StyledNavLink>
               </li> */}
-              <li>
+              <li onClick={onClick}>
                 <StyledNavLink to="/revenues">
                   <span>
                     <HiOutlineChevronDown
@@ -327,7 +331,7 @@ function MainNav() {
                   <span>المصروفات</span>
                 </StyledNavLink>
               </li> */}
-              <li>
+              <li onClick={onClick}>
                 <StyledNavLink to="/expenses">
                   <span>
                     <HiOutlineChevronDown
@@ -348,7 +352,7 @@ function MainNav() {
                   <span>تسجيل عمليه نقديه</span>
                 </StyledNavLink>
               </li> */}
-              <li>
+              <li onClick={onClick}>
                 <StyledNavLink to="/newExpense">
                   <span>
                     <HiOutlineChevronDown
@@ -362,7 +366,7 @@ function MainNav() {
             </ul>
           )}
         </li>
-        <li>
+        <li onClick={onClick}>
           <StyledNavLink to="/store">
             <span>
               <HiOutlineChevronDown style={{ height: "2rem", opacity: "0" }} />
