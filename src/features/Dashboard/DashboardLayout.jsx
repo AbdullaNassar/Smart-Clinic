@@ -43,12 +43,12 @@ function DashboardLayout() {
         // cabinCount={cabins.length}
       />
 
-      <TodayActivity />
+      {/* <TodayActivity /> */}
       <TodayActivity />
 
-      {/* <DurationChart confirmedStays={bookings} /> */}
+      <DurationChart confirmedStays={bookings} />
 
-      <div style={{ gridColumn: "1/-1" }}>
+      <div style={{ gridColumn: "1/-1", fontSize: "1.6rem" }}>
         <SalesChart bookings={bookings} numDays={numDays} />
       </div>
     </StyledDashboardLayout>

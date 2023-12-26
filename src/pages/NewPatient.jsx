@@ -12,7 +12,7 @@ import { AddPatientModal } from "../UI/Modal";
 function NewPatient() {
   const { closePatientModal } = usePatient();
   const navigate = useNavigate();
-  const { isAddPatientModal } = usePatient();
+  const { isAddPatientModal, openPatientModal } = usePatient();
 
   const { register, formState, handleSubmit, reset } = useForm();
   const { errors } = formState;
@@ -117,7 +117,11 @@ function NewPatient() {
     //   </button>
 
     // </form>
-    <AddPatientModal isOpen={isAddPatientModal} onCancel={onCancel} />
+    <div className={classes.all}>
+      <button onClick={() => openPatientModal()}>اضافه مريض جديد </button>
+
+      <AddPatientModal isOpen={isAddPatientModal} onCancel={onCancel} />
+    </div>
   );
 }
 export default NewPatient;

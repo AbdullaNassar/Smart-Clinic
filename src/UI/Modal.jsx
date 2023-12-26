@@ -14,6 +14,8 @@ import { HiMiniUserPlus } from "react-icons/hi2";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import MainNav from "./MainNav";
+import { RiDeleteBin5Fill, RiDeleteBin6Line } from "react-icons/ri";
+import { GiConfirmed } from "react-icons/gi";
 
 export function ConfirmationModal({ isOpen, onCancel, onConfirm }) {
   if (!isOpen) {
@@ -22,11 +24,14 @@ export function ConfirmationModal({ isOpen, onCancel, onConfirm }) {
 
   return ReactDOM.createPortal(
     <div className={classes.modal}>
-      <div className={classes.content}>
-        {/* <h2>انهاء الحجز</h2>
-        <hr/> */}
-        <p>هل تريد انهاء هذا الحجز </p>
-        <div className={classes.actions}>
+      <div className={classes.content} style={{ width: "30%" }}>
+        <div className={classes.confirmHeading}>
+          <span className={classes.confirmIcon}>
+            <GiConfirmed />
+          </span>
+          <p>هل تريد انهاء هذا الحجز </p>
+        </div>
+        <div className={classes.actions} style={{ marginTop: "1rem" }}>
           <button className={classes.cncl} onClick={onCancel}>
             لا
           </button>
@@ -48,18 +53,27 @@ const DeleteConfirmationModal = ({ isOpen, onCancel, onConfirm }) => {
   return ReactDOM.createPortal(
     <div className={classes.modal}>
       <div className={classes.content}>
-        <h2>تأكيد الحذف</h2>
-        <hr />
-        <p>
-          هل انت متأكد من حذف هذا الحجز؟ لا يمكن التراجع عن هذا الاجراء فيما بعد{" "}
-        </p>
-        <div className={classes.actions}>
-          <button className={classes.cncl} onClick={onCancel}>
-            الغاء
-          </button>
-          <button className={classes.delete} onClick={onConfirm}>
-            حذف
-          </button>
+        <div className={classes.deleteContent}>
+          <div className={classes.deleteHeading}>
+            <span className={classes.deleteIcon}>
+              <RiDeleteBin6Line />
+            </span>
+            <div>
+              <h2>تأكيد الحذف</h2>
+              <p>
+                هل انت متأكد من حذف هذا الحجز؟ لا يمكن التراجع عن هذا الاجراء
+                فيما بعد{" "}
+              </p>
+            </div>
+          </div>
+          <div className={classes.actions}>
+            <button className={classes.cncl} onClick={onCancel}>
+              الغاء
+            </button>
+            <button className={classes.delete} onClick={onConfirm}>
+              حذف
+            </button>
+          </div>
         </div>
       </div>
     </div>,

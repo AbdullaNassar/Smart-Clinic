@@ -1,3 +1,19 @@
+.all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.all button {
+  font-weight: bold;
+  padding: 1rem 2rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  /* letter-spacing: 2px; */
+  font-size: 1.5rem;
+}
 .form {
   width: 100%;
   max-width: 400px;

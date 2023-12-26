@@ -42,7 +42,7 @@ function TodayItem({ activity }) {
       {/* <Flag src={guests.countryFlag} alt={`Flag of ${guests.country}`} /> */}
       <Guest>{patients?.name}</Guest>
       <div>{type}</div>
-      <div>{price}</div>
+      <div>{price} LE</div>
       {/* <div>{numNights} nights</div> */}
 
       {/* {status === "unconfirmed" && (

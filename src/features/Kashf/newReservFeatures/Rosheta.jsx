@@ -30,7 +30,7 @@ function Rosheta({ saveData, data = [] }) {
   const { isLoading: isAdding, mutate } = useMutation({
     mutationFn: addNewMedicine,
     onSuccess: () => {
-      alert("new medicine added succsfully");
+      toast.success("تمت اضافه دواء جديد ");
       queryClient.invalidateQueries({
         queryKey: ["medicines"],
       });

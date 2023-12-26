@@ -321,6 +321,7 @@ function NewBooking() {
       </div>
       <div className={classes.btns}>
         <Button
+          type="button"
           className={classes.cncl}
           variation="secondary"
           onClick={() => navigate(-1)}

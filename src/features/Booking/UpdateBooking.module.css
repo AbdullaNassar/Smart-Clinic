@@ -1,12 +1,42 @@
 .form {
-  width: 90%;
+  width: 97%;
   /* max-width: 400px; */
-  margin-top: 1rem;
-  margin-left: 0.6rem;
+  /* margin-top: 1rem; */
+  /* margin-left: 6px; */
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   /* margin: 0 auto; */
+  font-size: 1.6rem;
+
+  animation: fade-in-left 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 3rem;
+
+  @media (max-width: 1000px) {
+    margin-top: 2rem;
+  }
 }
 .info {
-  display: block;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  column-gap: 4rem;
+  /* display: flex; */
+  /* gap: 20%; */
+  width: 100%;
+  padding-left: 4rem;
+  justify-content: center;
+  /* margin-bottom: 3rem; */
+
+  @media (max-width: 600px) {
+    padding-left: 1rem;
+  }
 }
 
 .formGroup {
@@ -20,7 +50,8 @@
 }
 .lbl {
   margin-right: 0.5rem;
-  font-weight: bold;
+  /* font-weight: bold; */
+  font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
@@ -28,8 +59,9 @@
   width: 80%;
   padding: 1rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-right: 1rem;
+  height: 4.5rem;
 }
 
 .radioGroup {
@@ -42,12 +74,12 @@
 }
 
 .textarea {
-  width: 80%;
+  width: 96%;
   padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
-  min-height: 11rem;
+  min-height: 9rem;
 }
 
 .button {
@@ -57,7 +89,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: 40%;
+  width: 35%;
 }
 
 .button:hover {
@@ -65,25 +97,72 @@
 }
 .lnk {
   font-size: 2.5rem;
-  color: #1871cd;
+  cursor: pointer;
+  /* color: #1871cd; */
 }
 
-@media (min-width: 500px) {
-  .info {
-    display: flex;
-    gap: 20%;
+.btns {
+  width: 66%;
+  display: flex;
+  justify-content: center;
+  @media (max-width: 600px) {
+    width: 100%;
+    gap: 2rem;
   }
-  .btns {
-    width: 66%;
-    /* background: red; */
-    /* margin-top: 2rem; */
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    /* margin-bottom: 2rem; */
+}
+
+.btn {
+  border: 1px solid black;
+}
+
+.priceContainer {
+  width: 97%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.paidContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.dateType {
+  width: 89%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.note {
+  width: 100%;
+  padding-left: 4rem;
+  @media (max-width: 600px) {
+    padding-left: 1rem;
   }
-  /* .button{
-    margin-top: 2rem;
-    margin-left: 12rem;
-  } */
+}
+.cncl:hover {
+  background-color: #dfdfdf;
+}
+
+@-webkit-keyframes fade-in-left {
+  0% {
+    -webkit-transform: translateX(-50px);
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes fade-in-left {
+  0% {
+    -webkit-transform: translateX(-50px);
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

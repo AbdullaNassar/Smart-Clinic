@@ -37,10 +37,37 @@ function SalesChart({ bookings, numDays }) {
     start: subDays(new Date(), numDays - 1),
     end: new Date(),
   });
-
+  const optionss = {
+    // weekday: "long",
+    // year: "numeric",
+    month: "long",
+    day: "numeric",
+    //  hour: "numeric",
+    //  minute: "numeric",
+    //  hour12: true,
+    // timeZone: 'UTC',
+    // timeZoneName: 'short',
+    locale: "ar",
+  };
+  const options = {
+    // weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    //  hour: "numeric",
+    //  minute: "numeric",
+    //  hour12: true,
+    // timeZone: 'UTC',
+    // timeZoneName: 'short',
+    locale: "ar",
+  };
+  // const formattedDate = new Intl.DateTimeFormat("ar", optionss).format(
+  //   new Date()
+  // );
   const data = allDates.map((date) => {
     return {
       label: format(date, "MMM dd"),
+      // label: new Intl.DateTimeFormat("ar", optionss).format(date),
       totalSales: bookings
         .filter((booking) => isSameDay(date, new Date(booking.created_at)))
         .reduce((acc, cur) => acc + cur.bookings.price, 0),
@@ -67,10 +94,13 @@ function SalesChart({ bookings, numDays }) {
   return (
     <StyledSalesChart>
       <Heading as="h2">
-        Sales from {format(allDates.at(0), "MMM dd yyyy")} &mdash;{" "}
-        {format(allDates.at(-1), "MMM dd yyyy")}{" "}
+        {format(allDates.at(-1), "MMM dd yyyy")} &mdash;
+        {format(allDates.at(0), "MMM dd yyyy")} الايرادات من
       </Heading>
-
+      {/* <Heading as="h2">
+        {new Intl.DateTimeFormat("ar", options).format(allDates.at(0))} &mdash;{" "}
+        {new Intl.DateTimeFormat("ar", options).format(allDates.at(-1))}{" "}
+      </Heading> */}
       <ResponsiveContainer height={300} width="90%">
         <AreaChart data={data}>
           <XAxis
@@ -79,7 +109,7 @@ function SalesChart({ bookings, numDays }) {
             tickLine={{ stroke: colors.text }}
           />
           <YAxis
-            unit="$"
+            unit=" LE"
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
@@ -91,8 +121,8 @@ function SalesChart({ bookings, numDays }) {
             stroke={colors.totalSales.stroke}
             fill={colors.totalSales.fill}
             strokeWidth={2}
-            name="Total sales"
-            unit="$"
+            name="Total Revenue"
+            unit="LE"
           />
           {/* <Area
             dataKey="extrasSales"

@@ -122,6 +122,12 @@ button {
   .noPrint {
     display: none;
   }
+
+  head,
+  title,
+  meta {
+    display: none !important;
+  }
 }
 
 .textAnimation {

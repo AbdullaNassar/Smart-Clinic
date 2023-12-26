@@ -67,7 +67,7 @@ function PatientHostory() {
   const navigate = useNavigate();
   return (
     <div className={classes.all}>
-      <div className={classes.search}>
+      <div className={`${classes.search} no-print`}>
         <div className={classes.searchContainer}>
           <input
             placeholder="بحث..."
@@ -86,6 +86,8 @@ function PatientHostory() {
           </span>
         </div>
         <span
+          style={{ color: "#439A86" }}
+          className="no-print"
           onClick={() => {
             window.print();
           }}
@@ -109,7 +111,7 @@ function PatientHostory() {
           </tr>
           {filteredList.map((item, idx) => (
             <tr>
-              <td>{(page - 1) * 10 + idx + 1}</td>
+              <td>{(page - 1) * 10 + idx + 1}.</td>
               <td>{item.name}</td>
               {/* <td>{item.id}</td> */}
               <td style={{ textAlign: "center" }}>{item.age}</td>

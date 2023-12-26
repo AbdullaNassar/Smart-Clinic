@@ -91,11 +91,11 @@ function Printer({
         </div>
         <div className={classes.col}>
           <label>اسم المريض: {patientinfo?.name}</label>
-          <label>السن:{patientinfo?.age}</label>
-          <label>النوع:{patientinfo?.gender}</label>
-          <label>اسم الدكتور: طه بندو</label>
+          {patientinfo?.age && <label>السن:{patientinfo?.age}</label>}
+          {patientinfo?.gender && <label>النوع:{patientinfo?.gender}</label>}
+          {/* <label>اسم الدكتور: طه بندو</label> */}
 
-          {(all || diagnosis) &&
+          {/* {(all || diagnosis) &&
             data.diagnosis &&
             data.diagnosis?.notes !== "" && (
               <label>ملاحظات: {data.diagnosis.notes}</label>
@@ -104,7 +104,7 @@ function Printer({
             data.diagnosis &&
             data.diagnosis?.details !== "" && (
               <label>التشخيص: {data.diagnosis.details}</label>
-            )}
+            )} */}
           {data.diagnosis && data.diagnosis?.advices !== "" && (
             <label>نصائح للمريض: {data.diagnosis.advices}</label>
           )}
@@ -112,17 +112,19 @@ function Printer({
       </div>
       <hr />
       <div className={classes.card}>
+        <h3>R/</h3>
         <div className={classes.box}>
           {(all || rosheta) && data.rosheta && data.rosheta.length > 0 && (
             <table className={classes.customTable}>
-              <caption>العلاج</caption>
+              {/* <caption>RX</caption> */}
               <tr>
-                <th>اسم الدواء</th>
-                <th>الجرعه</th>
-                <th>ملاحظات</th>
+                <th> </th>
+                <th></th>
+                <th></th>
               </tr>
-              {data.rosheta.map((item) => (
-                <tr>
+              {data.rosheta.map((item, idx) => (
+                <tr className={classes.roshtaFont}>
+                  {/* <td>{idx + 1}.</td> */}
                   <td>{item.name} </td>
                   <td>{item.times}</td>
                   {item.notes !== "" && <td>{item.notes}</td>}
@@ -136,59 +138,86 @@ function Printer({
           {(all || medical) &&
             data.medicalTest &&
             data.medicalTest.length > 0 && (
-              <table className={classes.customTable}>
-                <caption>التحاليل المطلوبه</caption>
-                <tr>
-                  <th>اسم التحليل</th>
-                  <th>ملاحظات</th>
-                </tr>
-                {data.medicalTest.map((item) => (
-                  <tr>
-                    <td>{item.name}</td>
-                    {item.notes !== "" && <td>{item.notes}</td>}
-                  </tr>
-                ))}
-              </table>
+              <div>
+                {/* <hr /> */}
+                <div className={classes.dataRow}>
+                  <label>Medical Test:</label>
+                  {data.medicalTest.map((item, idx) => (
+                    <span>
+                      {item.name}{" "}
+                      {idx + 1 !== data.medicalTest.length ? "-" : ""}
+                    </span>
+                  ))}
+                </div>
+              </div>
             )}
           {/* <hr/> */}
         </div>
         <div className={classes.box}>
           {(all || xray) && data.xrays && data.xrays.length > 0 && (
-            <table className={classes.customTable}>
-              <caption>الاشعات المطلوبه</caption>
-              <tr>
-                <th>اسم الاشعه</th>
-                <th>ملاحظات</th>
-              </tr>
-              {data.xrays.map((item) => (
-                <tr>
-                  <td>{item.name}</td>
-                  {item.notes !== "" && <td>{item.notes}</td>}
-                </tr>
-              ))}
-            </table>
+            <div className={classes.bdTop}>
+              {/* <hr /> */}
+              <div className={classes.dataRow}>
+                <label>xrays:</label>
+                {data.xrays.map((item, idx) => (
+                  <span>
+                    {item.name} {idx + 1 !== data.xrays.length ? "-" : ""}
+                  </span>
+                ))}
+              </div>
+            </div>
+            // <table className={classes.customTable}>
+            //   <caption>الاشعات المطلوبه</caption>
+            //   <tr>
+            //     <th>اسم الاشعه</th>
+            //     <th>ملاحظات</th>
+            //   </tr>
+            //   {data.xrays.map((item) => (
+            //     <tr>
+            //       <td>{item.name}</td>
+            //       {item.notes !== "" && <td>{item.notes}</td>}
+            //     </tr>
+            //   ))}
+            // </table>
           )}
           {/* <hr/> */}
         </div>
         <div className={classes.box}>
-          {(all || food) && data.food && data.food.length > 0 && (
-            <table className={classes.customTable}>
-              <caption>الاكل اثناء فتره العلاج</caption>
-              <tr>
-                <th>الطعام</th>
-                {/* <th>مسموح/ممنوع</th> */}
-              </tr>
-              {data.food.map((item) => (
-                <tr>
-                  <td>{item.name}</td>
-                  <td>{item.isOk === true ? "مسموح" : "ممنوع"}</td>
-                </tr>
-              ))}
-            </table>
-          )}
-          {/* <hr/> */}
+          <div className={`${classes.bdTop} ${classes.row}`}>
+            {(all || food) && data.food && data.food.length > 0 && (
+              <div>
+                <table className={`${classes.customTable}`}>
+                  <caption>الطعام اثناء فتره العلاج</caption>
+
+                  {data.food.map((item) => (
+                    <tr>
+                      <td>{item.name}</td>
+                      <td>{item.isOk === true ? "مسموح" : "ممنوع"}</td>
+                    </tr>
+                  ))}
+                </table>
+              </div>
+            )}
+            {(all || opposite) &&
+              data.oppositeMedicines &&
+              data.oppositeMedicines.length > 0 && (
+                <table className={classes.customTable}>
+                  <label>الادويه المحظوره اثناء فتره العلاج</label>
+                  {/* <tr>
+                    <th>اسم الدواء</th>
+                    <th>ملاحظات</th>
+                  </tr> */}
+                  {data.oppositeMedicines.map((item) => (
+                    <tr className={classes.opositeItem}>
+                      <td>{item.name}</td>
+                      {item.notes !== "" && <td>{item.notes}</td>}
+                    </tr>
+                  ))}
+                </table>
+              )}
+          </div>
         </div>
-        <div className={classes.box}>
+        {/* <div className={classes.box}>
           {(all || opposite) &&
             data.oppositeMedicines &&
             data.oppositeMedicines.length > 0 && (
@@ -206,11 +235,12 @@ function Printer({
                 ))}
               </table>
             )}
-          {/* <hr/> */}
-        </div>
+         
+        </div> */}
       </div>
-      <hr />
+      {/* <hr /> */}
       <div className={classes.footer}>
+        {/* <hr /> */}
         <div className={classes.col}>
           <span>
             +01063698275
