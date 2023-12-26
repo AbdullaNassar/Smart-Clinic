@@ -94,7 +94,7 @@ function NewExpense() {
     data.quantity = Number(data.quantity);
     data.isStore = data.isStore === "yes" ? true : false;
     console.log(data);
-    mutateMyExpense(data);
+    // mutateMyExpense(data);
 
     if (data.isStore === true) {
       const quan = data.quantity;

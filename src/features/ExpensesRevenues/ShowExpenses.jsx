@@ -26,7 +26,7 @@ function ShowExpenses() {
     queryKey: ["expenses"],
     queryFn: getMyExpenses,
   });
-  // console.log(expenses);
+  console.log(expenses);
 
   const {
     isLoading: loadingExpensesType,
@@ -36,7 +36,7 @@ function ShowExpenses() {
     queryKey: ["Expenses"],
     queryFn: getExpenses,
   });
-  console.log(expensesType);
+  // console.log(expensesType);
   const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
       day: "numeric",
@@ -207,7 +207,7 @@ function ShowExpenses() {
         const filteredData = expenses.filter((obj) =>
           allDates.some((date) => isSameDay(new Date(obj.date), date))
         );
-        console.log(filteredData);
+        // console.log(filteredData);
 
         expensesList = filteredData;
         expensesList.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -360,7 +360,7 @@ function ShowExpenses() {
 
     console.log(newList);
   }
-  console.log(expensesList);
+  // console.log(expensesList);
   if (expensesList !== undefined && searchQuery !== null) {
     // console.log(searchQuery);
     expensesList = expensesList.filter((item) =>
@@ -393,7 +393,7 @@ function ShowExpenses() {
       allPaid += expensesList[i].paidAmount;
     }
   }
-  console.log(expensesList);
+  // console.log(expensesList);
   return (
     <div className={classes.all}>
       <div className="heading">
@@ -443,7 +443,7 @@ function ShowExpenses() {
         </div>
 
         <div>
-          {/* <label>نوع المصروف</label> */}
+          {/* <label>اسم المصروف</label> */}
           <select
             value={type}
             onChange={(e) => {
@@ -453,7 +453,7 @@ function ShowExpenses() {
             }}
           >
             <option value="" disabled selected>
-              نوع المصروف
+              اسم المصروف
             </option>
             <option value="all">all</option>
             {expensesType !== undefined &&
@@ -536,7 +536,7 @@ function ShowExpenses() {
                     <button onClick={(e)=>setOrder('3month')}>اخر 3 شهور </button>
                     <button onClick={(e)=>setOrder('year')}>اخر سنه</button>
                     <div>
-                        <label>نوع المصروف</label>
+                        <label>اسم المصروف</label>
                         <select value={type} onChange={(e)=>setType(e.target.value)}>
                             <option value="all">all</option>
                             {expensesType!==undefined&&expensesType.map(item=><option value={item.name}>
@@ -557,8 +557,10 @@ function ShowExpenses() {
         <table className={classes.customers}>
           <tr>
             <th></th>
-            <th>نوع المصروف</th>
             <th>اسم المصروف</th>
+            <th>المورد</th>
+            <th>الهاتف</th>
+            {/* <th>اسم المصروف</th> */}
             <th>التاريخ</th>
             <th>الوقت</th>
             <th> المبلغ</th>
@@ -569,6 +571,7 @@ function ShowExpenses() {
             <th>ملاحظات</th>
           </tr>
           <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -589,7 +592,8 @@ function ShowExpenses() {
               <tr>
                 <td>{idx + 1}.</td>
                 <td>{item.expenseType}</td>
-                <td>{item.expenseName}</td>
+                <td>{item.supplierName}</td>
+                <td>{item.supplierPhone}</td>
                 <td>
                   <time>{formatDate(new Date(item.date))}</time>
                 </td>
