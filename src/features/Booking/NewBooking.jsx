@@ -99,7 +99,7 @@ function NewBooking() {
 
     console.log(data);
     mutate(data);
-    // navigate(-1);
+    navigate(-1);
   }
 
   function onCancel() {
