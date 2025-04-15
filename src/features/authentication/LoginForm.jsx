@@ -8,8 +8,8 @@ import SpinnerMini from "../../UI/SpinnerMini";
 import toast from "react-hot-toast";
 
 function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("abdallahmoemen44@gmail.com");
+  const [password, setPassword] = useState("123456");
 
   const { login, isLoading } = useLogin();
   function handleSubmit(e) {
