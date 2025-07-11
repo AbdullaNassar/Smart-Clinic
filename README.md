@@ -1,11 +1,12 @@
 # 🩺 Clinic Master
 
-**Clinic Master** is a  web application where a doctor can manage clinic operations, including booking, patient information, inventory, and financial tracking.
+**Clinic Master** is a web application where a doctor can manage clinic operations, including booking, patient information, inventory, and financial tracking.
 
 ---
+
 ## [🚀Live Demo](https://abdullah-clinic.netlify.app/)
 
----
+## ##[📷 Demo](./demo.mkv)
 
 ## ✨ Features
 
@@ -29,7 +30,7 @@
 - **React Router**
 - **CSS Modules**
 - **Conext API**
-- **React Query*
+- \*_React Query_
 - **react-hot-toast**
 - **react-error-boundary**
 - **react-hook-form**
@@ -226,5 +227,3 @@
     ├── index.js
     ├── main.jsx
 ```
-
-

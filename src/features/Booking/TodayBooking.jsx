@@ -207,6 +207,7 @@ function TodayBooking() {
     );
   }
   let bookingsList = bookings;
+  console.log(bookings);
   // let now = 0;
   // if (bookings !== undefined) {
   //   for (let i = 0; i < bookings.length; i++) {
@@ -258,7 +259,7 @@ function TodayBooking() {
     }
     bookingsList = x;
   }
-
+  console.log(bookingsList);
   // const [searchParams, setSearchParams] = useSearchParams();
   searchParams.set("openReservation", false);
 
