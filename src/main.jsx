@@ -7,9 +7,9 @@ import "./index.css";
 
 import { ErrorBoundary } from "react-error-boundary";
 
-import ErrorFallback from "./UI/ErrorFallback";
+import ErrorFallback from "./shared/components/ui/ErrorFallback.jsx";
 import { ThemeProvider } from "@mui/material";
-import theme from "./utils/theme";
+import theme from "./shared/utils/theme.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

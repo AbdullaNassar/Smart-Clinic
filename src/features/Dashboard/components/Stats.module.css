@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  gap: 2rem;
+  grid-column: 1/-1;
+  flex-wrap: wrap;
+  width: 100%;
+  @media (max-width: 1000px) {
+    gap: 1rem;
+  }
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.gap {
+  flex-grow: 1;
+  width: 100%;
+  @media (max-width: 1000px) {
+    grid-row: 2/3;
+  }
+  @media (max-width: 750px) {
+    width: 100%;
+  }
+}

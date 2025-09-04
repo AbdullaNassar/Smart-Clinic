@@ -1,0 +1,49 @@
+.all {
+  @media (max-width: 600px) {
+    padding-left: 1rem;
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: column; /* Stack label and input */
+  gap: 0.5rem; /* Space between label and input */
+  margin-bottom: 1rem; /* Space between rows */
+}
+
+.row label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.row input,
+.row textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: #555;
+}
+
+.row input:disabled,
+.row textarea:disabled {
+  background-color: #eee;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.button {
+  padding: 1rem 2rem;
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}

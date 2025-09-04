@@ -1,43 +1,38 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Main from "./pages/Main";
-import NewPatient from "./pages/NewPatient";
-import PatientHostory from "./pages/PatientHistory";
-import { PatientProvider } from "./contexts/PatientContext";
-// import DailyInfo from "./pages/DailyInfo";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Patients from "./features/patient/Patients";
-import Booking from "./features/Booking/Booking";
-import NewBooking from "./features/Booking/NewBooking";
-import AllBookings from "./features/Booking/AllBookings";
-import Reservation from "./features/Reservation/Reservation";
-import AllReservations from "./features/Kashf/AllReservations";
-import NewReservation from "./features/Kashf/NewReservation";
-import TodayBooking from "./features/Booking/TodayBooking";
-import PatientDetails from "./features/patient/PatientDetails";
-import ShowReservation from "./features/Kashf/displayReservation/ShowReservation";
-import ExpensesRevenues from "./features/ExpensesRevenues/ExpensesRevenues";
-import NewExpense from "./features/ExpensesRevenues/NewExpense";
-import NewRevenue from "./features/ExpensesRevenues/NewRevenue";
-import ShowExpenses from "./features/ExpensesRevenues/ShowExpenses";
-import ShowRevenues from "./features/ExpensesRevenues/ShowRevenues";
-// import Settings from "./features/seetings/Settings";
-import Login from "./pages/Login";
-import GlobalStyles from "./styles/GlobalStyles";
-import ProtectedRoute from "./UI/ProtectedRoute";
-import SignupForm from "./features/authentication/SignupForm";
 import { Toaster } from "react-hot-toast";
-import AppLayout from "./UI/AppLayout";
-import UpdateBooking from "./features/Booking/UpdateBooking";
-import Store from "./features/store/Store";
+
+import Main from "./features/Dashboard/pages/Main";
+import NewPatient from "./features/patient/pages/NewPatient";
+import PatientHostory from "./features/patient/pages/PatientHistory";
+import { PatientProvider } from "./features/patient/context/PatientContext";
+import NewBooking from "./features/Booking/pages/NewBooking";
+import AllBookings from "./features/Booking/pages/AllBookings";
+import AllReservations from "./features/Reservation/pages/AllReservations";
+import NewReservation from "./features/Reservation/pages/NewReservation";
+import TodayBooking from "./features/Booking/pages/TodayBooking";
+import PatientDetails from "./features/patient/pages/PatientDetails";
+import ShowReservation from "./features/Reservation/pages/ShowReservation";
+import NewExpense from "./features/ExpensesRevenues/pages/NewExpense";
+import ShowExpenses from "./features/ExpensesRevenues/pages/ShowExpenses";
+import ShowRevenues from "./features/ExpensesRevenues/pages/ShowRevenues";
+import Login from "./features/authentication/pages/Login";
+import GlobalStyles from "./shared/styles/GlobalStyles";
+import ProtectedRoute from "./shared/components/ui/ProtectedRoute";
+import AppLayout from "./shared/components/layout/AppLayout";
+import UpdateBooking from "./features/Booking/pages/UpdateBooking";
+import Store from "./features/store/pages/Store";
+import NotFound from "./shared/components/ui/NotFound";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // staleTime:60*1000
       staleTime: 0,
     },
   },
 });
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -55,33 +50,25 @@ function App() {
             >
               <Route path="/" element={<Main />} />
               <Route path="/newPatient" element={<NewPatient />} />
-              <Route path="/patients" element={<Patients />} />
               <Route path="/patientHistory" element={<PatientHostory />} />
-              <Route path="/booking" element={<Booking />} />
               <Route path="/todayBooking" element={<TodayBooking />} />
               <Route path="/allBookings" element={<AllBookings />} />
               <Route path="/newBooking" element={<NewBooking />} />
               <Route path="/updateBooking/:id" element={<UpdateBooking />} />
-              <Route path="/reservations" element={<Reservation />} />
               <Route path="/newReservations" element={<NewReservation />} />
               <Route path="/allReservations" element={<AllReservations />} />
               <Route path="/ReservationDetails" element={<ShowReservation />} />
-              {/* <Route path="/dailyInfo" element={<DailyInfo/>}/> */}
               <Route path="/patientDetails/:id" element={<PatientDetails />} />
-              <Route path="/ExpensesRevenues" element={<ExpensesRevenues />} />
               <Route path="/newExpense" element={<NewExpense />} />
-              <Route
-                path="/ExpensesRevenues/newRevenue"
-                element={<NewRevenue />}
-              />
               <Route path="/expenses" element={<ShowExpenses />} />
               <Route path="/revenues" element={<ShowRevenues />} />
               <Route path="/store" element={<Store />} />
-              <Route path="/signup" element={<SignupForm />} />
             </Route>
             <Route path="/login" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+
         <Toaster
           position="top-center"
           gutter={12}

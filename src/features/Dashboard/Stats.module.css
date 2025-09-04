@@ -1,5 +1,0 @@
-.gap {
-  @media (max-width: 1000px) {
-    grid-row: 2/3;
-  }
-}
