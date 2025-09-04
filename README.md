@@ -6,8 +6,6 @@
 
 ## [🚀Live Demo](https://abdullah-clinic.netlify.app/)
 
-## ##[📷 Demo](./demo.mkv)
-
 ## ✨ Features
 
 - Add new Patient bookings
