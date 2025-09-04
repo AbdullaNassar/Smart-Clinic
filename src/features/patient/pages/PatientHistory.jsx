@@ -97,7 +97,7 @@ function PatientHostory() {
             <th>الاسم</th>
             <th style={{ textAlign: "center" }}>السن</th>
             <th>رقم الهاتف</th>
-            <th>النوع</th>
+            {/* <th>النوع</th> */}
             <th>الزيارات</th>
             <th>ملاحظات</th>
             <th className="noPrint"></th>
@@ -108,7 +108,7 @@ function PatientHostory() {
               <td>{item.name}</td>
               <td style={{ textAlign: "center" }}>{formatNumber(item.age)}</td>
               <td>{formatNumber(item.phone)}</td>
-              <td>{item.gender === "male" ? "ذكر" : "انثي"}</td>
+              {/* <td>{item.gender === "male" ? "ذكر" : "انثي"}</td> */}
               <td>{formatNumber(getCountReservations(item.id))}</td>
               <td>{item.notes}</td>
               <td className={`${classes.option} noPrint`}>

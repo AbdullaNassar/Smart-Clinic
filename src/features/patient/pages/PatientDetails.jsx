@@ -50,7 +50,7 @@ function PatientDetails() {
             alt="Patient Picture"
           />
           <h3>{data?.name}</h3>
-          <label>{data?.gender === "male" ? "ذكر" : "انثى"}</label>
+          {/* <label>{data?.gender === "male" ? "ذكر" : "انثى"}</label> */}
           <label>{formatNumber(data?.age)} عام</label>
           <label>{formatNumber(data?.phone)}</label>
           <label>عدد الزيارات: {formatNumber(filteredList.length)}</label>

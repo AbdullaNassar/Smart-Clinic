@@ -12,10 +12,10 @@ function PatientInfo({ data, isLoading, error }) {
         <label>العمر:</label>
         <input disabled={true} value={data?.age} />
       </div>
-      <div className={classes.row}>
+      {/* <div className={classes.row}>
         <label>النوع:</label>
         <input disabled={true} value={data?.gender} />
-      </div>
+      </div> */}
       <div className={classes.row}>
         <label>رقم الهاتف:</label>
         <input disabled={true} value={data?.phone} />
